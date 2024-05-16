@@ -6,12 +6,20 @@ int main(int argc, char** argv) {
 	//设置标题 
 	setTitle(); 
 
+	//加载系统信息
+	loadInfo();
+	 
 	//获取用户身份 
 	role = greeting();
 	
 	//确认身份并根据身份不同登陆不同的界面 
 	clear();
-	cout << roleStr[role] << endl;
+	if(role == ADMINISTRATOR){
+		g_admin.process();
+	}
 
+	//存储信息到外部文件
+	storeInfo();
+	 
 	return 0;
 }
