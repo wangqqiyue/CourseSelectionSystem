@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ const char *roleStr[]={"管理员","学生","老师"};
 
 //打印字符宽度 
 #define PRINT_WIDTH  		8
+#define PRINT_LONG_WIDTH  		16
 
 //最多老师人数
 #define TEACHER_NUMBER_MAX  100 

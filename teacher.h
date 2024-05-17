@@ -14,8 +14,15 @@ public:
 	int teacherId;
 	string name;
 	string password;
+	Teacher(int id,string name,string passwd);
 };
 
-Teacher g_teacherList[TEACHER_NUMBER_MAX]={0};
+Teacher::Teacher(int id,string name,string passwd){
+	this->teacherId=id;
+	this->name=name;
+	this->password=passwd;
+}
+
+vector<Teacher> g_teacherList;
 
 #endif 
