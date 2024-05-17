@@ -16,6 +16,12 @@ int main(int argc, char** argv) {
 	clear();
 	if(role == ADMINISTRATOR){
 		g_admin.process();
+	}else if(role == TEACHER){
+		if(!g_teacherList.empty()){
+			if(g_teacherList[0].login()){
+				cout << "登陆成功" << endl;
+			}
+		}
 	}
 
 	//存储信息到外部文件
