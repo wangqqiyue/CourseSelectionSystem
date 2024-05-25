@@ -1,7 +1,9 @@
-#ifndef _TEACHER_H
-#define _TEACHER_H
+#ifndef INCLUDE_TEACHER
+#define INCLUDE_TEACHER
 
+#ifndef INCLUDE_ROLE
 #include "role.h"
+#endif
 
 //ΩÃ ¶ ”–’À∫≈√‹¬Î 
 /*

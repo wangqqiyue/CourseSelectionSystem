@@ -1,12 +1,35 @@
-#ifndef _ROLE_H
-#define _ROLE_H
+#ifndef INCLUDE_ROLE
+#define INCLUDE_ROLE
 
+#ifndef INCLUDE_IOSTREAM
 #include <iostream>
+#define INCLUDE_IOSTREAM
+#endif 
+
+#ifndef INCLUDE_STRING
 #include <string>
+#define INCLUDE_STRING
+#endif
+
+#ifndef INCLUDE_IOMANIP
 #include <iomanip>
+#define INCLUDE_IOMANIP
+#endif
+
+#ifndef INCLUDE_VECTOR
 #include <vector>
+#define INCLUDE_VECTOR
+#endif
+
+#ifndef INCLUDE_ALGORITHM
 #include <algorithm>
+#define INCLUDE_ALGORITHM
+#endif
+
+#ifndef INCLUDE_FUNCTIONAL
 #include <functional>
+#define INCLUDE_FUNCTIONAL
+#endif
 
 using namespace std;
 

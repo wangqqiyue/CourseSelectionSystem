@@ -1,5 +1,10 @@
+#ifndef INCLUDE_COURSE
+#define INCLUDE_COURSE
+
+#ifndef INCLUDE_ROLE
 /*课程定义头文件*/ 
 #include "role.h"
+#endif
 
 /*
 课程有课程名称、对应教室、老师、选课人数 、价格等 
@@ -57,3 +62,5 @@ void Course::showCourseInfo(){
 	cout << "课程编码" << "课程名" << "选课人数" <<  "课程价格" << "任课老师" << "教室" << endl;
 	cout << courseId  << courseName << studentNumber << price << teacherId << classroom << endl;
 }
+
+#endif

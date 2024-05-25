@@ -1,4 +1,9 @@
+#ifndef INCLUDE_STUDENT
+#define INCLUDE_STUDENT
+
+#ifndef INCLUDE_ROLE
 #include "role.h"
+#endif
 
 //学生 有姓名 身份证号 手机号 密码 
 /*
@@ -20,3 +25,5 @@ class Student{
 	vector<int> coursesIdList;
 	
 };
+
+#endif

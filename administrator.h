@@ -1,10 +1,19 @@
-#ifndef _ADMINISTATOR_H 
-#define _ADMINISTATOR_H
+#ifndef INCLUDE_ADMINISTATOR
+#define INCLUDE_ADMINISTATOR
 
+#ifndef INCLUDE_ROLE
 #include "role.h"
-#include "teacher.h"
+#endif
 
+#ifndef INCLUDE_TEACHER
+#include "teacher.h"
+#endif
+
+
+#ifndef INCLUDE_MAP
 #include<map>
+#define INCLUDE_MAP
+#endif
 
 //管理员 有账号和密码 
 /*

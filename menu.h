@@ -1,11 +1,39 @@
+#ifndef INCLUDE_MENU
+#define INCLUDE_MENU
 /*菜单和界面格式头文件*/
+
+#ifndef INCLUDE_WINDOWS
 #include <windows.h>
-#include "course.h"
-#include "administrator.h"
-#include "student.h"
-#include "teacher.h"
+#define INCLUDE_WINDOWS
+#endif
+
+#ifndef INCLUDE_SSTREAM
 #include <sstream>
+#define INCLUDE_SSTREAM
+#endif
+
+#ifndef INCLUDE_FSTREAM
 #include <fstream>
+#define INCLUDE_FSTREAM
+#endif
+
+
+#ifndef INCLUDE_COURSE
+#include "course.h"
+#endif
+
+#ifndef INCLUDE_ADMINISTATOR
+#include "administrator.h"
+#endif 
+
+#ifndef INCLUDE_STUDENT
+#include "student.h"
+#endif
+
+#ifndef INCLUDE_TEACHER
+#include "teacher.h"
+#endif
+
 
 const char *titleStr="培训中心管理系统";
 
@@ -86,4 +114,4 @@ void storeInfo(){
 	out.close();
 }
 
-
+#endif

@@ -1,4 +1,6 @@
+#ifndef INCLUDE_MENU
 #include "menu.h"
+#endif
 
 int main(int argc, char** argv) {
 	bool exitSystem = false; 
