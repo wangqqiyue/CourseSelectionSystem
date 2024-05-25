@@ -25,6 +25,16 @@
 //教室: 教室编号-教室名称 如 1101-第一教学楼101室 
 typedef pair<int,string> Classroom;
 
+//management 管理枚举 
+enum MGMT{
+	TEACHER_MGMT=0,
+	CLASSROOM_MGMT,
+	COURSE_MGMT,
+	MGMT_MAX,
+};
+
+//管理功能字符串 
+const char *mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
 
 class Administrator{
 private:
@@ -50,10 +60,27 @@ void Administrator::loadAccount(string account,string password){
 
 //管理员基本操作流程 
 void Administrator::process(){
+	int mgmtChoice=MGMT_MAX; 
 	if(!hasAccount){
 		createAdmin();
 	}
-	login();
+	while(login()){
+		clear();
+		cout << "------管理员菜单-------" << endl;
+		/*打印菜单选项 
+		教师信息
+			增 删 改  查 
+		教室信息
+			增 删 改  查 
+		课程信息 
+			增 删 改  查 
+		*/
+		mgmtChoice = getChoice("选择功能:", mgmtStr, MGMT_MAX);
+		if(MGMT_MAX == mgmtChoice){
+			continue;
+		}
+		//todo 实现具体功能 
+	}
 	
 }
 
@@ -81,8 +108,15 @@ void Administrator::createAdmin(){
 bool Administrator::login(){
 	string inputAccount;
 	string inputPasswd;
+	int loginChoice = -1;
+	
 	clear();
 	cout << "------管理员登陆-----" << endl;
+	loginChoice = getChoice("", loginStr, LOGIN_MAX);
+	if(LOGIN_MAX == loginChoice){
+			return false;
+	} 
+	
 	for(int i=0;i<LOGIN_RETRY_MAX;i++){
 		cout << "请输入管理员账号名称:" ;
 		cin >> inputAccount;
@@ -90,13 +124,15 @@ bool Administrator::login(){
 			cout << "账号不存在!请重新输入"  << endl;
 			continue;
 		}
-		
+
 		cout << "请输入管理员密码:" ;
 		cin >> inputPasswd;
 		if(inputPasswd != password){
 			cout << "密码错误!请重新输入"  << endl;
 			continue;
 		}
+		
+		cout << "登陆成功" << endl;
 		return true;
 	}
 	

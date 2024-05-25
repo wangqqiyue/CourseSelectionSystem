@@ -14,5 +14,9 @@
 		 
 */ 
 class Student{
+	int id;
+	string name;
+	string telphone;
+	vector<int> coursesIdList;
 	
 };

@@ -17,16 +17,12 @@ void setTitle() {
 
 //统一的欢迎界面,获取用户身份 
 Role greeting(){
-	int role = ROLE_MAX;
+	int role = -1;
+	clear(); 
+	cout << "-----主菜单-----"<< endl;
 	cout << "欢迎使用" << titleStr << endl;
-	cout << endl;
-	while(role >= ROLE_MAX || role < 0){
-		cout << "您的身份是："<<endl;
-		for(int i=0;i<ROLE_MAX;i++){
-			cout << i << ". " << roleStr[i] << endl;
-		}
-		cin >> role;
-	}
+
+	role = getChoice("您的身份是：",roleStr,ROLE_MAX);
 	return (Role)role;
 }
 
