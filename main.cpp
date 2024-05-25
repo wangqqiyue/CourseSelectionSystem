@@ -1,7 +1,6 @@
 #include "menu.h"
 
 int main(int argc, char** argv) {
-	Role role = ROLE_MAX;
 	bool exitSystem = false; 
 	
 	//设置标题 
@@ -11,7 +10,7 @@ int main(int argc, char** argv) {
 	loadInfo();
 	 
 	while(!exitSystem){
-		 	
+		Role role = ROLE_MAX;
 		//获取用户身份 
 		role = greeting();
 	

@@ -29,16 +29,16 @@ Teacher::Teacher(int id,string name,string passwd){
 bool Teacher::login(){
 	int id;
 	string inputPasswd;
-	int loginChoice = -1;
 	//在教师向量里查找编号为inpuAccount的元素
 	vector<Teacher>::iterator i;
 	
 	clear();
 	cout << "------教师登陆-----" << endl;
-	loginChoice = getChoice("", loginStr, LOGIN_MAX);
+	int loginChoice = getChoice("", loginStr, LOGIN_MAX);
 	if(LOGIN_MAX == loginChoice){
 		return false;
 	} 
+	
 	
 	for(int j=0;j<LOGIN_RETRY_MAX;j++){
 

@@ -36,6 +36,39 @@ enum MGMT{
 //管理功能字符串 
 const char *mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
 
+bool teacherInfoRetrieve(){
+	clear();
+	cout << "------教师信息查询-----"	<< endl;
+	cout << setw(PRINT_WIDTH)<<"教师编号" << setw(PRINT_LONG_WIDTH) << "教师姓名" << setw(PRINT_LONG_WIDTH) << "密码"<< endl;
+	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
+		cout <<  setw(PRINT_WIDTH)<<i->teacherId << setw(PRINT_LONG_WIDTH) <<	i->name << setw(PRINT_LONG_WIDTH)  << i->password << endl;
+	}
+	cout << "按任意键返回上一级" << endl;
+	cin.ignore();
+	getchar();
+	return true;
+	
+}
+
+bool teacherMgmt(){
+	int opChoice = -1;
+	while(OP_MAX != opChoice){
+		opChoice = -1; 
+		clear();
+		cout << "------教师信息管理-----"  << endl;
+		opChoice = getChoice("选择操作:", operationStr, OP_MAX);
+		if(RETRIEVE == opChoice){
+			return teacherInfoRetrieve();
+		}	
+	}
+	return false;
+}
+
+
+//todo 完善管理功能 
+bool classroomMgmt(){return false;}
+bool courseMgmt(){return false;}
+
 class Administrator{
 private:
 	bool hasAccount=false;
@@ -43,14 +76,24 @@ private:
 	map<int,string> rooms; //教室 
 	void createAdmin();
 	bool login(); 
+	bool (*mgmtFuncs[MGMT_MAX])();
+
 	
 public:
+	Administrator();
 	string adminAccount;//管理员账号 
 	string password;//管理员密码
 	void loadAccount(string account,string password); 
 	void process();
 
 }; 
+
+//管理员功能函数数组初始化 
+Administrator::Administrator(){
+	mgmtFuncs[TEACHER_MGMT] = teacherMgmt;
+	mgmtFuncs[CLASSROOM_MGMT] = classroomMgmt;
+	mgmtFuncs[COURSE_MGMT] = courseMgmt;	
+}
 
 void Administrator::loadAccount(string account,string password){
 	this->adminAccount=account;
@@ -60,13 +103,11 @@ void Administrator::loadAccount(string account,string password){
 
 //管理员基本操作流程 
 void Administrator::process(){
-	int mgmtChoice=MGMT_MAX; 
 	if(!hasAccount){
 		createAdmin();
 	}
 	while(login()){
-		clear();
-		cout << "------管理员菜单-------" << endl;
+		int mgmtChoice=-1; 	
 		/*打印菜单选项 
 		教师信息
 			增 删 改  查 
@@ -75,11 +116,15 @@ void Administrator::process(){
 		课程信息 
 			增 删 改  查 
 		*/
-		mgmtChoice = getChoice("选择功能:", mgmtStr, MGMT_MAX);
-		if(MGMT_MAX == mgmtChoice){
-			continue;
+		while(MGMT_MAX != mgmtChoice){
+			clear();
+			cout << "------管理员菜单-------" << endl;
+			mgmtChoice = getChoice("选择功能:", mgmtStr, MGMT_MAX);
+			if(MGMT_MAX != mgmtChoice){
+				//不断执行管理操作，直到返回错误退出 
+				while(mgmtFuncs[mgmtChoice]());
+			}
 		}
-		//todo 实现具体功能 
 	}
 	
 }
