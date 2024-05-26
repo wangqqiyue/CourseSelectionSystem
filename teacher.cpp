@@ -6,6 +6,7 @@
 #include "global.h"
 #endif
 
+
 vector<Teacher> g_teacherList;
 
 Teacher::Teacher(int id,string name,string passwd){

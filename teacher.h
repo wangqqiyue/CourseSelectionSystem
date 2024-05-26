@@ -5,8 +5,16 @@
 #include "global.h"
 #endif
 
+#ifndef INCLUDE_VECTOR
+#include <vector>
+#define INCLUDE_VECTOR
+#endif
 
 
+#ifndef INCLUDE_STRING
+#include <string>
+#define INCLUDE_STRING
+#endif
 
 //ΩÃ ¶ ”–’À∫≈√‹¬Î 
 /*

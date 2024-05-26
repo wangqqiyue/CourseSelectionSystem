@@ -1,6 +1,12 @@
 #ifndef INCLUDE_COURSE_RESOURCE
 #include "courseResource.h"
 #endif
+
+#ifndef INCLUDE_GLOBAL
+#include "global.h"
+#endif
+
+
 vector<Course> g_courseList;
 
 void Course::setCourseId(int courseId){

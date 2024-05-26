@@ -10,6 +10,13 @@
 #include "administrator.h"
 #endif
 
+#ifndef INCLUDE_TEACHER
+#include "teacher.h"
+#endif
+
+
+
+
 int main(int argc, char** argv) {
 	bool exitSystem = false; 
 	

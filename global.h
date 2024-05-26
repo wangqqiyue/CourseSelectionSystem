@@ -1,41 +1,19 @@
+/*
+所有文件需要的库头文件 
+*/
+
 #ifndef INCLUDE_GLOBAL
 #define INCLUDE_GLOBAL
-
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif
-
-#ifndef INCLUDE_IOSTREAM
-#include <iostream>
-#define INCLUDE_IOSTREAM
-#endif 
-
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
 
 #ifndef INCLUDE_IOMANIP
 #include <iomanip>
 #define INCLUDE_IOMANIP
 #endif
 
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
-#ifndef INCLUDE_ALGORITHM
-#include <algorithm>
-#define INCLUDE_ALGORITHM
-#endif
-
-#ifndef INCLUDE_FUNCTIONAL
-#include <functional>
-#define INCLUDE_FUNCTIONAL
-#endif
+#ifndef INCLUDE_IOSTREAM
+#include <iostream>
+#define INCLUDE_IOSTREAM
+#endif 
 
 using namespace std;
 

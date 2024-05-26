@@ -5,6 +5,13 @@
 #include "global.h"
 #endif
 
+
+#ifndef INCLUDE_STRING
+#include <string>
+#define INCLUDE_STRING
+#endif
+
+
 //管理员 有账号和密码 
 /*
 功能：录入课程信息、教室信息 
@@ -22,7 +29,7 @@
 */ 
 
 
-class Teacher;
+
 //由于默认只有一个管理员，不需要被实例化，所以设为静态类 
 class Administrator{
 public:

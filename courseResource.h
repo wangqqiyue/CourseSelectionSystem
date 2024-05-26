@@ -6,9 +6,18 @@
 #ifndef INCLUDE_COURSE_RESOURCE 
 #define INCLUDE_COURSE_RESOURCE
 
-#ifndef INCLUDE_GLOBAL
-#include "global.h"
+#ifndef INCLUDE_VECTOR
+#include <vector>
+#define INCLUDE_VECTOR
 #endif
+
+
+#ifndef INCLUDE_STRING
+#include <string>
+#define INCLUDE_STRING
+#endif
+
+using namespace std;
 
 class Classroom{
 	int classroomId;

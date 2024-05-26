@@ -10,6 +10,7 @@
 #include "recordProcess.h" 
 #endif
 
+
 //静态成员变量需要在类外定义 
 bool Administrator::hasAccount=false;
 bool Administrator::hasLoaded=false;

@@ -3,6 +3,11 @@
 #endif
 
 
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif
+
 
 int Global::LOGIN_RETRY_MAX=5;
 int Global::PRINT_WIDTH=8;
