@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 		
 		//确认身份并根据身份不同登陆不同的界面 
 		if(role == ADMINISTRATOR){
-			g_admin.process();
+			Administrator::process();
 		}else if(role == TEACHER){
 			if(Teacher::login()){
 				cout << "登陆成功" << endl;

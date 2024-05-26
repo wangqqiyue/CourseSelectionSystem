@@ -80,37 +80,28 @@ bool teacherMgmt(){
 bool classroomMgmt(){return false;}
 bool courseMgmt(){return false;}
 
+//由于默认只有一个管理员，不需要被实例化，所以设为静态类 
 class Administrator{
-private:
-	bool hasAccount=false;
-	bool hasLoaded=false;
-	map<int,string> rooms; //教室 
-	void createAdmin();
-	bool login(); 
-	bool (*mgmtFuncs[MGMT_MAX])();
-
-	
 public:
-	Administrator();
-	string adminAccount;//管理员账号 
-	string password;//管理员密码
-	void loadAccount(string account,string password); 
-	void process();
+	static bool hasAccount;
+	static bool hasLoaded;
+	static map<int,string> rooms; //教室 
+	static void createAdmin();
+	static bool login(); 
+	static bool (*mgmtFuncs[MGMT_MAX])();
+	static string adminAccount;//管理员账号 
+	static string password;//管理员密码
+	static void process();
 
 }; 
 
-//管理员功能函数数组初始化 
-Administrator::Administrator(){
-	mgmtFuncs[TEACHER_MGMT] = teacherMgmt;
-	mgmtFuncs[CLASSROOM_MGMT] = classroomMgmt;
-	mgmtFuncs[COURSE_MGMT] = courseMgmt;	
-}
+//静态成员变量需要在类外定义 
+bool Administrator::hasAccount=false;
+bool Administrator::hasLoaded=false;
+string Administrator::adminAccount;
+string Administrator::password;
 
-void Administrator::loadAccount(string account,string password){
-	this->adminAccount=account;
-	this->password=password;
-	hasAccount=true;
-}
+bool (*Administrator::mgmtFuncs[MGMT_MAX])() = {teacherMgmt,NULL,NULL};
 
 //管理员基本操作流程 
 void Administrator::process(){
@@ -183,8 +174,11 @@ bool Administrator::login(){
 
 		cout << "请输入管理员密码:" ;
 		cin >> inputPasswd;
-		if(inputPasswd != password){
+		if(inputPasswd != Administrator::password){
+		
 			cout << "密码错误!请重新输入"  << endl;
+			cout <<"password="<<password<<endl;
+		system("pause");
 			continue;
 		}
 		
@@ -197,6 +191,5 @@ bool Administrator::login(){
 	return false;
 }
 
-Administrator g_admin;
 
 #endif

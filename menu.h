@@ -71,7 +71,9 @@ void loadInfo(){
 		stringstream ss(temp);
 		ss >> account;
 		ss >> password;
-		g_admin.loadAccount(account,password);
+		Administrator::adminAccount=account;
+		Administrator::password=password;
+		Administrator::hasAccount=true;
 	}
 	in.close();
 	
@@ -99,7 +101,7 @@ void storeInfo(){
 	//加载管理员账号密码
 	out.open("administrator.txt",ios::out);
 	out << setw(PRINT_WIDTH)<<"账号" << setw(PRINT_WIDTH) << "密码" << endl;
-	out << setw(PRINT_WIDTH)<<g_admin.adminAccount << setw(PRINT_WIDTH) << g_admin.password << endl;
+	out << setw(PRINT_WIDTH)<<Administrator::adminAccount << setw(PRINT_WIDTH) << Administrator::password << endl;
 	out.close();
 	
 	//存储教师信息 
