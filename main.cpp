@@ -1,5 +1,13 @@
-#ifndef INCLUDE_MENU
-#include "menu.h"
+#ifndef INCLUDE_RECORD_PROCESS
+#include "recordProcess.h"
+#endif
+
+#ifndef INCLUDE_GLOBAL
+#include "global.h"
+#endif
+
+#ifndef INCLUDE_ADMINISTATOR
+#include "administrator.h"
 #endif
 
 int main(int argc, char** argv) {
@@ -12,15 +20,15 @@ int main(int argc, char** argv) {
 	loadInfo();
 	 
 	while(!exitSystem){
-		Role role = ROLE_MAX;
+		Global::Role role = Global::ROLE_MAX;
 		//获取用户身份 
 		role = greeting();
 	
 		
 		//确认身份并根据身份不同登陆不同的界面 
-		if(role == ADMINISTRATOR){
+		if(role == Global::ADMINISTRATOR){
 			Administrator::process();
-		}else if(role == TEACHER){
+		}else if(role == Global::TEACHER){
 			if(Teacher::login()){
 				cout << "登陆成功" << endl;
 				system("pause");

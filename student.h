@@ -1,8 +1,8 @@
 #ifndef INCLUDE_STUDENT
 #define INCLUDE_STUDENT
 
-#ifndef INCLUDE_ROLE
-#include "role.h"
+#ifndef INCLUDE_GLOBAL
+#include "global.h"
 #endif
 
 //学生 有姓名 身份证号 手机号 密码 
