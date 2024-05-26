@@ -19,12 +19,18 @@
 
 using namespace std;
 
+
 class Classroom{
-	int classroomId;
+public:
+	int roomId;
+	string roomName;
 	int capacity;//教室学生容量 
-	string classroomName;
+	
+	Classroom(int id,string name,int cap):roomId(id),roomName(name),capacity(cap){}
+	static bool recordToStream(ostream& os);
 };
 
+extern vector<Classroom> g_roomList;
 
 /*
 课程有课程名称、对应教室、老师、选课人数 、价格等 

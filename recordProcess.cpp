@@ -89,7 +89,23 @@ void loadInfo(){
 		Course c(courseId,courseName,number,price,teacherId,classroomId);
 		g_courseList.push_back(c);
 	}
+	in.close();
 	
+	//加载教室信息
+	in.open("classroomsInfo.txt",ios::in);
+	getline(in,temp);
+	while(getline(in,temp)){
+		int roomId,capacity;
+		string roomName;
+		
+		stringstream ss(temp);
+		ss >> roomId;
+		ss >> roomName;
+		ss >> capacity;
+		
+		Classroom cr(roomId,roomName,capacity);
+		g_roomList.push_back(cr);
+	}
 	in.close();
 }
 
@@ -121,10 +137,35 @@ void storeInfo(){
 		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH)  << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherId << setw(Global::PRINT_LONG_WIDTH)  << i->classroomId << endl;
 	}
 	out.close();
+	
+	//存储教室信息 
+	out.open("classroomsInfo.txt",ios::out);
+	Classroom::recordToStream(out);
+	out.close();
 }
 
 
-//查询教师数据 
+/*----------------管理教师数据 -------------------*/
+
+
+bool teacherMgmt(){
+	int opChoice = -1;
+	while(Global::OP_MAX != opChoice){
+		opChoice = -1; 
+		clear();
+		cout << "------教师信息管理-----"  << endl;
+		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
+		if(Global::RETRIEVE == opChoice){
+			return teacherInfoRetrieve();
+		}else if(Global::CREATE == opChoice){
+			return teacherInfoCreate();
+		}
+	}
+	return false;
+}
+
+
+//查询教师信息 
 bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
@@ -200,25 +241,33 @@ bool teacherInfoCreate(){
 	
 }
 
-//管理教师信息 
-bool teacherMgmt(){
+
+/*--------------------------------教室信息管理 ----------------------------------------*/
+bool classroomMgmt(){
 	int opChoice = -1;
 	while(Global::OP_MAX != opChoice){
 		opChoice = -1; 
 		clear();
-		cout << "------教师信息管理-----"  << endl;
+		cout << "------教室信息管理-----"  << endl;
 		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
 		if(Global::RETRIEVE == opChoice){
-			return teacherInfoRetrieve();
-		}else if(Global::CREATE == opChoice){
-			return teacherInfoCreate();
+			return roomInfoRetrieve();
 		}
 	}
 	return false;
 }
 
+//查询教室数据 
+bool roomInfoRetrieve(){
+	clear();
+	cout << "------教室信息查询-----"	<< endl;
+	Classroom::recordToStream(cout);
+	cout << "按任意键返回上一级" << endl;
+	cin.ignore();
+	getchar();
+	return true;
+	
+}
 
-//todo 完善管理功能 
-bool classroomMgmt(){return false;}
 bool courseMgmt(){return false;}
 

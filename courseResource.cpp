@@ -8,11 +8,26 @@
 
 
 vector<Course> g_courseList;
+vector<Classroom> g_roomList;
+
+bool Classroom::recordToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out << setw(Global::PRINT_WIDTH)<<"教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_LONG_WIDTH) << "教室容量"<< endl;
+	for(vector<Classroom>::iterator i=g_roomList.begin();i!=g_roomList.end();i++){
+		out <<  setw(Global::PRINT_WIDTH)<<i->roomId << setw(Global::PRINT_LONG_WIDTH) <<	i->roomName << setw(Global::PRINT_LONG_WIDTH)  << i->capacity << endl;
+	}
+}
 
 void Course::setCourseId(int courseId){
 	this->courseId = courseId;
 	
 }
+
 void Course::setCourseName(string name){
 	courseName =name;
 }

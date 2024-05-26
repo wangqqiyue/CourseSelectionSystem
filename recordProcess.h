@@ -14,10 +14,8 @@ void loadInfo();
 //信息存储
 void storeInfo();
 
-//管理教师信息 
+/*----------------管理教师信息-------------------------------*/
 bool teacherMgmt(); 
-bool classroomMgmt();
-bool courseMgmt();
 
 /*新增教师数据 
 需要判断新增数据是否有重复,新增后不超过教师总数上限 
@@ -26,5 +24,17 @@ bool teacherInfoCreate();
 
 //查询教师数据 
 bool teacherInfoRetrieve();
+
+
+/*------------------管理教室信息 ----------------------------*/
+bool classroomMgmt();
+
+//查询教室数据 
+bool roomInfoRetrieve();
+
+
+/*-----------------管理课程信息-----------------------------*/
+bool courseMgmt();
+
 
 #endif

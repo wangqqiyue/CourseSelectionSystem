@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000001000000
-UnitCount=11
+UnitCount=12
 
 [VersionInfo]
 Major=1
@@ -61,7 +61,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=menu.h
+FileName=recordProcess.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -80,18 +80,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit4]
-FileName=classroom.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit5]
-FileName=course.h
+FileName=global.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -101,16 +91,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=role.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit7]
 FileName=student.h
 CompileCpp=1
 Folder=
@@ -120,7 +100,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit8]
+[Unit7]
 FileName=teacher.h
 CompileCpp=1
 Folder=
@@ -130,7 +110,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit9]
+[Unit8]
 FileName=administrator.cpp
 CompileCpp=1
 Folder=
@@ -140,8 +120,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit9]
+FileName=global.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit10]
-FileName=util.cpp
+FileName=teacher.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -151,7 +141,27 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit11]
-FileName=teacher.cpp
+FileName=courseResource.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=courseResource.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit12]
+FileName=recordProcess.cpp
 CompileCpp=1
 Folder=
 Compile=1
