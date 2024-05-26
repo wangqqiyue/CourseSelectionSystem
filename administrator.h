@@ -41,6 +41,7 @@ public:
 	static string adminAccount;//管理员账号 
 	static string password;//管理员密码
 	static void process();
+	static bool recordToStream(ostream& out);
 
 }; 
 

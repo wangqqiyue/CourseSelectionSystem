@@ -29,6 +29,7 @@ public:
 	string password;
 	Teacher(int id,string name,string passwd);
 	static bool login();
+	static bool recordToStream(ostream& out);
 };
 extern vector<Teacher> g_teacherList;
 

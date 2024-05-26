@@ -110,3 +110,15 @@ bool Administrator::login(){
 	return false;
 }
 
+bool Administrator::recordToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out << setw(Global::PRINT_WIDTH)<<"账号" << setw(Global::PRINT_WIDTH) << "密码" << endl;
+	out << setw(Global::PRINT_WIDTH)<<Administrator::adminAccount << setw(Global::PRINT_WIDTH) << Administrator::password << endl;
+	return true;
+}
+

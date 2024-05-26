@@ -64,4 +64,17 @@ bool Teacher::login(){
 	return false;
 }
 
+bool Teacher::recordToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
+	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
+		out <<  setw(Global::PRINT_WIDTH)<<i->teacherId << setw(Global::PRINT_LONG_WIDTH) <<	i->name << setw(Global::PRINT_LONG_WIDTH)  << i->password << endl;
+	}
+	return true;
+} 
 

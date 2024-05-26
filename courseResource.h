@@ -58,7 +58,7 @@ public:
 	void setPrice(float price);
 	void setTeacher(int teacherId);
 	void setClassroom(int classroom);
-	void showCourseInfo();
+	static bool recordToStream(ostream& os);
 };
 extern vector<Course> g_courseList;
 #endif

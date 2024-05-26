@@ -116,26 +116,17 @@ void storeInfo(){
 
 	//加载管理员账号密码
 	out.open("administrator.txt",ios::out);
-	out << setw(Global::PRINT_WIDTH)<<"账号" << setw(Global::PRINT_WIDTH) << "密码" << endl;
-	out << setw(Global::PRINT_WIDTH)<<Administrator::adminAccount << setw(Global::PRINT_WIDTH) << Administrator::password << endl;
+	Administrator::recordToStream(out);
 	out.close();
 	
 	//存储教师信息 
 	out.open("teachersInfo.txt",ios::out);
-	//一行行读取信息，并分割赋值 
-	out << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
-	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
-		out <<  setw(Global::PRINT_WIDTH)<<i->teacherId << setw(Global::PRINT_LONG_WIDTH) <<	i->name << setw(Global::PRINT_LONG_WIDTH)  << i->password << endl;
-	}
+	Teacher::recordToStream(out);
 	out.close();
 	
 	//存储课程信息 
 	out.open("coursesInfo.txt",ios::out);
-	//一行行读取信息，并分割赋值 
-	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_WIDTH) << "课程名" << setw(Global::PRINT_LONG_WIDTH) << "选课人数"<< setw(Global::PRINT_LONG_WIDTH) << "课程价格"<< setw(Global::PRINT_LONG_WIDTH) << "任课老师编号"<< setw(Global::PRINT_LONG_WIDTH) << "教室编号"<<endl;
-	for(vector<Course>::iterator i=g_courseList.begin();i!=g_courseList.end();i++){
-		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH)  << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherId << setw(Global::PRINT_LONG_WIDTH)  << i->classroomId << endl;
-	}
+	Course::recordToStream(out);
 	out.close();
 	
 	//存储教室信息 
@@ -169,10 +160,7 @@ bool teacherMgmt(){
 bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
-	cout << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
-	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
-		cout <<  setw(Global::PRINT_WIDTH)<<i->teacherId << setw(Global::PRINT_LONG_WIDTH) <<	i->name << setw(Global::PRINT_LONG_WIDTH)  << i->password << endl;
-	}
+	Teacher::recordToStream(cout);
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();
 	getchar();
