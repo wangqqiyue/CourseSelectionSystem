@@ -62,15 +62,23 @@ enum OPERATION{
 //管理功能字符串 
 const char *operationStr[]={"新增","删除","修改","查询","返回上一级"};
 
-//登陆最多尝试次数 
-#define LOGIN_RETRY_MAX  5
+class Global{
+public:
+	//登陆最多尝试次数 
+	static int LOGIN_RETRY_MAX;
 
-//打印字符宽度 
-#define PRINT_WIDTH  		8
-#define PRINT_LONG_WIDTH  		16
+	//打印字符宽度 
+	static int PRINT_WIDTH;
+	static int PRINT_LONG_WIDTH;
 
-//最多老师人数
-#define TEACHER_NUMBER_MAX  100 
+	//最多老师人数
+	static int TEACHER_NUMBER_MAX;
+}; 
+
+int Global::LOGIN_RETRY_MAX=5;
+int Global::PRINT_WIDTH=8;
+int Global::PRINT_LONG_WIDTH=16;
+int Global::TEACHER_NUMBER_MAX=100;
 
 //清空控制台
 void clear(){

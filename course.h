@@ -58,7 +58,7 @@ void Course::setClassroom(string classroom){
 //打印课程完整信息 
 void Course::showCourseInfo(){
 	//设置打印宽度 
-	setw(PRINT_WIDTH);
+	setw(Global::PRINT_WIDTH);
 	cout << "课程编码" << "课程名" << "选课人数" <<  "课程价格" << "任课老师" << "教室" << endl;
 	cout << courseId  << courseName << studentNumber << price << teacherId << classroom << endl;
 }

@@ -49,9 +49,9 @@ const char *mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"
 bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
-	cout << setw(PRINT_WIDTH)<<"教师编号" << setw(PRINT_LONG_WIDTH) << "教师姓名" << setw(PRINT_LONG_WIDTH) << "密码"<< endl;
+	cout << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
 	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
-		cout <<  setw(PRINT_WIDTH)<<i->teacherId << setw(PRINT_LONG_WIDTH) <<	i->name << setw(PRINT_LONG_WIDTH)  << i->password << endl;
+		cout <<  setw(Global::PRINT_WIDTH)<<i->teacherId << setw(Global::PRINT_LONG_WIDTH) <<	i->name << setw(Global::PRINT_LONG_WIDTH)  << i->password << endl;
 	}
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();
@@ -101,7 +101,7 @@ bool Administrator::hasLoaded=false;
 string Administrator::adminAccount;
 string Administrator::password;
 
-bool (*Administrator::mgmtFuncs[MGMT_MAX])() = {teacherMgmt,NULL,NULL};
+bool (*Administrator::mgmtFuncs[MGMT_MAX])() = {teacherMgmt,classroomMgmt,courseMgmt};
 
 //管理员基本操作流程 
 void Administrator::process(){
@@ -164,7 +164,7 @@ bool Administrator::login(){
 			return false;
 	} 
 	
-	for(int i=0;i<LOGIN_RETRY_MAX;i++){
+	for(int i=0;i<Global::LOGIN_RETRY_MAX;i++){
 		cout << "请输入管理员账号名称:" ;
 		cin >> inputAccount;
 		if(inputAccount != adminAccount){
@@ -186,7 +186,7 @@ bool Administrator::login(){
 		return true;
 	}
 	
-	cout << "登陆次数超过" << LOGIN_RETRY_MAX << endl; 
+	cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
 	cout << "已退出" << endl;
 	return false;
 }

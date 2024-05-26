@@ -42,7 +42,7 @@ bool Teacher::login(){
 	} 
 	
 	
-	for(int j=0;j<LOGIN_RETRY_MAX;j++){
+	for(int j=0;j<Global::LOGIN_RETRY_MAX;j++){
 
 		cout << "请输入教师帐号（即教师编号）:" ;
 		cin >> id;
@@ -70,7 +70,7 @@ bool Teacher::login(){
 		return true;
 	}
 	
-	cout << "登陆次数超过" << LOGIN_RETRY_MAX << endl; 
+	cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
 	cout << "已退出" << endl;
 	return false;
 }

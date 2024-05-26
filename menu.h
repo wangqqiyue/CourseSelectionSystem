@@ -100,16 +100,16 @@ void storeInfo(){
 
 	//加载管理员账号密码
 	out.open("administrator.txt",ios::out);
-	out << setw(PRINT_WIDTH)<<"账号" << setw(PRINT_WIDTH) << "密码" << endl;
-	out << setw(PRINT_WIDTH)<<Administrator::adminAccount << setw(PRINT_WIDTH) << Administrator::password << endl;
+	out << setw(Global::PRINT_WIDTH)<<"账号" << setw(Global::PRINT_WIDTH) << "密码" << endl;
+	out << setw(Global::PRINT_WIDTH)<<Administrator::adminAccount << setw(Global::PRINT_WIDTH) << Administrator::password << endl;
 	out.close();
 	
 	//存储教师信息 
 	out.open("teachersInfo.txt",ios::out);
 	//一行行读取信息，并分割赋值 
-	out << setw(PRINT_WIDTH)<<"教师编号" << setw(PRINT_LONG_WIDTH) << "教师姓名" << setw(PRINT_LONG_WIDTH) << "密码"<< endl;
+	out << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
 	for(vector<Teacher>::iterator i=g_teacherList.begin();i!=g_teacherList.end();i++){
-		out <<  setw(PRINT_WIDTH)<<i->teacherId << setw(PRINT_LONG_WIDTH) <<	i->name << setw(PRINT_LONG_WIDTH)  << i->password << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->teacherId << setw(Global::PRINT_LONG_WIDTH) <<	i->name << setw(Global::PRINT_LONG_WIDTH)  << i->password << endl;
 	}
 	
 	
