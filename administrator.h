@@ -31,9 +31,6 @@
 		所有添加删除修改过的数据均以文件形式保存，系统重启后能根据修改后的数据完成各种功能 
 */ 
 
-//教室: 教室编号-教室名称 如 1101-第一教学楼101室 
-typedef pair<int,string> Classroom;
-
 //management 管理枚举 
 enum MGMT{
 	TEACHER_MGMT=0,
