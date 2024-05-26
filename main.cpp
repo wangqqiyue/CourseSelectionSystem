@@ -28,11 +28,10 @@ int main(int argc, char** argv) {
 			
 		}else{
 			exitSystem = true;
-		}
-	
-		//存储信息到外部文件
-		storeInfo();
-		
+		}	
 	} 
+	
+	//存储信息到外部文件
+	storeInfo();
 	return 0;
 }

@@ -62,6 +62,7 @@ enum OPERATION{
 //管理功能字符串 
 const char *operationStr[]={"新增","删除","修改","查询","返回上一级"};
 
+//宏定义全局变量类 
 class Global{
 public:
 	//登陆最多尝试次数 

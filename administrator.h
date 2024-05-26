@@ -60,6 +60,60 @@ bool teacherInfoRetrieve(){
 	
 }
 
+/*新增教师数据 
+需要判断新增数据是否有重复,新增后不超过教师总数上限 
+*/
+bool teacherInfoCreate(){
+	int id;
+	string name;
+	string passwd;
+	char comfirm = 'y';
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		clear();
+		cout << "------新增教师信息-----"	<< endl;
+		cout << "请输入信息" << endl;
+		cout<<"教师编号:";
+		cin >> id;
+		
+		vector<Teacher>::iterator i;
+		for(i=g_teacherList.begin();i!=g_teacherList.end();++i){
+			if(i->teacherId == id){
+				cout << "该编号已存在！请重新选择" << endl;
+				break;
+			}
+		}
+		if(i != g_teacherList.end()){
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		
+		cout << "教师姓名:" ;
+		cin >> name;
+		
+		cout << "密码;";
+		cin >> passwd;
+		
+		Teacher t(id,name,passwd);
+		g_teacherList.push_back(t);
+		
+		cout << "已新增数据如下" << endl;
+		cout << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
+		cout <<  setw(Global::PRINT_WIDTH)<<id << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << passwd << endl;
+		
+		
+		cout << "是否继续?Y/N" << endl;
+		cin >> comfirm;
+	}
+	
+	cout << "按任意键返回上一级" << endl;
+	cin.ignore();
+	getchar();
+	return true;
+	
+}
+
 //管理教师信息 
 bool teacherMgmt(){
 	int opChoice = -1;
@@ -70,7 +124,9 @@ bool teacherMgmt(){
 		opChoice = getChoice("选择操作:", operationStr, OP_MAX);
 		if(RETRIEVE == opChoice){
 			return teacherInfoRetrieve();
-		}	
+		}else if(CREATE == opChoice){
+			return teacherInfoCreate();
+		}
 	}
 	return false;
 }
@@ -88,7 +144,7 @@ public:
 	static map<int,string> rooms; //教室 
 	static void createAdmin();
 	static bool login(); 
-	static bool (*mgmtFuncs[MGMT_MAX])();
+	static bool (*mgmtFuncs[MGMT_MAX])();//管理功能的函数指针数组 
 	static string adminAccount;//管理员账号 
 	static string password;//管理员密码
 	static void process();
@@ -101,6 +157,7 @@ bool Administrator::hasLoaded=false;
 string Administrator::adminAccount;
 string Administrator::password;
 
+//函数指针数组的初始化 
 bool (*Administrator::mgmtFuncs[MGMT_MAX])() = {teacherMgmt,classroomMgmt,courseMgmt};
 
 //管理员基本操作流程 

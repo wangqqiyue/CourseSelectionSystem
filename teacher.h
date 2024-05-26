@@ -27,7 +27,7 @@ Teacher::Teacher(int id,string name,string passwd){
 	this->name=name;
 	this->password=passwd;
 }
-
+//静态函数的定义 
 bool Teacher::login(){
 	int id;
 	string inputPasswd;
