@@ -79,6 +79,9 @@ bool teacherInfoCreate(){
 		cout << "请输入信息" << endl;
 		cout<<"教师编号:";
 		cin >> id;
+		if(!isInputOk()){
+			continue;
+		}
 		
 		vector<Teacher>::iterator i;
 		for(i=g_teacherList.begin();i!=g_teacherList.end();++i){

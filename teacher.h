@@ -46,7 +46,9 @@ bool Teacher::login(){
 
 		cout << "请输入教师帐号（即教师编号）:" ;
 		cin >> id;
-	
+		if(!isInputOk()){
+			continue;
+		}
 		
 		for(i=g_teacherList.begin();i!=g_teacherList.end();++i){
 			if(i->teacherId == id){
