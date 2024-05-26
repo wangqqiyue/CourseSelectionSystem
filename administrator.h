@@ -68,10 +68,14 @@ bool teacherInfoCreate(){
 	string name;
 	string passwd;
 	char comfirm = 'y';
+	clear();
+	cout << "------新增教师信息-----"	<< endl;
 	
 	while('y' == comfirm || 'Y' == comfirm){
-		clear();
-		cout << "------新增教师信息-----"	<< endl;
+		if(g_teacherList.size() >= Global::TEACHER_NUMBER_MAX){
+			cout << "教师数量已达上限("<< Global::TEACHER_NUMBER_MAX <<")!" << endl;
+			break;
+		}
 		cout << "请输入信息" << endl;
 		cout<<"教师编号:";
 		cin >> id;
