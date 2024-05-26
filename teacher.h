@@ -17,7 +17,7 @@ public:
 	string name;
 	string password;
 	Teacher(int id,string name,string passwd);
-	bool login();
+	static bool login();
 };
 vector<Teacher> g_teacherList;
 

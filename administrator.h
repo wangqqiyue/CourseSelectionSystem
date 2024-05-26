@@ -45,6 +45,7 @@ enum MGMT{
 //管理功能字符串 
 const char *mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
 
+//查询教师数据 
 bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
@@ -59,6 +60,7 @@ bool teacherInfoRetrieve(){
 	
 }
 
+//管理教师信息 
 bool teacherMgmt(){
 	int opChoice = -1;
 	while(OP_MAX != opChoice){

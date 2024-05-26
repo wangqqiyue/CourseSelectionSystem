@@ -21,11 +21,11 @@ int main(int argc, char** argv) {
 		if(role == ADMINISTRATOR){
 			g_admin.process();
 		}else if(role == TEACHER){
-			if(!g_teacherList.empty()){
-				if(g_teacherList[0].login()){
-					cout << "登陆成功" << endl;
-				}
+			if(Teacher::login()){
+				cout << "登陆成功" << endl;
+				system("pause");
 			}
+			
 		}else{
 			exitSystem = true;
 		}
