@@ -13,6 +13,7 @@ int Global::LOGIN_RETRY_MAX=5;
 int Global::PRINT_WIDTH=8;
 int Global::PRINT_LONG_WIDTH=16;
 int Global::TEACHER_NUMBER_MAX=100;
+int Global::ROOM_NUMBER_MAX=100;
 
 const char *Global::roleStr[]={"管理员","学生","老师","退出"};
 const char *Global::loginStr[]={"登陆","返回上一级"};

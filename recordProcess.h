@@ -32,6 +32,10 @@ bool classroomMgmt();
 //查询教室数据 
 bool roomInfoRetrieve();
 
+/*新增教室数据 
+需要判断新增数据是否有重复,新增后不超过教室总数上限 
+*/
+bool roomInfoCreate();
 
 /*-----------------管理课程信息-----------------------------*/
 bool courseMgmt();

@@ -240,6 +240,8 @@ bool classroomMgmt(){
 		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
 		if(Global::RETRIEVE == opChoice){
 			return roomInfoRetrieve();
+		}else if(Global::CREATE == opChoice){
+			return roomInfoCreate();
 		}
 	}
 	return false;
@@ -250,6 +252,79 @@ bool roomInfoRetrieve(){
 	clear();
 	cout << "------教室信息查询-----"	<< endl;
 	Classroom::recordToStream(cout);
+	cout << "按任意键返回上一级" << endl;
+	cin.ignore();
+	getchar();
+	return true;
+	
+}
+
+
+/*新增教室数据 
+需要判断新增数据是否有重复,新增后不超过教室总数上限 
+*/
+bool roomInfoCreate(){
+	int id,capacity;
+	string name;
+
+	char comfirm = 'y';
+	clear();
+	cout << "------新增教室信息-----"	<< endl;
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		if(g_roomList.size() >= Global::ROOM_NUMBER_MAX){
+			cout << "教室数量已达上限("<< Global::ROOM_NUMBER_MAX <<")!" << endl;
+			break;
+		}
+		cout << "请输入信息" << endl;
+		cout<<"教室编号:";
+		cin >> id;
+		if(!isInputOk()){
+			continue;
+		}
+		
+		vector<Classroom>::iterator i;
+		for(i=g_roomList.begin();i!=g_roomList.end();++i){
+			if(i->roomId == id){
+				cout << "该编号已存在！请重新选择" << endl;
+				break;
+			}
+		}
+		if(i != g_roomList.end()){
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		
+		cout << "教室名称:" ;
+		cin >> name;
+		for(i=g_roomList.begin();i!=g_roomList.end();++i){
+			if(i->roomName == name){
+				cout << "该名称已存在！请重新选择" << endl;
+				break;
+			}
+		}
+		if(i != g_roomList.end()){
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		
+		cout << "教室容量";
+		cin >> capacity;
+		
+		Classroom cr(id,name,capacity);
+		g_roomList.push_back(cr);
+		
+		cout << "已新增数据如下" << endl;
+		cout << setw(Global::PRINT_WIDTH)<<"教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_LONG_WIDTH) << "教室容量"<< endl;
+		cout <<  setw(Global::PRINT_WIDTH)<<id << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << capacity << endl;
+		
+		
+		cout << "是否继续?Y/N" << endl;
+		cin >> comfirm;
+	}
+	
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();
 	getchar();
