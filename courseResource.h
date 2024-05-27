@@ -27,7 +27,7 @@ public:
 	int capacity;//教室学生容量 
 	
 	Classroom(int id,string name,int cap):roomId(id),roomName(name),capacity(cap){}
-	static bool recordToStream(ostream& os);
+	static bool recordToStream(ostream& os, bool tailOnly = false);
 };
 
 extern vector<Classroom> g_roomList;
@@ -47,13 +47,14 @@ public:
 	int courseId;
 	string courseName;
 	int studentNumber;
+	int capacity;//课程人数限额 
 	float price;
 	int teacherId;
 	int roomId;
 
-	Course(int id,string name,int num,float p,int tId,int rId):courseId(id),courseName(name),studentNumber(num),price(p),teacherId(tId),roomId(rId){}
+	Course(int id,string name,int num,float p,int tId,int rId,int c):courseId(id),courseName(name),studentNumber(num),price(p),teacherId(tId),roomId(rId),capacity(c){}
 	
-	static bool recordToStream(ostream& os);
+	static bool recordToStream(ostream& os, bool tailOnly = false);
 };
 extern vector<Course> g_courseList;
 #endif

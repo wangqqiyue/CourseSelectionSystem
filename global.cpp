@@ -17,6 +17,8 @@ int Global::TEACHER_NUMBER_MAX=100;
 int Global::ROOM_NUMBER_MAX=100;
 int Global::COURSE_NUMBER_MAX=100;
 int Global::COURSE_PRICE_MAX=3000;
+int Global::COURSE_CAPACITY_MAX=200;
+int Global::COURSE_CAPACITY_MIN=20;
 
 const char *Global::roleStr[]={"管理员","学生","老师","退出"};
 const char *Global::loginStr[]={"登陆","返回上一级"};

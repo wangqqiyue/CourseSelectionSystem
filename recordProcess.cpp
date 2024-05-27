@@ -74,7 +74,7 @@ void loadInfo(){
 	in.open("coursesInfo.txt",ios::in);
 	getline(in,temp);
 	while(getline(in,temp)){
-		int courseId,number,teacherId,classroomId;
+		int courseId,number,teacherId,classroomId,capacity;
 		float price;
 		string courseName;
 		
@@ -85,8 +85,9 @@ void loadInfo(){
 		ss >> price;
 		ss >> teacherId;
 		ss >> classroomId;
+		ss >> capacity;
 		
-		Course c(courseId,courseName,number,price,teacherId,classroomId);
+		Course c(courseId,courseName,number,price,teacherId,classroomId,capacity);
 		g_courseList.push_back(c);
 	}
 	in.close();
@@ -365,7 +366,7 @@ bool courseInfoRetrieve(){
 需要判断新增数据是否有重复,新增后不超过课程总数上限 
 */
 bool courseInfoCreate(){
-	int id,teacherId,roomId;
+	int id,teacherId,roomId,capacity;
 	float price;
 	string name;
 
@@ -379,50 +380,74 @@ bool courseInfoCreate(){
 			break;
 		}
 		cout << "请输入信息" << endl;
-		cout<<"课程编号:";
-		cin >> id;
-		if(!isInputOk()){
-			continue;
-		}
 		
-		vector<Course>::iterator i;
-		for(i=g_courseList.begin();i!=g_courseList.end();++i){
-			if(i->courseId == id){
-				cout << "该编号已存在！请重新选择" << endl;
+		while('y' == comfirm || 'Y' == comfirm){
+			cout<<"课程编号:";
+			cin >> id;
+			if(!isInputOk()){
+				continue;
+			}
+			
+			vector<Course>::iterator i;
+			for(i=g_courseList.begin();i!=g_courseList.end();++i){
+				if(i->courseId == id){
+					cout << "该编号已存在！请重新选择" << endl;
+					break;
+				}
+			}
+			if(i != g_courseList.end()){
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else{
 				break;
 			}
 		}
-		if(i != g_courseList.end()){
-			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
-			continue;
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
 		}
 		
 		
-		cout << "课程名称:" ;
-		cin >> name;
-		for(i=g_courseList.begin();i!=g_courseList.end();++i){
-			if(i->courseName == name){
-				cout << "该名称已存在！请重新选择" << endl;
+		while('y' == comfirm || 'Y' == comfirm){
+			cout << "课程名称:" ;
+			cin >> name;
+			
+			vector<Course>::iterator i;
+			for(i=g_courseList.begin();i!=g_courseList.end();++i){
+				if(i->courseName == name){
+					cout << "该名称已存在！请重新选择" << endl;
+					break;
+				}
+			}
+			if(i != g_courseList.end()){
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else{
 				break;
 			}
 		}
-		if(i != g_courseList.end()){
-			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
-			continue;
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
 		}
 		
-		cout << "课程价格";
-		cin >> price;
-		while(price < 0 || price > Global::COURSE_PRICE_MAX){
-			cout << "课程价格需要在合理范围(0--"<< Global::COURSE_PRICE_MAX <<")，请重新输入:" << endl;
+		while('y' == comfirm || 'Y' == comfirm){
+			cout << "课程价格";
 			cin >> price;
+			if(price < 0 || price > Global::COURSE_PRICE_MAX){
+				cout << "课程价格需要在合理范围(0--"<< Global::COURSE_PRICE_MAX <<")，请重新输入:" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else{
+				break;
+			}
+		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
 		}
 		
-		
-		while(true) 
-		{
+		while('y' == comfirm || 'Y' == comfirm){
 			cout<<"教师编号:";
 			cin >> teacherId;
 			if(!isInputOk()){
@@ -436,13 +461,34 @@ bool courseInfoCreate(){
 			}
 			if(i == g_teacherList.end()){
 				cout << "该编号不存在！请重新选择" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
 			}else{
 				break;
 			}
 		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
+		}
 
-		while(true) 
-		{
+		while('y' == comfirm || 'Y' == comfirm){
+			cout << "课程人数限额";
+			cin >> capacity;
+			if(capacity < Global::COURSE_CAPACITY_MIN || capacity > Global::COURSE_CAPACITY_MAX){
+				cout << "课程人数限额需要在合理范围("<< Global::COURSE_CAPACITY_MIN <<"--"<< Global::COURSE_CAPACITY_MAX <<")"<<endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else{
+				break;
+			}
+		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
+		}
+		
+		while('y' == comfirm || 'Y' == comfirm){
 			cout<<"教室编号:";
 			cin >> roomId;
 			if(!isInputOk()){
@@ -456,19 +502,29 @@ bool courseInfoCreate(){
 			}
 			if(i == g_roomList.end()){
 				cout << "该编号不存在！请重新选择" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else if(i->capacity < capacity){
+				cout << "该教室仅能容纳" << i->capacity << "人, 请重新选择！" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
 			}else{
 				break;
 			}
 		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
+		}
 				
-		
-		Course c(id,name,0,price,teacherId,roomId);
+		//新建课程对象，并添加到向量尾部 
+		Course c(id,name,0,price,teacherId,roomId,capacity);
 		g_courseList.push_back(c);
 		
+		//打印新增数据 
 		cout << "已新增数据如下" << endl;
-		cout << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_LONG_WIDTH) << "选课人数"<< setw(Global::PRINT_LONG_WIDTH) << "课程价格"<< setw(Global::PRINT_LONG_WIDTH) << "任课老师编号"<< setw(Global::PRINT_LONG_WIDTH) << "教室编号"<<endl;
-		cout <<  setw(Global::PRINT_WIDTH)<<id << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << 0 << setw(Global::PRINT_LONG_WIDTH) << fixed << setprecision(2) << price << setw(Global::PRINT_LONG_WIDTH)  << teacherId << setw(Global::PRINT_LONG_WIDTH)  << roomId << endl;
-	
+		Course::recordToStream(cout,true);
 		
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;

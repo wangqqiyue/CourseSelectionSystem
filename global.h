@@ -35,7 +35,11 @@ public:
 	static int COURSE_NUMBER_MAX; 
 	//最大课程价格 
 	static int COURSE_PRICE_MAX;
-	
+	//最大课程人数限额 
+	static int COURSE_CAPACITY_MAX;
+	//最小课程人数限额 
+	static int COURSE_CAPACITY_MIN;
+		
 	/*用户角色定义头文件*/
 	enum Role{
 		ADMINISTRATOR=0,
