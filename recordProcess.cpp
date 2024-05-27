@@ -127,7 +127,7 @@ void storeInfo(){
 	
 	//存储课程信息 
 	out.open("coursesInfo.txt",ios::out);
-	Course::recordToStream(out);
+	Course::recordToStream(out,g_courseList.begin());
 	out.close();
 	
 	//存储教室信息 
@@ -354,7 +354,7 @@ bool courseMgmt(){
 bool courseInfoRetrieve(){
 	clear();
 	cout << "------教室信息查询-----"	<< endl;
-	Course::recordToStream(cout);
+	Course::recordToStream(cout,g_courseList.begin());
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();
 	getchar();
@@ -524,7 +524,7 @@ bool courseInfoCreate(){
 		
 		//打印新增数据 
 		cout << "已新增数据如下" << endl;
-		Course::recordToStream(cout,true);
+		Course::recordToStream(cout,g_courseList.end() - 1,true);
 		
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
