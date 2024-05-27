@@ -39,6 +39,10 @@ bool roomInfoCreate();
 
 /*-----------------管理课程信息-----------------------------*/
 bool courseMgmt();
-
-
+//查询课程数据 
+bool courseInfoRetrieve();
+/*新增课程数据 
+需要判断新增数据是否有重复,新增后不超过课程总数上限 
+*/
+bool courseInfoCreate();
 #endif

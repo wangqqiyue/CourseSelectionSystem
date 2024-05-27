@@ -29,7 +29,12 @@ public:
 
 	//最多老师人数
 	static int TEACHER_NUMBER_MAX;
+	//最大教室数量 
 	static int ROOM_NUMBER_MAX; 
+	//最大课程数量 
+	static int COURSE_NUMBER_MAX; 
+	//最大课程价格 
+	static int COURSE_PRICE_MAX;
 	
 	/*用户角色定义头文件*/
 	enum Role{

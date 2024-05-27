@@ -24,29 +24,6 @@ bool Classroom::recordToStream(ostream& out){
 	return true;
 }
 
-void Course::setCourseId(int courseId){
-	this->courseId = courseId;
-	
-}
-
-void Course::setCourseName(string name){
-	courseName =name;
-}
-
-void Course::setStudentNumber(int number){
-	studentNumber=number;
-}
-
-void Course::setPrice(float price){
-	this->price=price;
-}
-void Course::setTeacher(int teacherId){
-	this->teacherId=teacherId;
-}
-void Course::setClassroom(int classroom){
-	this->classroomId=classroom;
-}
-
 bool Course::recordToStream(ostream& out){
 	//非法流 返回false 
 	if(!out){
@@ -54,9 +31,9 @@ bool Course::recordToStream(ostream& out){
 		return false;
 	}
 	
-	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_WIDTH) << "课程名" << setw(Global::PRINT_LONG_WIDTH) << "选课人数"<< setw(Global::PRINT_LONG_WIDTH) << "课程价格"<< setw(Global::PRINT_LONG_WIDTH) << "任课老师编号"<< setw(Global::PRINT_LONG_WIDTH) << "教室编号"<<endl;
+	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_LONG_WIDTH) << "选课人数"<< setw(Global::PRINT_LONG_WIDTH) << "课程价格"<< setw(Global::PRINT_LONG_WIDTH) << "任课老师编号"<< setw(Global::PRINT_LONG_WIDTH) << "教室编号"<<endl;
 	for(vector<Course>::iterator i=g_courseList.begin();i!=g_courseList.end();i++){
-		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH)  << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherId << setw(Global::PRINT_LONG_WIDTH)  << i->classroomId << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherId << setw(Global::PRINT_LONG_WIDTH)  << i->roomId << endl;
 	}
 	return true;
 }

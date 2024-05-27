@@ -49,15 +49,10 @@ public:
 	int studentNumber;
 	float price;
 	int teacherId;
-	int classroomId;
+	int roomId;
 
-	Course(int id,string name,int num,float p,int tId,int cId):courseId(id),courseName(name),studentNumber(num),price(p),teacherId(tId),classroomId(cId){}
-	void setCourseId(int courseId);
-	void setCourseName(string name); 
-	void setStudentNumber(int number);
-	void setPrice(float price);
-	void setTeacher(int teacherId);
-	void setClassroom(int classroom);
+	Course(int id,string name,int num,float p,int tId,int rId):courseId(id),courseName(name),studentNumber(num),price(p),teacherId(tId),roomId(rId){}
+	
 	static bool recordToStream(ostream& os);
 };
 extern vector<Course> g_courseList;
