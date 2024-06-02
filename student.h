@@ -30,9 +30,10 @@ public:
 	string password;
 	Student(string a,string id,string name,string tel,string p):account(a),idCardNumber(id),name(name),telphone(tel),password(p){}
 	static void createAccount();
-	static bool login();
 	static bool recordToStream(ostream& out, vector<Student>::iterator firstRecord,bool onlyOne=false);
 	static void process();
+	static bool checkAccountExist(string account);
+	static bool checkAccountExist(string account,vector<Student>::iterator &i);
 };
 
 extern vector<Student> studentList;

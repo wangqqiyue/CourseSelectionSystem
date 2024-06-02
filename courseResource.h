@@ -28,6 +28,7 @@ public:
 	
 	Classroom(int id,string name,int cap):roomId(id),roomName(name),capacity(cap){}
 	static bool recordToStream(ostream& os);
+	static bool checkExist(int id, vector<Classroom>::iterator &i);
 };
 
 extern vector<Classroom> g_roomList;
@@ -49,10 +50,10 @@ public:
 	int studentNumber;
 	int capacity;//课程人数限额 
 	float price;
-	int teacherId;
+	string teacherAccount;
 	int roomId;
 
-	Course(int id,string name,int num,float p,int tId,int rId,int c):courseId(id),courseName(name),studentNumber(num),price(p),teacherId(tId),roomId(rId),capacity(c){}
+	Course(int id,string name,int num,float p,string tAcc,int rId,int c):courseId(id),courseName(name),studentNumber(num),price(p),teacherAccount(tAcc),roomId(rId),capacity(c){}
 	
 	static bool recordToStream(ostream& os, vector<Course>::iterator firstRecord,bool onlyOne=false);
 };

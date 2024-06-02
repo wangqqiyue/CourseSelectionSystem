@@ -9,6 +9,23 @@
 #endif
 
 
+#ifndef INCLUDE_VECTOR
+#include <vector>
+#define INCLUDE_VECTOR
+#endif
+
+#ifndef INCLUDE_TEACHER
+#include "teacher.h"
+#endif
+
+#ifndef INCLUDE_STUDENT
+#include "student.h"
+#endif
+
+#ifndef INCLUDE_ADMINISTATOR
+#include "administrator.h"
+#endif
+
 int Global::LOGIN_RETRY_MAX=5;
 int Global::PRINT_WIDTH=12;
 int Global::PRINT_LONG_WIDTH=24;
@@ -85,3 +102,88 @@ int getChoice(const char* promptStr, const char **choiceStr, const int choiceMax
 	
 	return choice;
 }
+
+//设置密码 
+string setPassword() {
+    string password, comfirmPasswd;
+    do {
+        cout << "请输入密码：";
+        cin >> password;
+
+        cout << "请再次输入以确认密码：";
+        cin >> comfirmPasswd;
+
+        if (password != comfirmPasswd) {
+            cout << "两次密码不一致，请重新输入！" << endl;
+        }
+    } while (password != comfirmPasswd);
+    return password;
+}
+
+//登陆
+bool login(Global::Role role){
+	string inputAccount;
+	string inputPasswd;
+	vector<Student>::iterator is;
+	vector<Teacher>::iterator it;
+	int loginChoice = -1;
+	
+	clear();
+	cout << "------"<< Global::roleStr[role] <<"登陆-----" << endl;
+	loginChoice = getChoice("", Global::loginStr, Global::LOGIN_MAX);
+	if(Global::LOGIN_MAX == loginChoice){
+			return false;
+	} 
+	
+	for(int i=0;i<Global::LOGIN_RETRY_MAX;i++){
+		cout << "请输入账号名称:" ;
+		cin >> inputAccount;		
+		
+		if(Global::ADMINISTRATOR == role){	
+			if(inputAccount != Administrator::adminAccount){
+				cout << "账号不存在!请重新输入"  << endl;
+				continue;
+			}
+		}else if(Global::TEACHER == role){
+			if(!Teacher::checkAccountExist(inputAccount,it)){
+				cout << "账号不存在!请重新输入"  << endl;
+				continue;
+			}
+		}else{
+			if(!Student::checkAccountExist(inputAccount,is)){
+				cout << "账号不存在!请重新输入"  << endl;
+				continue;
+			}
+		}
+
+		cout << "请输入密码:" ;
+		cin >> inputPasswd;
+		
+		if(Global::ADMINISTRATOR == role){	
+			if(inputPasswd != Administrator::password){
+			
+				cout << "密码错误!请重新输入"  << endl;
+				continue;
+			}
+		}else if(Global::TEACHER == role){
+			if(inputPasswd != it->password){
+				cout << "密码错误!请重新输入"  << endl;
+				continue;
+			}
+		}else{
+			if(inputPasswd != is->password){
+				cout << "密码错误!请重新输入"  << endl;
+				continue;
+			}
+		}
+		
+		cout << "登陆成功" << endl;
+		return true;
+	}
+	
+	cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
+	cout << "已退出" << endl;
+	return false;
+}
+
+ 

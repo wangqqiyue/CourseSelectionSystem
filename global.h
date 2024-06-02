@@ -114,4 +114,10 @@ bool isInputOk();
 //获取用户输入的选项 
 int getChoice(const char* promptStr, const char **choiceStr, const int choiceMax);
 
+//设置密码
+string setPassword();
+
+//登陆
+bool login(Global::Role role);
+
 #endif

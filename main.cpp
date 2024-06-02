@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 		if(role == Global::ADMINISTRATOR){
 			Administrator::process();
 		}else if(role == Global::TEACHER){
-			if(Teacher::login()){
+			if(login(Global::TEACHER)){
 				cout << "µÇÂ½³É¹¦" << endl;
 				system("pause");
 			}

@@ -25,6 +25,15 @@ bool Classroom::recordToStream(ostream& out){
 	return true;
 }
 
+bool Classroom::checkExist(int id, vector<Classroom>::iterator &i){
+	for(i=g_roomList.begin();i!=g_roomList.end();i++){
+		if(i->roomId == id){
+			return true;
+		}
+	}
+	return false;
+}
+
 //传入流对象，迭代器, 是否只打印一条记录 
 bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, bool onlyOne){
 	//非法流 返回false 
@@ -40,7 +49,7 @@ bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, 
 		if(onlyOne){
 			i=firstRecord;
 		}
-		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherId << setw(Global::PRINT_LONG_WIDTH)  << i->roomId << setw(Global::PRINT_LONG_WIDTH)  << i->capacity << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherAccount << setw(Global::PRINT_LONG_WIDTH)  << i->roomId << setw(Global::PRINT_LONG_WIDTH)  << i->capacity << endl;
 		if(onlyOne){
 			break;
 		}		

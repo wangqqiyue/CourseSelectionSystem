@@ -59,14 +59,13 @@ void loadInfo(){
 	//一行行读取信息，并分割赋值 
 	getline(in,temp);
 	while(getline(in,temp)){
-		int teacherId;
-		string teacherName,teacherPassword;
+		string teacherAccount,teacherName,teacherPassword;
 		stringstream ss(temp);
-		ss >> teacherId;
+		ss >> teacherAccount;
 		ss >> teacherName;
 		ss >> teacherPassword;
-		Teacher t(teacherId,teacherName,teacherPassword);
-		g_teacherList.push_back(t);
+		Teacher t(teacherAccount,teacherName,teacherPassword);
+		teacherList.push_back(t);
 	}
 	in.close();
 	
@@ -74,20 +73,20 @@ void loadInfo(){
 	in.open("coursesInfo.txt",ios::in);
 	getline(in,temp);
 	while(getline(in,temp)){
-		int courseId,number,teacherId,classroomId,capacity;
+		int courseId,number,classroomId,capacity;
 		float price;
-		string courseName;
+		string courseName,teacherAccount;
 		
 		stringstream ss(temp);
 		ss >> courseId;
 		ss >> courseName;
 		ss >> number;
 		ss >> price;
-		ss >> teacherId;
+		ss >> teacherAccount;
 		ss >> classroomId;
 		ss >> capacity;
 		
-		Course c(courseId,courseName,number,price,teacherId,classroomId,capacity);
+		Course c(courseId,courseName,number,price,teacherAccount,classroomId,capacity);
 		g_courseList.push_back(c);
 	}
 	in.close();
@@ -140,7 +139,7 @@ void storeInfo(){
 	
 	//存储教师信息 
 	out.open("teachersInfo.txt",ios::out);
-	Teacher::recordToStream(out);
+	Teacher::recordToStream(out, teacherList.begin());
 	out.close();
 	
 	//存储课程信息 
@@ -184,7 +183,7 @@ bool teacherMgmt(){
 bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
-	Teacher::recordToStream(cout);
+	Teacher::recordToStream(cout, teacherList.begin());
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();
 	getchar();
@@ -196,33 +195,21 @@ bool teacherInfoRetrieve(){
 需要判断新增数据是否有重复,新增后不超过教师总数上限 
 */
 bool teacherInfoCreate(){
-	int id;
-	string name;
-	string passwd;
+	string account,name,passwd;
 	char comfirm = 'y';
 	clear();
 	cout << "------新增教师信息-----"	<< endl;
 	
 	while('y' == comfirm || 'Y' == comfirm){
-		if(g_teacherList.size() >= Global::TEACHER_NUMBER_MAX){
+		if(teacherList.size() >= Global::TEACHER_NUMBER_MAX){
 			cout << "教师数量已达上限("<< Global::TEACHER_NUMBER_MAX <<")!" << endl;
 			break;
 		}
 		cout << "请输入信息" << endl;
-		cout<<"教师编号:";
-		cin >> id;
-		if(!isInputOk()){
-			continue;
-		}
-		
-		vector<Teacher>::iterator i;
-		for(i=g_teacherList.begin();i!=g_teacherList.end();++i){
-			if(i->teacherId == id){
-				cout << "该编号已存在！请重新选择" << endl;
-				break;
-			}
-		}
-		if(i != g_teacherList.end()){
+		cout<<"教师账号:";
+		cin >> account;
+
+		if(Teacher::checkAccountExist(account)){
 			cout << "是否继续?Y/N" << endl;
 			cin >> comfirm;
 			continue;
@@ -234,14 +221,12 @@ bool teacherInfoCreate(){
 		cout << "密码;";
 		cin >> passwd;
 		
-		Teacher t(id,name,passwd);
-		g_teacherList.push_back(t);
+		Teacher t(account,name,passwd);
+		teacherList.push_back(t);
 		
 		cout << "已新增数据如下" << endl;
-		cout << setw(Global::PRINT_WIDTH)<<"教师编号" << setw(Global::PRINT_LONG_WIDTH) << "教师姓名" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
-		cout <<  setw(Global::PRINT_WIDTH)<<id << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << passwd << endl;
-		
-		
+		Teacher::recordToStream(cout, teacherList.end()-1, true);
+
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
 	}
@@ -389,9 +374,9 @@ bool courseInfoRetrieve(){
 需要判断新增数据是否有重复,新增后不超过课程总数上限 
 */
 bool courseInfoCreate(){
-	int id,teacherId,roomId,capacity;
+	int id,roomId,capacity;
 	float price;
-	string name;
+	string name,teacherAccount;
 
 	char comfirm = 'y';
 	clear();
@@ -471,18 +456,10 @@ bool courseInfoCreate(){
 		}
 		
 		while('y' == comfirm || 'Y' == comfirm){
-			cout<<"教师编号:";
-			cin >> teacherId;
-			if(!isInputOk()){
-				continue;
-			}
-			vector<Teacher>::iterator i;
-			for(i=g_teacherList.begin();i!=g_teacherList.end();++i){
-				if(i->teacherId == teacherId){
-					break;
-				}
-			}
-			if(i == g_teacherList.end()){
+			cout<<"教师帐号:";
+			cin >> teacherAccount;
+
+			if(Teacher::checkAccountExist(teacherAccount)){
 				cout << "该编号不存在！请重新选择" << endl;
 				cout << "是否继续?Y/N" << endl;
 				cin >> comfirm;
@@ -518,12 +495,7 @@ bool courseInfoCreate(){
 				continue;
 			}
 			vector<Classroom>::iterator i;
-			for(i=g_roomList.begin();i!=g_roomList.end();++i){
-				if(i->roomId == roomId){
-					break;
-				}
-			}
-			if(i == g_roomList.end()){
+			if(!Classroom::checkExist(roomId,i)){
 				cout << "该编号不存在！请重新选择" << endl;
 				cout << "是否继续?Y/N" << endl;
 				cin >> comfirm;
@@ -542,7 +514,7 @@ bool courseInfoCreate(){
 		}
 				
 		//新建课程对象，并添加到向量尾部 
-		Course c(id,name,0,price,teacherId,roomId,capacity);
+		Course c(id,name,0,price,teacherAccount,roomId,capacity);
 		g_courseList.push_back(c);
 		
 		//打印新增数据 

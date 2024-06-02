@@ -24,14 +24,16 @@
 */ 
 class Teacher{
 public:
-	int teacherId;
+	string account;
 	string name;
 	string password;
-	Teacher(int id,string name,string passwd);
-	static bool login();
-	static bool recordToStream(ostream& out);
+	Teacher(string acc,string n,string p):account(acc),name(n),password(p){}
+	static bool recordToStream(ostream& out, vector<Teacher>::iterator firstRecord, bool onlyOne=false);
+	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 
+	static bool checkAccountExist(string account);
+
 };
-extern vector<Teacher> g_teacherList;
+extern vector<Teacher> teacherList;
 
 
 #endif 

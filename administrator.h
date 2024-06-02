@@ -36,7 +36,6 @@ public:
 	static bool hasAccount;
 	static bool hasLoaded;
 	static void createAdmin();
-	static bool login(); 
 	static bool (*mgmtFuncs[Global::MGMT_MAX])();//管理功能的函数指针数组 
 	static string adminAccount;//管理员账号 
 	static string password;//管理员密码

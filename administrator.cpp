@@ -27,7 +27,7 @@ void Administrator::process(){
 	if(!hasAccount){
 		createAdmin();
 	}
-	while(login()){
+	while(login(Global::ADMINISTRATOR)){
 		int mgmtChoice=-1; 	
 		/*打印菜单选项 
 		教师信息
@@ -52,62 +52,12 @@ void Administrator::process(){
 
 //创建管理员账号 
 void Administrator::createAdmin(){
-	string comfirmPasswd;
 	clear();
 	cout << "------创建管理员账号-----" << endl;
 	cout << "请输入管理员账号名称:" ;
 	cin >> adminAccount;
 	
-	do{
-		cout << "请输入管理员密码:" ;
-		cin >> password;
-		
-		cout << "请再次输入以确认密码:" ;
-		cin >> comfirmPasswd;	
-		
-		if(password != comfirmPasswd){
-			cout << "两次密码不一致，请重新输入!" << endl;
-		}
-	}while(password != comfirmPasswd);
-}
-
-bool Administrator::login(){
-	string inputAccount;
-	string inputPasswd;
-	int loginChoice = -1;
-	
-	clear();
-	cout << "------管理员登陆-----" << endl;
-	loginChoice = getChoice("", Global::loginStr, Global::LOGIN_MAX);
-	if(Global::LOGIN_MAX == loginChoice){
-			return false;
-	} 
-	
-	for(int i=0;i<Global::LOGIN_RETRY_MAX;i++){
-		cout << "请输入管理员账号名称:" ;
-		cin >> inputAccount;
-		if(inputAccount != adminAccount){
-			cout << "账号不存在!请重新输入"  << endl;
-			continue;
-		}
-
-		cout << "请输入管理员密码:" ;
-		cin >> inputPasswd;
-		if(inputPasswd != Administrator::password){
-		
-			cout << "密码错误!请重新输入"  << endl;
-			cout <<"password="<<password<<endl;
-		system("pause");
-			continue;
-		}
-		
-		cout << "登陆成功" << endl;
-		return true;
-	}
-	
-	cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
-	cout << "已退出" << endl;
-	return false;
+	Administrator::password = setPassword();
 }
 
 bool Administrator::recordToStream(ostream& out){
