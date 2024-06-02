@@ -5,9 +5,14 @@
 #include "global.h"
 #endif
 
+#ifndef INCLUDE_VECTOR
+#include <vector>
+#define INCLUDE_VECTOR
+#endif
+
 //学生 有姓名 身份证号 手机号 密码 
 /*
-功能：登陆
+功能：登陆/注册 
 		录入信息、绑定信息 
 		查看可选课程
 		报名
@@ -17,11 +22,19 @@
 		缴费
 */ 
 class Student{
-	int id;
+public: 
+	string account;
+	string idCardNumber;//18 个数字 6位地区号-8位出生日期-3个数字-1位检验位(0-x) 
 	string name;
 	string telphone;
-	vector<int> coursesIdList;
-	
+	string password;
+	Student(string a,string id,string name,string tel,string p):account(a),idCardNumber(id),name(name),telphone(tel),password(p){}
+	static void createAccount();
+	static bool login();
+	static bool recordToStream(ostream& out, vector<Student>::iterator firstRecord,bool onlyOne=false);
+	static void process();
 };
+
+extern vector<Student> studentList;
 
 #endif

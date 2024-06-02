@@ -39,6 +39,11 @@ public:
 	static int COURSE_CAPACITY_MAX;
 	//最小课程人数限额 
 	static int COURSE_CAPACITY_MIN;
+	//身份证号长度 
+	static int ID_LENGTH;
+	//手机号长度 
+	static int TEL_LENGTH;
+	
 		
 	/*用户角色定义头文件*/
 	enum Role{
@@ -56,7 +61,16 @@ public:
 	};
 	
 	static const char *loginStr[];
+
+	enum StuLoginChoice{
+		STU_SIGNUP=0,
+		STU_LOGIN,
+		STU_LOGIN_MAX,
+	};
 	
+	static const char *stuLoginStr[];
+
+
 	//数据操作枚举 
 	enum OPERATION{
 		CREATE=0,//增 

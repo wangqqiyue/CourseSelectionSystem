@@ -108,6 +108,24 @@ void loadInfo(){
 		g_roomList.push_back(cr);
 	}
 	in.close();
+	
+	//加载学生信息
+	in.open("studentsInfo.txt",ios::in);
+	getline(in,temp);
+	while(getline(in,temp)){
+		string account,name,id,tel,password;
+		
+		stringstream ss(temp);
+		ss >> account;
+		ss >> name;
+		ss >> id;
+		ss >> tel;
+		ss >> password;
+		
+		Student s = Student(account,id,name,tel,password);
+		studentList.push_back(s);
+	}
+	in.close();
 }
 
 
@@ -133,6 +151,11 @@ void storeInfo(){
 	//存储教室信息 
 	out.open("classroomsInfo.txt",ios::out);
 	Classroom::recordToStream(out);
+	out.close();
+	
+	//存储教室信息 
+	out.open("studentsInfo.txt",ios::out);
+	Student::recordToStream(out,studentList.begin());
 	out.close();
 }
 

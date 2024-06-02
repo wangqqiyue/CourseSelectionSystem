@@ -10,8 +10,8 @@
 
 
 int Global::LOGIN_RETRY_MAX=5;
-int Global::PRINT_WIDTH=10;
-int Global::PRINT_LONG_WIDTH=16;
+int Global::PRINT_WIDTH=12;
+int Global::PRINT_LONG_WIDTH=24;
 
 int Global::TEACHER_NUMBER_MAX=100;
 int Global::ROOM_NUMBER_MAX=100;
@@ -19,9 +19,12 @@ int Global::COURSE_NUMBER_MAX=100;
 int Global::COURSE_PRICE_MAX=3000;
 int Global::COURSE_CAPACITY_MAX=200;
 int Global::COURSE_CAPACITY_MIN=20;
+int Global::ID_LENGTH=18;
+int Global::TEL_LENGTH=11;
 
 const char *Global::roleStr[]={"管理员","学生","老师","退出"};
 const char *Global::loginStr[]={"登陆","返回上一级"};
+const char *Global::stuLoginStr[]={"注册","登陆","返回上一级"};
 const char *Global::operationStr[]={"新增","删除","修改","查询","返回上一级"};
 const char *Global::mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
 const char *Global::titleStr="培训中心管理系统";

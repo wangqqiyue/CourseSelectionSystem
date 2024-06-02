@@ -14,7 +14,9 @@
 #include "teacher.h"
 #endif
 
-
+#ifndef INCLUDE_STUDENT
+#include "student.h"
+#endif
 
 
 int main(int argc, char** argv) {
@@ -41,6 +43,8 @@ int main(int argc, char** argv) {
 				system("pause");
 			}
 			
+		}else if(role == Global::STUDENT){
+			Student::process();
 		}else{
 			exitSystem = true;
 		}	
