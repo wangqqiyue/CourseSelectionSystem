@@ -18,9 +18,9 @@ bool Classroom::recordToStream(ostream& out){
 		return false;
 	}
 	
-	out << setw(Global::PRINT_WIDTH)<<"教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_LONG_WIDTH) << "教室容量"<< endl;
+	out << setw(Global::PRINT_WIDTH)<<"教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_WIDTH) << "教室容量"<< endl;
 	for(vector<Classroom>::iterator i=g_roomList.begin();i!=g_roomList.end();i++){
-		out <<  setw(Global::PRINT_WIDTH)<<i->roomId << setw(Global::PRINT_LONG_WIDTH) <<	i->roomName << setw(Global::PRINT_LONG_WIDTH)  << i->capacity << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->roomId << setw(Global::PRINT_LONG_WIDTH) <<	i->roomName << setw(Global::PRINT_WIDTH)  << i->capacity << endl;
 	}
 	return true;
 }
@@ -42,14 +42,14 @@ bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, 
 		return false;
 	}
 
-	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_LONG_WIDTH) << "选课人数"<< setw(Global::PRINT_LONG_WIDTH) << "课程价格"<< setw(Global::PRINT_LONG_WIDTH) << "任课老师编号"<< setw(Global::PRINT_LONG_WIDTH) << "教室编号" << setw(Global::PRINT_LONG_WIDTH) <<  "课程人数限额" <<endl;
+	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数"<< setw(Global::PRINT_WIDTH) << "课程价格"<< setw(Global::PRINT_WIDTH) << "任课老师"<< setw(Global::PRINT_WIDTH) << "教室" << setw(Global::PRINT_WIDTH) <<  "人数限额" <<endl;
 	
 
 	for(vector<Course>::iterator i = g_courseList.begin();i!=g_courseList.end();i++){
 		if(onlyOne){
 			i=firstRecord;
 		}
-		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_LONG_WIDTH)  << i->studentNumber << setw(Global::PRINT_LONG_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_LONG_WIDTH)  << i->teacherAccount << setw(Global::PRINT_LONG_WIDTH)  << i->roomId << setw(Global::PRINT_LONG_WIDTH)  << i->capacity << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_WIDTH)  << i->studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_WIDTH)  << i->teacherAccount << setw(Global::PRINT_WIDTH)  << i->roomId << setw(Global::PRINT_WIDTH)  << i->capacity << endl;
 		if(onlyOne){
 			break;
 		}		

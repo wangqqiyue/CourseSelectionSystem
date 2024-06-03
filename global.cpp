@@ -44,6 +44,7 @@ const char *Global::loginStr[]={"登陆","返回上一级"};
 const char *Global::stuLoginStr[]={"注册","登陆","返回上一级"};
 const char *Global::operationStr[]={"新增","删除","修改","查询","返回上一级"};
 const char *Global::mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
+const char *Global::stuFuncStr[]={"查看已选课程","查看所有课程","选课","付款","返回上一级"};
 const char *Global::titleStr="培训中心管理系统";
 
 //清空控制台

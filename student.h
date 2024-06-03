@@ -34,6 +34,7 @@ public:
 	static void process();
 	static bool checkAccountExist(string account);
 	static bool checkAccountExist(string account,vector<Student>::iterator &i);
+	static bool (*stuFuncs[Global::STU_FUNC_MAX])();//学生功能的函数指针数组 
 };
 
 extern vector<Student> studentList;

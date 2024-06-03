@@ -2,7 +2,15 @@
 #include "student.h"
 #endif
 
+#ifndef INCLUDE_RECORD_PROCESS
+#include "recordProcess.h" 
+#endif
+
 vector<Student> studentList;
+
+//函数指针数组的初始化 
+bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,NULL,NULL};
+
 
 bool Student::checkAccountExist(string account){
 	vector<Student>::iterator i;
@@ -25,10 +33,15 @@ bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 
 //学生基本操作流程 
 void Student::process(){
+	int stuFuncChoice = -1;
 	while(login(Global::STUDENT)){
 		clear();
-		cout << "登陆成功" << endl;
-		system("pause");
+		cout << "--------学生功能菜单---------" << endl;
+		stuFuncChoice = getChoice("选择功能:", Global::stuFuncStr, Global::STU_FUNC_MAX);
+		if(Global::STU_FUNC_MAX != stuFuncChoice){
+			//不断执行操作，直到返回错误退出 
+			stuFuncs[stuFuncChoice]();
+		}
 
 	}
 }

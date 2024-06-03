@@ -361,7 +361,7 @@ bool courseMgmt(){
 //查询课程数据 
 bool courseInfoRetrieve(){
 	clear();
-	cout << "------教室信息查询-----"	<< endl;
+	cout << "------课程信息查询-----"	<< endl;
 	Course::recordToStream(cout,g_courseList.begin());
 	cout << "按任意键返回上一级" << endl;
 	cin.ignore();

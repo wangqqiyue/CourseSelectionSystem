@@ -94,6 +94,20 @@ public:
 	//管理功能字符串 
 	static const char *mgmtStr[];
 	
+	//学生功能枚举 
+	enum STU_FUNC{
+		LIST_SELECTED_COURSE=0,//查看已选课程 
+		SHOW_ALL_COURSE,//查看所有课程 
+		SELECT_COURSE,//选课
+		PAY_ORDER,//付款 
+		STU_FUNC_MAX,
+	};
+	
+	//学生功能字符串 
+	static const char *stuFuncStr[];
+	
+	
+	
 	//程序标题字符串 
 	static const char *titleStr;
 }; 
