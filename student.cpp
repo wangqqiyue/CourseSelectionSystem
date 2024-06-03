@@ -9,7 +9,7 @@
 vector<Student> studentList;
 
 //函数指针数组的初始化 
-bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,NULL,NULL};
+bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,selectCourse,NULL};
 
 
 bool Student::checkAccountExist(string account){

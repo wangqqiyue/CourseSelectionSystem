@@ -57,6 +57,12 @@ void setTitle() {
 	SetConsoleTitle(Global::titleStr);
 }
 
+//设置控制台颜色 
+void setConsoleColor(WORD color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
+
 //统一的欢迎界面,获取用户身份 
 Global::Role greeting(){
 	int role = -1;

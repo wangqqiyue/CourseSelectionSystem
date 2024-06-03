@@ -35,6 +35,108 @@
 #endif
 
 
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif
+
+#ifndef INCLUDE_CONIO
+#include <conio.h>
+#define INCLUDE_CONIO
+#endif
+
+
+/*----------------------学生选课-------------------------*/
+bool selectCourse(){
+	int currentLine=0;//当前光标所在行 
+	int *selectList;//已选择的课程列表, 如果选中则为1 
+	int selectTotal=0;//已选择的数量 
+	int courseTotal = g_courseList.size();//总课程数量
+	bool firstPrint = true;//首次打印 
+    
+    //初始化 
+    selectList = new int[courseTotal];
+    for(int i=0;i<courseTotal;i++){
+    	selectList[i] = 0;
+	}
+    
+	while (true) {
+        if (_kbhit()|| firstPrint) {
+    		int line=0;
+			vector<Course>::iterator i;
+	
+        	clear();
+        	//标题和规则说明 
+			cout << "----------------学生选课----------------" << endl;
+			
+			//显示当前状态 
+			float priceTotal = 0;
+			cout << "选课状态" << endl;
+			cout << "已选择课程数量:" << selectTotal << "(";
+			for(int j=0;j<courseTotal;j++){
+				if(1 == selectList[j]){
+					priceTotal += g_courseList[j].price;
+					cout <<  g_courseList[j].courseName << " ";
+				}
+			}
+			cout << ")" << endl;
+			cout << "课程总价格:" <<  fixed << setprecision(2)<< priceTotal  << endl;
+			
+			Course::printTitleToStream(cout);
+			
+			//获取输入 
+			if(!firstPrint){
+	            char ch = _getch();
+	            if (ch == 72) { // 上箭头键
+	                currentLine--;
+	                if (currentLine < 0) {
+	                    currentLine += courseTotal;
+	                }
+	            } else if (ch == 80) { // 下箭头键
+	                currentLine++;
+	                currentLine%=courseTotal;
+	            } else if(ch == 13) {//回车键 
+	            	selectList[currentLine] += 1;
+	            	selectList[currentLine] %= 2;
+	        	else if(ch == 'y'){
+	        		break;
+				}else if(ch == 'q'){
+	        		return false;
+				}else{
+	        		continue;
+				}
+			}
+
+			//遍历所有课程行 
+            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++,line++){
+            	
+            	//当前行高亮 
+            	if(line == currentLine){
+            		setConsoleColor(FOREGROUND_GREEN |  FOREGROUND_INTENSITY | BACKGROUND_INTENSITY); // 设置前景色为绿色
+				}
+
+				//如果当前课程被选中，则高亮 
+				if(1 == selectList[line]){
+            		setConsoleColor(BACKGROUND_GREEN |  FOREGROUND_INTENSITY | BACKGROUND_INTENSITY); // 设置背景色为白色
+            		selectTotal++;
+				}
+				
+            	Course::recordToStream(cout,i,true);
+            	setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // 恢复默认颜色
+			}
+			firstPrint = false;
+			
+			cout <<"操作提示： 上下选择, 回车键选中, [y]键确认, [q] 键退出" << endl;
+        }
+        
+    }
+    //todo 确认选课结果 
+    
+    free(selectList);
+	
+	return true;
+}
+
 //信息加载 
 void loadInfo(){
 	ifstream in;

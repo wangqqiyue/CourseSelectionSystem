@@ -15,6 +15,12 @@
 #define INCLUDE_IOSTREAM
 #endif 
 
+#ifndef INCLUDE_MINWINDEF
+#include <minwindef.h>
+#define INCLUDE_MINWINDEF
+#endif 
+
+
 using namespace std;
 
 //宏定义全局变量类 
@@ -118,6 +124,9 @@ void clear();
 
 //设置控制台标题 
 void setTitle();
+
+//设置控制台颜色 
+void setConsoleColor(WORD color);
 
 //统一的欢迎界面,获取用户身份 
 Global::Role greeting();

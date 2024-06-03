@@ -56,6 +56,7 @@ public:
 	Course(int id,string name,int num,float p,string tAcc,int rId,int c):courseId(id),courseName(name),studentNumber(num),price(p),teacherAccount(tAcc),roomId(rId),capacity(c){}
 	
 	static bool recordToStream(ostream& os, vector<Course>::iterator firstRecord,bool onlyOne=false);
+	static bool printTitleToStream(ostream& out);
 };
 extern vector<Course> g_courseList;
 #endif

@@ -34,17 +34,28 @@ bool Classroom::checkExist(int id, vector<Classroom>::iterator &i){
 	return false;
 }
 
+bool Course::printTitleToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数"<< setw(Global::PRINT_WIDTH) << "课程价格"<< setw(Global::PRINT_WIDTH) << "任课老师"<< setw(Global::PRINT_WIDTH) << "教室" << setw(Global::PRINT_WIDTH) <<  "人数限额" <<endl;	
+	return true;
+}
+
 //传入流对象，迭代器, 是否只打印一条记录 
-bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, bool onlyOne){
+bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, bool onlyOne){ 
 	//非法流 返回false 
 	if(!out){
 		cerr << "非法的流" << endl;
 		return false;
 	}
 
-	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数"<< setw(Global::PRINT_WIDTH) << "课程价格"<< setw(Global::PRINT_WIDTH) << "任课老师"<< setw(Global::PRINT_WIDTH) << "教室" << setw(Global::PRINT_WIDTH) <<  "人数限额" <<endl;
+	if(!onlyOne){
+		printTitleToStream(out);	
+	}		
 	
-
 	for(vector<Course>::iterator i = g_courseList.begin();i!=g_courseList.end();i++){
 		if(onlyOne){
 			i=firstRecord;
