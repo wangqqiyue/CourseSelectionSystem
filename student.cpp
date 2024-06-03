@@ -25,26 +25,12 @@ bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 
 //学生基本操作流程 
 void Student::process(){
-	
-	while(true){
-		int stuLoginChoice=-1; 	
+	while(login(Global::STUDENT)){
+		clear();
+		cout << "登陆成功" << endl;
+		system("pause");
 
-		while(Global::STU_LOGIN_MAX != stuLoginChoice){
-			clear();
-			cout << "------学生菜单-------" << endl;
-			stuLoginChoice = getChoice("选择功能:", Global::stuLoginStr, Global::STU_LOGIN_MAX);
-			if(Global::STU_SIGNUP == stuLoginChoice){
-				Student::createAccount();
-			}else if(Global::STU_LOGIN == stuLoginChoice){
-				if(login(Global::STUDENT)){
-					cout << "登陆成功" << endl;
-					system("pause");
-				}
-			}
-		}
-		break;
 	}
-	
 }
 
 

@@ -130,10 +130,20 @@ bool login(Global::Role role){
 	
 	clear();
 	cout << "------"<< Global::roleStr[role] <<"µÇÂ½-----" << endl;
-	loginChoice = getChoice("", Global::loginStr, Global::LOGIN_MAX);
-	if(Global::LOGIN_MAX == loginChoice){
+	if(Global::STUDENT == role){
+		loginChoice = getChoice("", Global::stuLoginStr, Global::STU_LOGIN_MAX);
+		if(Global::STU_LOGIN_MAX == loginChoice){
 			return false;
-	} 
+		}else if(Global::STU_SIGNUP == loginChoice){
+			Student::createAccount();
+			return true;
+		}
+	}else{
+		loginChoice = getChoice("", Global::loginStr, Global::LOGIN_MAX);
+		if(Global::LOGIN_MAX == loginChoice){
+				return false;
+		}
+	}
 	
 	for(int i=0;i<Global::LOGIN_RETRY_MAX;i++){
 		cout << "ÇëÊäÈëÕËºÅÃû³Æ:" ;
