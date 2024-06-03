@@ -33,14 +33,16 @@ bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 
 //学生基本操作流程 
 void Student::process(){
-	int stuFuncChoice = -1;
 	while(login(Global::STUDENT)){
-		clear();
-		cout << "--------学生功能菜单---------" << endl;
-		stuFuncChoice = getChoice("选择功能:", Global::stuFuncStr, Global::STU_FUNC_MAX);
-		if(Global::STU_FUNC_MAX != stuFuncChoice){
-			//不断执行操作，直到返回错误退出 
-			stuFuncs[stuFuncChoice]();
+		int stuFuncChoice = -1;
+		while(Global::STU_FUNC_MAX != stuFuncChoice){
+			clear();
+			cout << "--------学生功能菜单---------" << endl;
+			stuFuncChoice = getChoice("选择功能:", Global::stuFuncStr, Global::STU_FUNC_MAX);
+			if(Global::STU_FUNC_MAX != stuFuncChoice){
+				//不断执行操作，直到返回错误退出 
+				stuFuncs[stuFuncChoice]();
+			}
 		}
 
 	}

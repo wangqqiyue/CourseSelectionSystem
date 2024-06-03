@@ -10,6 +10,89 @@
 vector<Course> g_courseList;
 vector<Classroom> g_roomList;
 
+/*-----------------CourseSelectionTable 定义实现-------------------------------------*/ 
+
+multimap<int,string> CourseSelectionTable::courseKeyMap;
+multimap<string,int> CourseSelectionTable::studentKeyMap;
+
+//检查 
+template<typename K,typename V>
+bool CourseSelectionTable::checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete){
+	int count = 0;
+
+    for (typename multimap<K, V>::iterator it = map.begin(); it != map.end(); ++it) {
+        if (it->first == key && it->second == val) {
+            count++;
+            if(needDelete){
+            	map.erase(it);
+			}
+        }
+    }
+    
+    return count != 0;
+}
+
+bool CourseSelectionTable::addEntry(int id, string account){
+	bool result=true;
+	
+    if(CourseSelectionTable::checkExist(courseKeyMap,id,account)){
+    	cerr << "新增失败！重复的项目<" << id << "," << account <<"> 已存在" << endl;
+    	result= false;
+	}else{
+		courseKeyMap.insert(make_pair(id,account));
+	}
+	
+
+    if(CourseSelectionTable::checkExist(studentKeyMap,account,id)){
+    	cerr << "新增失败！重复的项目<" << account << "," << id <<"> 已存在" << endl;
+    	result=  false;
+	}else{
+		studentKeyMap.insert(make_pair(account,id));
+	}
+    
+	return 	result;
+}
+
+bool CourseSelectionTable::deleteEntry(int id, string account){
+	bool result=true;
+    if(!CourseSelectionTable::checkExist(courseKeyMap,id,account,true)){
+    	cerr << "删除失败！项目<" << id << "," << account <<"> 不存在" << endl;
+    	result=  false;
+	}
+	
+    if(!CourseSelectionTable::checkExist(studentKeyMap,account,id,true)){
+    	cerr << "删除失败！项目<" << account << "," << id <<"> 不存在" << endl;
+    	result=  false;
+	}
+    
+	
+	return 	result;
+}
+
+vector<string> CourseSelectionTable::getStudentByCourse(int id){
+	
+}
+
+vector<int> CourseSelectionTable::getCourseByStudent(string account){
+	
+}
+
+bool CourseSelectionTable::recordToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out << setw(Global::PRINT_WIDTH)<<"课程编号" << setw(Global::PRINT_LONG_WIDTH) << "学生账号"<< endl;
+	for(multimap<int,string>::iterator i=courseKeyMap.begin();i!=courseKeyMap.end();i++){
+		out <<  setw(Global::PRINT_WIDTH) << i->first << setw(Global::PRINT_LONG_WIDTH) << i->second << endl;
+	}
+	return true;
+}
+
+/*-----------------Classroom 定义实现-------------------------------------*/ 
+
 //既可以在函数声明中，也可以在函数定义中声明缺省参数，但不能既在函数声明中又在函数定义中同时声明缺省参数。
 bool Classroom::recordToStream(ostream& out){
 	//非法流 返回false 
@@ -33,6 +116,8 @@ bool Classroom::checkExist(int id, vector<Classroom>::iterator &i){
 	}
 	return false;
 }
+
+/*-----------------Course 定义实现-------------------------------------*/ 
 
 bool Course::printTitleToStream(ostream& out){
 	//非法流 返回false 

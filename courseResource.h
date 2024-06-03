@@ -17,8 +17,12 @@
 #define INCLUDE_STRING
 #endif
 
-using namespace std;
+#ifndef INCLUDE_MAP
+#include <map>
+#define INCLUDE_MAP
+#endif
 
+using namespace std;
 
 class Classroom{
 public:
@@ -59,4 +63,20 @@ public:
 	static bool printTitleToStream(ostream& out);
 };
 extern vector<Course> g_courseList;
+
+/*---------------------课程学生关系表-----------------------*/
+class CourseSelectionTable{
+private:
+	static  multimap<int,string> courseKeyMap;
+	static multimap<string,int> studentKeyMap;
+public:
+	static bool addEntry(int id, string account);
+	static bool deleteEntry(int courseId, string account);
+	static vector<string> getStudentByCourse(int id);
+	static vector<int> getCourseByStudent(string account);
+	static bool recordToStream(ostream& os);
+	template<typename K,typename V>
+	static bool checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete = false);
+	
+};
 #endif

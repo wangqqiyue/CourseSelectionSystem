@@ -98,7 +98,7 @@ bool selectCourse(){
 	            } else if(ch == 13) {//回车键 
 	            	selectList[currentLine] += 1;
 	            	selectList[currentLine] %= 2;
-	        	else if(ch == 'y'){
+	        	}else if(ch == 'y'){
 	        		break;
 				}else if(ch == 'q'){
 	        		return false;
@@ -131,6 +131,7 @@ bool selectCourse(){
         
     }
     //todo 确认选课结果 
+    
     
     free(selectList);
 	
@@ -227,6 +228,22 @@ void loadInfo(){
 		studentList.push_back(s);
 	}
 	in.close();
+	
+	//加载选课表 
+	in.open("courseSelectionTable.txt",ios::in);
+	getline(in,temp);
+	while(getline(in,temp)){
+		string account;
+		int id;
+		
+		stringstream ss(temp);
+		ss >> id;
+		ss >> account;
+
+		CourseSelectionTable::addEntry(id,account);
+	}
+	in.close();
+	
 }
 
 
@@ -257,6 +274,11 @@ void storeInfo(){
 	//存储教室信息 
 	out.open("studentsInfo.txt",ios::out);
 	Student::recordToStream(out,studentList.begin());
+	out.close();
+	
+	//存储选课表信息 
+	out.open("courseSelectionTable.txt",ios::out);
+	CourseSelectionTable::recordToStream(out);
 	out.close();
 }
 
