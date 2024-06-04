@@ -1,6 +1,10 @@
 #ifndef INCLUDE_RECORD_PROCESS
 #define INCLUDE_RECORD_PROCESS
 
+#ifndef INCLUDE_STUDENT
+#include "student.h"
+#endif
+
 /*
 记录处理组件
 进行各项数据记录的处理
@@ -9,6 +13,8 @@
 
 /*----------------------学生选课-------------------------*/
 bool selectCourse();
+
+Student* getStudentByAccount(string account);
 
 //信息加载 
 void loadInfo();

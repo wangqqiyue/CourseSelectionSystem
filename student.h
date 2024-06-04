@@ -23,6 +23,7 @@
 */ 
 class Student{
 public: 
+	static string login_account;
 	string account;
 	string idCardNumber;//18 个数字 6位地区号-8位出生日期-3个数字-1位检验位(0-x) 
 	string name;

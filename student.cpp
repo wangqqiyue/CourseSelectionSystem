@@ -9,8 +9,9 @@
 vector<Student> studentList;
 
 //函数指针数组的初始化 
-bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,selectCourse,NULL};
-
+bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,selectCourse,NULL,NULL};
+//当前登陆学生账号 
+string Student::login_account="";
 
 bool Student::checkAccountExist(string account){
 	vector<Student>::iterator i;
@@ -113,6 +114,7 @@ void Student::createAccount(){
 		
 		cout << "已注册账号如下："	<< endl;
 		Student::recordToStream(cout, studentList.end() - 1,true);
+		Student::login_account =  account;
 		break; 
 	}
 	cout << "按任意键返回上一级" << endl;

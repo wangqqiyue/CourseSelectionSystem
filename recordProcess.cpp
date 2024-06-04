@@ -45,21 +45,52 @@
 #define INCLUDE_CONIO
 #endif
 
+#ifndef INCLUDE_ALGORITHM
+#include <algorithm>
+#define INCLUDE_ALGORITHM
+#endif
+
+template<class T>
+bool checkExist(const vector<T>& vec, const T& target){
+	for(typename vector<T>::const_iterator i=vec.begin();i!=vec.end();i++){
+		if(*i == target){
+			return true;
+		}
+	}
+	return false;
+}
+
+//返回的是studentList中第一个满足条件（即账号等于传入参数account）的 Student对象的地址。
+Student* getStudentByAccount(string account){
+	for(vector<Student>::iterator i=studentList.begin();i!=studentList.end();i++){
+		if(i->account == account){
+			return &(*i);
+		}
+	}
+	return NULL;
+}
 
 /*----------------------学生选课-------------------------*/
 bool selectCourse(){
 	int currentLine=0;//当前光标所在行 
 	int *selectList;//已选择的课程列表, 如果选中则为1 
 	int selectTotal=0;//已选择的数量 
-	int courseTotal = g_courseList.size();//总课程数量
+	int courseTotal;//可选课程总数量
 	bool firstPrint = true;//首次打印 
     
     //初始化 
-    selectList = new int[courseTotal];
+	vector<int> courseIdList = CourseSelectionTable::getCourseByStudent(Student::login_account);//已选择的课程列表 
+	courseTotal = g_courseList.size();//可选课程总数量
+
+	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
     	selectList[i] = 0;
+    	if(checkExist(courseIdList,g_courseList[i].courseId)){
+    		selectList[i] = 1;
+		}
 	}
-    
+	
+	
 	while (true) {
         if (_kbhit()|| firstPrint) {
     		int line=0;
@@ -76,9 +107,10 @@ bool selectCourse(){
 			for(int j=0;j<courseTotal;j++){
 				if(1 == selectList[j]){
 					priceTotal += g_courseList[j].price;
-					cout <<  g_courseList[j].courseName << " ";
+					cout << g_courseList[j].courseName << " ";
 				}
 			}
+			
 			cout << ")" << endl;
 			cout << "课程总价格:" <<  fixed << setprecision(2)<< priceTotal  << endl;
 			
@@ -102,14 +134,16 @@ bool selectCourse(){
 	        		break;
 				}else if(ch == 'q'){
 	        		return false;
-				}else{
-	        		continue;
 				}
 			}
 
 			//遍历所有课程行 
             for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++,line++){
-            	
+				if(checkExist(courseIdList, i->courseId)){
+					selectTotal++;
+					continue;
+				}
+				
             	//当前行高亮 
             	if(line == currentLine){
             		setConsoleColor(FOREGROUND_GREEN |  FOREGROUND_INTENSITY | BACKGROUND_INTENSITY); // 设置前景色为绿色

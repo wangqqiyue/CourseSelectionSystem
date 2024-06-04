@@ -1,0 +1,12 @@
+选课数据用2个multimap结构存储
+键值对为 课程编码-学生账号
+
+教师查看某课程的所有学生名单时：根据课程编码查询
+学生查看自己所选课程时：根据学生账号查询
+
+注意：
+删除和新增项目时，必须保证2个multimap中的元素同步修改
+
+封装成CourseSelectionTable类
+对外暴露3个接口：vector getStudentByCourse(course), vector getCourseByStudent(student), bool addEntry(course, student), bool deleteEntry(course, student)
+内部成员：courseKeyMap, studentKeyMap 分别以 courseId 和 studentAccount 为键, 都是 multimap 类型

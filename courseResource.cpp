@@ -32,6 +32,17 @@ bool CourseSelectionTable::checkExist(multimap<K,V>& map, const K& key, const V&
     return count != 0;
 }
 
+//在multimap中查找相应键,返回值向量 
+template<typename K,typename V>
+vector<V> getElementByKey(multimap<K,V>& map, const K& key){
+	vector<V> result;
+	pair<typename multimap<K, V>::iterator, typename multimap<K, V>::iterator> range = map.equal_range(key);
+	for (typename multimap<K, V>::iterator it = range.first; it != range.second; ++it) {
+        result.push_back(it->second);
+    }
+    return result;
+}
+
 bool CourseSelectionTable::addEntry(int id, string account){
 	bool result=true;
 	
@@ -70,11 +81,11 @@ bool CourseSelectionTable::deleteEntry(int id, string account){
 }
 
 vector<string> CourseSelectionTable::getStudentByCourse(int id){
-	
+	return getElementByKey(courseKeyMap,id);
 }
 
 vector<int> CourseSelectionTable::getCourseByStudent(string account){
-	
+	return getElementByKey(studentKeyMap,account);
 }
 
 bool CourseSelectionTable::recordToStream(ostream& out){

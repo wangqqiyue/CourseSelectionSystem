@@ -105,6 +105,7 @@ public:
 		LIST_SELECTED_COURSE=0,//查看已选课程 
 		SHOW_ALL_COURSE,//查看所有课程 
 		SELECT_COURSE,//选课
+		WITHDRAW_COURSE,//退课
 		PAY_ORDER,//付款 
 		STU_FUNC_MAX,
 	};
