@@ -77,10 +77,17 @@ bool selectCourse(){
 	int selectTotal=0;//已选择的数量 
 	int courseTotal;//可选课程总数量
 	bool firstPrint = true;//首次打印 
+	int line=0;//行下标 
+	vector<Course>::iterator i;//课程遍历迭代器 
     
     //初始化 
 	vector<int> paidList = CourseSelectionTable::paidOrder.getCourseByStudent(Student::login_account);//已支付的课程列表
-	courseTotal = g_courseList.size() - paidList.size();//可选课程总数量
+	vector<int> unpaidList = CourseSelectionTable::unpaidOrder.getCourseByStudent(Student::login_account);//可退课程列表
+	vector<int> forbiddenList;//不可选列表=已支付+可退 
+	forbiddenList.insert(forbiddenList.end(),paidList.begin(),paidList.end());
+	forbiddenList.insert(forbiddenList.end(),unpaidList.begin(),unpaidList.end());
+	 
+	courseTotal = g_courseList.size() - forbiddenList.size();//可选课程总数量
 
 	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
@@ -90,8 +97,7 @@ bool selectCourse(){
 	
 	while (true) {
         if (_kbhit()|| firstPrint) {
-    		int line=0;
-			vector<Course>::iterator i;
+
 	
         	clear();
         	//标题和规则说明 
@@ -102,9 +108,9 @@ bool selectCourse(){
 			cout << "选课状态" << endl;
 			cout << "已选择课程数量:" << selectTotal << "(";
 
-            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++){
+            for(i=g_courseList.begin(),line=0;i!=g_courseList.end();i++){
             	//跳过已支付的课程 
-				if(checkExist(paidList,i->courseId)){
+				if(checkExist(forbiddenList,i->courseId)){
 					continue;
 				}
 				if(1 == selectList[line]){
@@ -143,8 +149,8 @@ bool selectCourse(){
 
 			//遍历所有课程行 
             for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++){
-            	//跳过已支付的课程 
-				if(checkExist(paidList,i->courseId)){
+            	//跳过不可选的课程 
+				if(checkExist(forbiddenList,i->courseId)){
 					continue;
 				}
 				
@@ -169,13 +175,148 @@ bool selectCourse(){
         }
         
     }
-    //todo 确认选课结果计入订单 
     
     
+    //确认选课结果计入订单 
+    cout << "以下课程已计入订单,请及时在支付页面中付款"  << endl;
+    for(i=g_courseList.begin(),line=0;i!=g_courseList.end();i++){
+    	//跳过所有不可选的课程 
+		if(checkExist(forbiddenList,i->courseId)){
+			continue;
+		}
+		if(1 == selectList[line]){
+			Course::recordToStream(cout,i,true);
+			CourseSelectionTable::unpaidOrder.addEntry(i->courseId,Student::login_account);
+		}
+    	line++;
+	}
+
     free(selectList);
-	
+	goPrevious(); 
 	return true;
 }
+
+//退课 
+bool withdrawCourse(){
+	int currentLine=0;//当前光标所在行 
+	int *selectList;//已选择的课程列表, 如果选中则为1 
+	int selectTotal=0;//已选择的数量 
+	int courseTotal;//可选课程总数量
+	bool firstPrint = true;//首次打印 
+	int line=0;//行下标 
+	vector<Course>::iterator i;//课程遍历迭代器 
+    
+    //初始化 
+	vector<int> unpaidList = CourseSelectionTable::unpaidOrder.getCourseByStudent(Student::login_account);//可退课程列表
+	courseTotal = unpaidList.size();//可退课程总数量
+
+	selectList = new int[courseTotal];
+    for(int i=0;i<courseTotal;i++){
+    	selectList[i] = 0;
+	}
+	
+	
+	while (true) {
+        if (_kbhit()|| firstPrint) {
+
+	
+        	clear();
+        	//标题和规则说明 
+			cout << "----------------学生选课----------------" << endl;
+			
+			//显示当前状态 
+			float priceTotal = 0;
+			cout << "选课状态" << endl;
+			cout << "已退课课程数量:" << selectTotal << "(";
+
+            for(i=g_courseList.begin(),line=0;i!=g_courseList.end();i++){
+            	//只统计可退的课程 
+				if(checkExist(unpaidList,i->courseId)){
+					if(1 == selectList[line]){
+						priceTotal += i->price;
+						cout << i->courseName << " ";
+					} 
+					line++;
+				}
+			}
+			
+			cout << ")" << endl;
+			cout << "课程总价格:" <<  fixed << setprecision(2)<< priceTotal  << endl;
+			
+			
+			
+			//获取输入 
+			if(!firstPrint){
+	            char ch = _getch();
+	            if (ch == 72) { // 上箭头键
+	                currentLine--;
+	                if (currentLine < 0) {
+	                    currentLine += courseTotal;
+	                }
+					
+	            } else if (ch == 80) { // 下箭头键
+	                currentLine++;
+	                currentLine%=courseTotal;
+	            } else if(ch == 13) {//回车键 
+	            		selectList[currentLine] += 1;
+	            		selectList[currentLine] %= 2;	            		
+	        	}else if(ch == 'y'){
+	        		break;
+				}else if(ch == 'q'){
+	        		return false;
+				}
+			}
+
+			Course::printTitleToStream(cout);
+			//遍历所有课程行 
+            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++){
+            	//跳过非可退的课程 
+				if(!checkExist(unpaidList,i->courseId)){
+					continue;
+				}
+				
+            	//当前行高亮 
+            	if(line == currentLine){
+            		setConsoleColor(FOREGROUND_GREEN |  FOREGROUND_INTENSITY | BACKGROUND_INTENSITY); // 设置前景色为绿色
+				}
+
+				//如果当前课程被选中，则高亮 
+				if(1 == selectList[line]){
+            		setConsoleColor(BACKGROUND_GREEN |  FOREGROUND_INTENSITY | BACKGROUND_INTENSITY); // 设置背景色为白色
+            		selectTotal++;
+				}
+				
+            	Course::recordToStream(cout,i,true);
+            	setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // 恢复默认颜色
+            	line++;
+			}
+			firstPrint = false;
+			
+			cout <<"操作提示： 上下选择, 回车键选中, [y]键确认, [q] 键退出" << endl;
+        }
+        
+    }
+    
+    
+    //确认选课结果计入订单 
+    cout << "以下课程(未缴费)已计入退课单"  << endl;
+    for(i=g_courseList.begin(),line=0;i!=g_courseList.end();i++){
+    	//跳过不可退的课程 
+		if(!checkExist(unpaidList,i->courseId)){
+			continue;
+		}
+		if(1 == selectList[line]){
+			Course::recordToStream(cout,i,true);
+			CourseSelectionTable::unpaidOrder.deleteEntry(i->courseId,Student::login_account);
+		}
+    	line++;
+	}
+
+    free(selectList);
+	goPrevious(); 
+	return true;
+}
+
 
 //信息加载 
 void loadInfo(){
@@ -347,9 +488,7 @@ bool teacherInfoRetrieve(){
 	clear();
 	cout << "------教师信息查询-----"	<< endl;
 	Teacher::recordToStream(cout, teacherList.begin());
-	cout << "按任意键返回上一级" << endl;
-	cin.ignore();
-	getchar();
+	goPrevious(); 
 	return true;
 	
 }

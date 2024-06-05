@@ -74,6 +74,12 @@ Global::Role greeting(){
 	return (Global::Role)role;
 }
 
+//返回上一级 
+void goPrevious(){
+	cout << "按任意键返回上一级" << endl;
+	cin.ignore();
+	getchar();
+} 
 
 //检查输入是否合规 
 bool isInputOk(){

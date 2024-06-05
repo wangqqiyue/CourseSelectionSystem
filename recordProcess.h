@@ -14,6 +14,8 @@
 /*----------------------学生选课-------------------------*/
 bool selectCourse();
 
+bool withdrawCourse();//退课 
+
 Student* getStudentByAccount(string account);
 
 //信息加载 

@@ -144,4 +144,7 @@ string setPassword();
 //登陆
 bool login(Global::Role role);
 
+//返回上一级
+void goPrevious();
+
 #endif

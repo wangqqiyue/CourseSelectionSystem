@@ -9,7 +9,7 @@
 vector<Student> studentList;
 
 //函数指针数组的初始化 
-bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,selectCourse,NULL,NULL};
+bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {NULL,courseInfoRetrieve,selectCourse,withdrawCourse,NULL};
 //当前登陆学生账号 
 string Student::login_account="";
 

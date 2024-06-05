@@ -20,13 +20,15 @@ template<typename K,typename V>
 bool OrderTable::checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete){
 	int count = 0;
 
-    for (typename multimap<K, V>::iterator it = map.begin(); it != map.end(); ++it) {
+    for (typename multimap<K, V>::iterator it = map.begin(); it != map.end(); ) {
         if (it->first == key && it->second == val) {
             count++;
             if(needDelete){
-            	map.erase(it);
+            	map.erase(it++);// erase之后，令当前迭代器指向其后继。否则迭代器失效,会报错 
+            	continue;
 			}
         }
+        it++; 
     }
     
     return count != 0;
