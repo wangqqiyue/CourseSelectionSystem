@@ -33,6 +33,7 @@ public:
 	Classroom(int id,string name,int cap):roomId(id),roomName(name),capacity(cap){}
 	static bool recordToStream(ostream& os);
 	static bool checkExist(int id, vector<Classroom>::iterator &i);
+	static Classroom* getElementById(int id);
 };
 
 extern vector<Classroom> g_roomList;
@@ -61,6 +62,7 @@ public:
 	
 	static bool recordToStream(ostream& os, vector<Course>::iterator firstRecord,bool onlyOne=false);
 	static bool printTitleToStream(ostream& out);
+	static Course* getElementById(int id);
 };
 extern vector<Course> g_courseList;
 

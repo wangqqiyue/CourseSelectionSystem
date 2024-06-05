@@ -31,6 +31,7 @@ public:
 	static bool recordToStream(ostream& out, vector<Teacher>::iterator firstRecord, bool onlyOne=false);
 	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 
 	static bool checkAccountExist(string account);
+	static Teacher* getElementByAccount(string account);
 
 };
 extern vector<Teacher> teacherList;

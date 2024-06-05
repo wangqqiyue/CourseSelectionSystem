@@ -46,3 +46,12 @@ bool Teacher::recordToStream(ostream& out, vector<Teacher>::iterator firstRecord
 	}
 	return true;
 } 
+
+//根据教师账号返回教师元素的指针 
+Teacher* Teacher::getElementByAccount(string account){
+		for(vector<Teacher>::iterator i=teacherList.begin();i!=teacherList.end();i++){
+		if(i->account == account){
+			return const_cast<Teacher*>(&(*i));
+		}
+	}
+}

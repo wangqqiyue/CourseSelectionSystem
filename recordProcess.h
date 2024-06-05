@@ -16,6 +16,12 @@ bool selectCourse();
 
 bool withdrawCourse();//退课 
 
+//查看已选课程 
+bool showSelectedCourse();
+
+
+bool payOrder();//支付课程费用 
+
 Student* getStudentByAccount(string account);
 
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, courseTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 

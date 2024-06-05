@@ -264,6 +264,121 @@ bool withdrawCourse(){
 }
 
 
+//查看已选课程 
+bool showSelectedCourse(){
+	
+	vector<Course>::iterator i;//课程遍历迭代器 
+    
+    //初始化 
+    vector<int> unpaidList = CourseSelectionTable::unpaidOrder.getCourseByStudent(Student::login_account);//可退课程列表
+    vector<int> paidList = CourseSelectionTable::paidOrder.getCourseByStudent(Student::login_account);//可退课程列表
+
+    clear();
+    //确认选课结果计入订单 
+    cout << "---------------已选课程-----------------"  << endl;
+   	cout << setw(Global::PRINT_WIDTH)<<"课程编号" << setw(Global::PRINT_WIDTH)<<"课程名称"  << setw(Global::PRINT_WIDTH)<<"教室"  << setw(Global::PRINT_WIDTH)<<"授课教师" << setw(Global::PRINT_WIDTH)<<"上课人数" <<setw(Global::PRINT_WIDTH)<< "缴费情况"<<endl;
+
+    for(i=g_courseList.begin();i!=g_courseList.end();i++){
+    	if(checkExist(paidList,i->courseId) || checkExist(unpaidList,i->courseId)){
+    		string roomName,teacherName;
+    		
+    		Classroom* room = Classroom::getElementById(i->roomId);
+    		Teacher* teacher = Teacher::getElementByAccount(i->teacherAccount);
+    		if(!room || !teacher){
+    			cerr << "教室/教师编号不存在" << endl;
+			}
+    		cout << setw(Global::PRINT_WIDTH)<<i->courseId <<setw(Global::PRINT_WIDTH)<< i->courseName << setw(Global::PRINT_WIDTH)<<room->roomName << setw(Global::PRINT_WIDTH)<<teacher->name << setw(Global::PRINT_WIDTH)<<i->studentNumber << setw(Global::PRINT_WIDTH)<<(checkExist(unpaidList,i->courseId)?"未缴费":"已缴费" )<< endl;
+		}
+	}
+
+	goPrevious(); 
+	return true;
+}
+
+//支付课程费用 
+bool payOrder(){
+	int courseTotal = 0;//课程总数量
+	float priceTotal = 0;//总价 
+	vector<Course>::iterator i;//课程遍历迭代器 
+	char comfirm = 'y';
+	bool result = true;
+    
+    //初始化 
+    vector<int> unpaidList = CourseSelectionTable::unpaidOrder.getCourseByStudent(Student::login_account);//可退课程列表
+    
+    clear();
+    cout << "---------------选课费用结算-----------------"  << endl;
+    
+    //未选课情况 
+    if(unpaidList.size() == 0){
+    	cout << "您没有待支付的课程"<<endl;
+    	goPrevious(); 
+		return result;
+	}
+	
+	//列举选课未支付课程 
+    cout << "您选择了以下课程:" << endl;
+    Course::printTitleToStream(cout);
+   	for(i=g_courseList.begin();i!=g_courseList.end();i++){
+   		if(checkExist(unpaidList,i->courseId)){
+   			courseTotal++;
+   			priceTotal += i->price;
+   			Course::recordToStream(cout,i,true);
+		}	
+	} 
+	cout << "共" << courseTotal << "门, 合计" << fixed << setprecision(2) << priceTotal << "元" << endl;
+	
+	cout << "注意：支付后，报名信息将计入系统，将无法退课！" << endl;
+	cout << "是否继续?Y/N" << endl;
+	cin >> comfirm;
+	if(comfirm == 'y' || comfirm == 'Y'){
+		//尝试在对应课程人数中加1人,注意检查人数限额,如果失败则提示某门课程人数达到上限,建议退课后再支付 
+		for(vector<int>::iterator i=unpaidList.begin();i!=unpaidList.end();i++){
+			Course* course = Course::getElementById(*i);
+			if(course){
+				if(course->studentNumber+1>course->capacity){
+					cout << "课程" << course->courseName << "已满额，无法选课，建议退课后再重新支付" << endl;
+					result = false;
+				}
+			}else{
+				cerr<<"编号为"<<*i<<"的课程不存在"<<endl;
+				result = false;
+			}
+		}
+		//如果前面执行失败,则不执行后面的内容 
+		if(result){
+
+			//将学生信息录入到paidList
+			for(vector<int>::iterator i=unpaidList.begin();i!=unpaidList.end();i++){
+				if(!CourseSelectionTable::paidOrder.addEntry(*i,Student::login_account)){
+					result=false;
+				}
+			}
+
+			//清空unpaidList
+			for(vector<int>::iterator i=unpaidList.begin();i!=unpaidList.end();i++){
+				if(!CourseSelectionTable::unpaidOrder.deleteEntry(*i,Student::login_account)){
+					result=false;
+				}
+			}
+					
+			
+		}
+	
+	}else{
+		result = false;
+	}
+	
+	//结算页面 
+	if(result){
+		cout << "支付成功！" << endl;
+	}else{
+		cout << "已取消支付" << endl;
+	}
+	goPrevious(); 
+	return result;
+}
+
 //信息加载 
 void loadInfo(){
 	ifstream in;
@@ -370,6 +485,20 @@ void loadInfo(){
 	}
 	in.close();
 	
+	//加载订单表 
+	in.open("unpaidOrder.txt",ios::in);
+	getline(in,temp);
+	while(getline(in,temp)){
+		string account;
+		int id;
+		
+		stringstream ss(temp);
+		ss >> id;
+		ss >> account;
+
+		CourseSelectionTable::unpaidOrder.addEntry(id,account);
+	}
+	in.close();
 }
 
 
@@ -405,6 +534,11 @@ void storeInfo(){
 	//存储选课表信息 
 	out.open("courseSelectionTable.txt",ios::out);
 	CourseSelectionTable::paidOrder.recordToStream(out);
+	out.close();
+	
+	//存储订单表信息 
+	out.open("unpaidOrder.txt",ios::out);
+	CourseSelectionTable::unpaidOrder.recordToStream(out);
 	out.close();
 }
 

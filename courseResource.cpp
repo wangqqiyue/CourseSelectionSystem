@@ -130,6 +130,15 @@ bool Classroom::checkExist(int id, vector<Classroom>::iterator &i){
 	return false;
 }
 
+//根据id获取教室名称 
+Classroom* Classroom::getElementById(int id){
+	for(vector<Classroom>::iterator i=g_roomList.begin();i!=g_roomList.end();i++){
+		if(i->roomId == id){
+			return const_cast<Classroom*>(&(*i));
+		}
+	}
+}
+
 /*-----------------Course 定义实现-------------------------------------*/ 
 
 bool Course::printTitleToStream(ostream& out){
@@ -166,3 +175,10 @@ bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, 
 	return true;
 }
 
+Course* Course::getElementById(int id){
+		for(vector<Course>::iterator i=g_courseList.begin();i!=g_courseList.end();i++){
+		if(i->courseId == id){
+			return const_cast<Course*>(&(*i));
+		}
+	}
+}
