@@ -80,14 +80,11 @@ bool selectCourse(){
     
     //初始化 
 	vector<int> paidList = CourseSelectionTable::paidOrder.getCourseByStudent(Student::login_account);//已支付的课程列表
-	courseTotal = g_courseList.size();//可选课程总数量
+	courseTotal = g_courseList.size() - paidList.size();//可选课程总数量
 
 	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
     	selectList[i] = 0;
-    	if(checkExist(paidList,g_courseList[i].courseId)){
-    		selectList[i] = -1;//已支付的课程不在可选范围内 
-		}
 	}
 	
 	
@@ -104,11 +101,17 @@ bool selectCourse(){
 			float priceTotal = 0;
 			cout << "选课状态" << endl;
 			cout << "已选择课程数量:" << selectTotal << "(";
-			for(int j=0;j<courseTotal;j++){
-				if(1 == selectList[j]){
-					priceTotal += g_courseList[j].price;
-					cout << g_courseList[j].courseName << " ";
+
+            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++){
+            	//跳过已支付的课程 
+				if(checkExist(paidList,i->courseId)){
+					continue;
 				}
+				if(1 == selectList[line]){
+					priceTotal += i->price;
+					cout << i->courseName << " ";
+				}
+            	line++;
 			}
 			
 			cout << ")" << endl;
@@ -124,25 +127,13 @@ bool selectCourse(){
 	                if (currentLine < 0) {
 	                    currentLine += courseTotal;
 	                }
-	                if(-1 == selectList[currentLine]){
-	                	currentLine--;
-	                	if (currentLine < 0) {
-	                    	currentLine += courseTotal;
-	                	}
-					}
 					
 	            } else if (ch == 80) { // 下箭头键
 	                currentLine++;
 	                currentLine%=courseTotal;
-	                if(-1 == selectList[currentLine]){
-	                	currentLine++;
-	                	currentLine%=courseTotal;
-					}
 	            } else if(ch == 13) {//回车键 
-	            	if(-1 != selectList[currentLine]){
 	            		selectList[currentLine] += 1;
 	            		selectList[currentLine] %= 2;	            		
-					}
 	        	}else if(ch == 'y'){
 	        		break;
 				}else if(ch == 'q'){
@@ -151,9 +142,9 @@ bool selectCourse(){
 			}
 
 			//遍历所有课程行 
-            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++,line++){
+            for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++){
             	//跳过已支付的课程 
-				if(-1 == selectList[line]){
+				if(checkExist(paidList,i->courseId)){
 					continue;
 				}
 				
@@ -170,6 +161,7 @@ bool selectCourse(){
 				
             	Course::recordToStream(cout,i,true);
             	setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // 恢复默认颜色
+            	line++;
 			}
 			firstPrint = false;
 			
