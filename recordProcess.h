@@ -18,6 +18,10 @@ bool withdrawCourse();//退课
 
 Student* getStudentByAccount(string account);
 
+//选择菜单  idList是一个课程id名单表 , selectList 是选择表, courseTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
+bool getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion=true);
+ 
+/*--------------------------------------文件操作--------------------------------------------------------*/
 //信息加载 
 void loadInfo();
 
