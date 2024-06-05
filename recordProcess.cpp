@@ -79,14 +79,14 @@ bool selectCourse(){
 	bool firstPrint = true;//首次打印 
     
     //初始化 
-	vector<int> courseIdList = CourseSelectionTable::getCourseByStudent(Student::login_account);//已选择的课程列表 
+	vector<int> paidList = CourseSelectionTable::paidOrder.getCourseByStudent(Student::login_account);//已支付的课程列表
 	courseTotal = g_courseList.size();//可选课程总数量
 
 	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
     	selectList[i] = 0;
-    	if(checkExist(courseIdList,g_courseList[i].courseId)){
-    		selectList[i] = 1;
+    	if(checkExist(paidList,g_courseList[i].courseId)){
+    		selectList[i] = -1;//已支付的课程不在可选范围内 
 		}
 	}
 	
@@ -124,12 +124,25 @@ bool selectCourse(){
 	                if (currentLine < 0) {
 	                    currentLine += courseTotal;
 	                }
+	                if(-1 == selectList[currentLine]){
+	                	currentLine--;
+	                	if (currentLine < 0) {
+	                    	currentLine += courseTotal;
+	                	}
+					}
+					
 	            } else if (ch == 80) { // 下箭头键
 	                currentLine++;
 	                currentLine%=courseTotal;
+	                if(-1 == selectList[currentLine]){
+	                	currentLine++;
+	                	currentLine%=courseTotal;
+					}
 	            } else if(ch == 13) {//回车键 
-	            	selectList[currentLine] += 1;
-	            	selectList[currentLine] %= 2;
+	            	if(-1 != selectList[currentLine]){
+	            		selectList[currentLine] += 1;
+	            		selectList[currentLine] %= 2;	            		
+					}
 	        	}else if(ch == 'y'){
 	        		break;
 				}else if(ch == 'q'){
@@ -139,8 +152,8 @@ bool selectCourse(){
 
 			//遍历所有课程行 
             for(i=g_courseList.begin(),line=0,selectTotal=0;i!=g_courseList.end();i++,line++){
-				if(checkExist(courseIdList, i->courseId)){
-					selectTotal++;
+            	//跳过已支付的课程 
+				if(-1 == selectList[line]){
 					continue;
 				}
 				
@@ -164,7 +177,7 @@ bool selectCourse(){
         }
         
     }
-    //todo 确认选课结果 
+    //todo 确认选课结果计入订单 
     
     
     free(selectList);
@@ -274,7 +287,7 @@ void loadInfo(){
 		ss >> id;
 		ss >> account;
 
-		CourseSelectionTable::addEntry(id,account);
+		CourseSelectionTable::paidOrder.addEntry(id,account);
 	}
 	in.close();
 	
@@ -312,7 +325,7 @@ void storeInfo(){
 	
 	//存储选课表信息 
 	out.open("courseSelectionTable.txt",ios::out);
-	CourseSelectionTable::recordToStream(out);
+	CourseSelectionTable::paidOrder.recordToStream(out);
 	out.close();
 }
 

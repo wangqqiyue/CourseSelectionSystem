@@ -12,12 +12,12 @@ vector<Classroom> g_roomList;
 
 /*-----------------CourseSelectionTable 定义实现-------------------------------------*/ 
 
-multimap<int,string> CourseSelectionTable::courseKeyMap;
-multimap<string,int> CourseSelectionTable::studentKeyMap;
+OrderTable CourseSelectionTable::paidOrder;
+OrderTable CourseSelectionTable::unpaidOrder;
 
 //检查 
 template<typename K,typename V>
-bool CourseSelectionTable::checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete){
+bool OrderTable::checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete){
 	int count = 0;
 
     for (typename multimap<K, V>::iterator it = map.begin(); it != map.end(); ++it) {
@@ -43,10 +43,10 @@ vector<V> getElementByKey(multimap<K,V>& map, const K& key){
     return result;
 }
 
-bool CourseSelectionTable::addEntry(int id, string account){
+bool OrderTable::addEntry(int id, string account){
 	bool result=true;
 	
-    if(CourseSelectionTable::checkExist(courseKeyMap,id,account)){
+    if(checkExist(courseKeyMap,id,account)){
     	cerr << "新增失败！重复的项目<" << id << "," << account <<"> 已存在" << endl;
     	result= false;
 	}else{
@@ -54,7 +54,7 @@ bool CourseSelectionTable::addEntry(int id, string account){
 	}
 	
 
-    if(CourseSelectionTable::checkExist(studentKeyMap,account,id)){
+    if(checkExist(studentKeyMap,account,id)){
     	cerr << "新增失败！重复的项目<" << account << "," << id <<"> 已存在" << endl;
     	result=  false;
 	}else{
@@ -64,14 +64,14 @@ bool CourseSelectionTable::addEntry(int id, string account){
 	return 	result;
 }
 
-bool CourseSelectionTable::deleteEntry(int id, string account){
+bool OrderTable::deleteEntry(int id, string account){
 	bool result=true;
-    if(!CourseSelectionTable::checkExist(courseKeyMap,id,account,true)){
+    if(!checkExist(courseKeyMap,id,account,true)){
     	cerr << "删除失败！项目<" << id << "," << account <<"> 不存在" << endl;
     	result=  false;
 	}
 	
-    if(!CourseSelectionTable::checkExist(studentKeyMap,account,id,true)){
+    if(!checkExist(studentKeyMap,account,id,true)){
     	cerr << "删除失败！项目<" << account << "," << id <<"> 不存在" << endl;
     	result=  false;
 	}
@@ -80,15 +80,15 @@ bool CourseSelectionTable::deleteEntry(int id, string account){
 	return 	result;
 }
 
-vector<string> CourseSelectionTable::getStudentByCourse(int id){
+vector<string> OrderTable::getStudentByCourse(int id){
 	return getElementByKey(courseKeyMap,id);
 }
 
-vector<int> CourseSelectionTable::getCourseByStudent(string account){
+vector<int> OrderTable::getCourseByStudent(string account){
 	return getElementByKey(studentKeyMap,account);
 }
 
-bool CourseSelectionTable::recordToStream(ostream& out){
+bool OrderTable::recordToStream(ostream& out){
 	//非法流 返回false 
 	if(!out){
 		cerr << "非法的流" << endl;

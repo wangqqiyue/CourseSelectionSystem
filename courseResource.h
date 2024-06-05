@@ -65,18 +65,26 @@ public:
 extern vector<Course> g_courseList;
 
 /*---------------------课程学生关系表-----------------------*/
-class CourseSelectionTable{
-private:
-	static  multimap<int,string> courseKeyMap;
-	static multimap<string,int> studentKeyMap;
+//订单表 内部类 
+class OrderTable{
 public:
-	static bool addEntry(int id, string account);
-	static bool deleteEntry(int courseId, string account);
-	static vector<string> getStudentByCourse(int id);
-	static vector<int> getCourseByStudent(string account);
-	static bool recordToStream(ostream& os);
+	multimap<int,string> courseKeyMap;
+	multimap<string,int> studentKeyMap;
+	bool addEntry(int id, string account);
+	bool deleteEntry(int courseId, string account);
+	vector<string> getStudentByCourse(int id);
+	vector<int> getCourseByStudent(string account);
+	bool recordToStream(ostream& os);
 	template<typename K,typename V>
-	static bool checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete = false);
+	bool checkExist(multimap<K,V>& map, const K& key, const V& val, bool needDelete = false);
+};
+	
+class CourseSelectionTable{
+public:
+	//已支付的课程 
+	static  OrderTable paidOrder;
+	//未支付的课程订单
+	static OrderTable unpaidOrder; 
 	
 };
 #endif
