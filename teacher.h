@@ -24,6 +24,7 @@
 */ 
 class Teacher{
 public:
+	static string login_account;//当前登陆账号 
 	string account;
 	string name;
 	string password;
@@ -32,7 +33,10 @@ public:
 	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 
 	static bool checkAccountExist(string account);
 	static Teacher* getElementByAccount(string account);
-
+	static bool (*teacherFuncs[Global::TEACHER_FUNC_MAX])();//教师功能的函数指针数组 
+	static void process();
+	static bool showTeacherCourse();
+	static bool showRoster();
 };
 extern vector<Teacher> teacherList;
 

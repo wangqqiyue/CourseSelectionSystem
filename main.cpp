@@ -38,10 +38,7 @@ int main(int argc, char** argv) {
 		if(role == Global::ADMINISTRATOR){
 			Administrator::process();
 		}else if(role == Global::TEACHER){
-			if(login(Global::TEACHER)){
-				cout << "µÇÂ½³É¹¦" << endl;
-				system("pause");
-			}
+			Teacher::process();
 			
 		}else if(role == Global::STUDENT){
 			Student::process();

@@ -46,6 +46,7 @@ const char *Global::operationStr[]={"新增","删除","修改","查询","返回上一级"};
 const char *Global::mgmtStr[]={"管理教师信息","管理教室信息","管理课程信息","返回上一级"};
 const char *Global::stuFuncStr[]={"查看已选课程","查看所有课程","选择新课程","退选未支付的课程","支付订单","返回上一级"};
 const char *Global::titleStr="培训中心管理系统";
+const char *Global::teacherFuncStr[] = {"查看名下课程", "查看课程学生名单","返回上一级"}; 
 
 //清空控制台
 void clear(){
@@ -172,6 +173,7 @@ bool login(Global::Role role){
 				cout << "账号不存在!请重新输入"  << endl;
 				continue;
 			}
+			
 		}else{
 			if(!Student::checkAccountExist(inputAccount,is)){
 				cout << "账号不存在!请重新输入"  << endl;
@@ -193,6 +195,8 @@ bool login(Global::Role role){
 				cout << "密码错误!请重新输入"  << endl;
 				continue;
 			}
+			//当前登陆账号 
+			Teacher::login_account = inputAccount;
 		}else{
 			if(inputPasswd != is->password){
 				cout << "密码错误!请重新输入"  << endl;

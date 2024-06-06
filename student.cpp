@@ -23,6 +23,18 @@ bool Student::checkAccountExist(string account){
 	return false;
 }
 
+
+//返回的是studentList中第一个满足条件（即账号等于传入参数account）的 Student对象的地址。
+Student* Student::getElementByAccount(string account){
+	for(vector<Student>::iterator i=studentList.begin();i!=studentList.end();i++){
+		if(i->account == account){
+			return &(*i);
+		}
+	}
+	return NULL;
+}
+
+
 bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 	for(i=studentList.begin();i!=studentList.end();++i){
 		if(i->account == account){

@@ -60,15 +60,6 @@ bool checkExist(const vector<T>& vec, const T& target){
 	return false;
 }
 
-//返回的是studentList中第一个满足条件（即账号等于传入参数account）的 Student对象的地址。
-Student* getStudentByAccount(string account){
-	for(vector<Student>::iterator i=studentList.begin();i!=studentList.end();i++){
-		if(i->account == account){
-			return &(*i);
-		}
-	}
-	return NULL;
-}
 
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, courseTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
 bool getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion){
@@ -362,7 +353,11 @@ bool payOrder(){
 				}
 			}
 					
-			
+			//向课程增加人数
+			for(vector<int>::iterator i=unpaidList.begin();i!=unpaidList.end();i++){
+				Course* course = Course::getElementById(*i);
+				course->studentNumber += 1;
+			} 
 		}
 	
 	}else{

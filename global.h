@@ -110,10 +110,18 @@ public:
 		STU_FUNC_MAX,
 	};
 	
+	//教师功能字符串 
+	static const char *teacherFuncStr[];
+	
+	//教师功能枚举 
+	enum TEACHER_FUNC{
+		SHOW_TEACHER_COURSE=0,//查看已选课程 
+		SHOW_ROSTER,//查看学生名单 
+		TEACHER_FUNC_MAX,
+	};
+	
 	//学生功能字符串 
-	static const char *stuFuncStr[];
-	
-	
+	static const char *stuFuncStr[];	
 	
 	//程序标题字符串 
 	static const char *titleStr;
