@@ -30,15 +30,24 @@ public:
 	string telphone;
 	string password;
 	Student(string a,string id,string name,string tel,string p):account(a),idCardNumber(id),name(name),telphone(tel),password(p){}
-	static void createAccount();
+	static bool createAccount();
 	static bool recordToStream(ostream& out, vector<Student>::iterator firstRecord,bool onlyOne=false);
 	static void process();
 	static bool checkAccountExist(string account);
 	static bool checkAccountExist(string account,vector<Student>::iterator &i);
 	static bool (*stuFuncs[Global::STU_FUNC_MAX])();//学生功能的函数指针数组 
 	static Student* getElementByAccount(string account);
+	static vector<Student> studentList;
+	static bool payOrder();
+	static bool showSelectedCourse();
+	static bool withdrawCourse();
+	static bool selectCourse();
+	static bool getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion=true);
+	
+	const static  char* dataFile;//数据存储文件
+	static bool storeInfo(); 
+	static bool loadInfo();
 };
 
-extern vector<Student> studentList;
 
 #endif

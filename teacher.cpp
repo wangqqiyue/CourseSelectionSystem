@@ -6,13 +6,34 @@
 #include "global.h"
 #endif
 
-#ifndef INCLUDE_COURSE_RESOURCE
-#include "courseResource.h"
+#ifndef INCLUDE_COURSE
+#include "course.h"
 #endif
 
 #ifndef INCLUDE_STUDENT
 #include "student.h"
 #endif
+
+
+#ifndef INCLUDE_FSTREAM
+#include <fstream>
+#define INCLUDE_FSTREAM
+#endif
+
+
+#ifndef INCLUDE_SSTREAM
+#include <sstream>
+#define INCLUDE_SSTREAM
+#endif
+
+#ifndef INCLUDE_SELECTION_TABLE
+#include "selectionTable.h"
+#endif
+
+#ifndef INCLUDE_CLASSROOM
+#include "classroom.h"
+#endif
+
 
 vector<Teacher> teacherList;
 
@@ -20,7 +41,43 @@ vector<Teacher> teacherList;
 bool (*Teacher::teacherFuncs[Global::TEACHER_FUNC_MAX])() = {Teacher::showTeacherCourse,Teacher::showRoster};
 string Teacher::login_account = "";//当前登陆账号 
 
-//学生基本操作流程 
+
+const char* Teacher::dataFile = "teachersInfo.txt"; 
+
+bool Teacher::storeInfo(){
+	bool result = true;
+	ofstream out;
+	//加载管理员账号密码
+	out.open(dataFile,ios::out);
+	if(!Teacher::recordToStream(out, teacherList.begin())){
+		result= false;
+	}
+
+	out.close();
+	return result;
+}
+
+bool Teacher::loadInfo(){
+	ifstream in;
+	string temp;
+	
+	//加载管理员账号密码
+	in.open(dataFile,ios::in);
+	getline(in,temp);
+	while(getline(in,temp)){
+		string teacherAccount,teacherName,teacherPassword;
+		stringstream ss(temp);
+		ss >> teacherAccount;
+		ss >> teacherName;
+		ss >> teacherPassword;
+		Teacher t(teacherAccount,teacherName,teacherPassword);
+		teacherList.push_back(t);
+	}
+	in.close();
+}
+
+
+//教师基本操作流程 
 void Teacher::process(){
 	while(login(Global::TEACHER)){
 		int funcChoice = -1;
@@ -98,7 +155,7 @@ bool Teacher::showTeacherCourse(){
 	}
 	
 	cout << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数" << setw(Global::PRINT_LONG_WIDTH) << "教室" << endl;
-	for(vector<Course>::iterator i=g_courseList.begin();i!=g_courseList.end();i++){
+	for(vector<Course>::iterator i=Course::courseList.begin();i!=Course::courseList.end();i++){
 		Classroom* room;
 		if(i->teacherAccount == login_account){
 			room = Classroom::getElementById(i->roomId);
@@ -127,7 +184,7 @@ bool Teacher::showRoster(){
 	}
 	
 	cout << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数" << setw(Global::PRINT_LONG_WIDTH) << "教室" << endl;
-	for(vector<Course>::iterator i=g_courseList.begin();i!=g_courseList.end();i++){
+	for(vector<Course>::iterator i=Course::courseList.begin();i!=Course::courseList.end();i++){
 		Classroom* room;
 		if(i->teacherAccount == login_account){
 			room = Classroom::getElementById(i->roomId);

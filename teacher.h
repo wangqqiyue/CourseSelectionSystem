@@ -37,6 +37,9 @@ public:
 	static void process();
 	static bool showTeacherCourse();
 	static bool showRoster();
+	const static  char* dataFile;//数据存储文件
+	static bool storeInfo(); 
+	static bool loadInfo();
 };
 extern vector<Teacher> teacherList;
 

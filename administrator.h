@@ -41,8 +41,41 @@ public:
 	static string password;//管理员密码
 	static void process();
 	static bool recordToStream(ostream& out);
-
+	const static  char* dataFile;//数据存储文件
+	static bool storeInfo(); 
+	static bool loadInfo();
 }; 
 
+
+/*----------------管理教师信息-------------------------------*/
+bool teacherMgmt(); 
+
+/*新增教师数据 
+需要判断新增数据是否有重复,新增后不超过教师总数上限 
+*/
+bool teacherInfoCreate();
+
+//查询教师数据 
+bool teacherInfoRetrieve();
+
+
+/*------------------管理教室信息 ----------------------------*/
+bool classroomMgmt();
+
+//查询教室数据 
+bool roomInfoRetrieve();
+
+/*新增教室数据 
+需要判断新增数据是否有重复,新增后不超过教室总数上限 
+*/
+bool roomInfoCreate();
+
+/*-----------------管理课程信息-----------------------------*/
+bool courseMgmt();
+
+/*新增课程数据 
+需要判断新增数据是否有重复,新增后不超过课程总数上限 
+*/
+bool courseInfoCreate();
 
 #endif

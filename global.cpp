@@ -149,8 +149,7 @@ bool login(Global::Role role){
 		if(Global::STU_LOGIN_MAX == loginChoice){
 			return false;
 		}else if(Global::STU_SIGNUP == loginChoice){
-			Student::createAccount();
-			return true;
+			return Student::createAccount();
 		}
 	}else{
 		loginChoice = getChoice("", Global::loginStr, Global::LOGIN_MAX);

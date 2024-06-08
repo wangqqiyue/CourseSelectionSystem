@@ -39,7 +39,6 @@ int main(int argc, char** argv) {
 			Administrator::process();
 		}else if(role == Global::TEACHER){
 			Teacher::process();
-			
 		}else if(role == Global::STUDENT){
 			Student::process();
 		}else{
