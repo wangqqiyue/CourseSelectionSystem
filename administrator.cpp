@@ -37,12 +37,18 @@
 #include "classroom.h"
 #endif
 
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif 
+
 
 //静态成员变量需要在类外定义 
 bool Administrator::hasAccount=false;
 bool Administrator::hasLoaded=false;
 string Administrator::adminAccount;
 string Administrator::password;
+const string Administrator::bankAccount = "5248-6532-3159-6450";
 //函数指针数组的初始化 
 bool (*Administrator::mgmtFuncs[Global::MGMT_MAX])() = {teacherMgmt,classroomMgmt,courseMgmt};
 
@@ -51,6 +57,9 @@ const char* Administrator::dataFile = "administrator.txt";
 
 bool Administrator::storeInfo(){
 	bool result = true;
+	//写入前设置文件属性为普通 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_NORMAL);
+
 	ofstream out;
 	//加载管理员账号密码
 	out.open(dataFile,ios::out);
@@ -58,6 +67,8 @@ bool Administrator::storeInfo(){
 		result= false;
 	}
 	out.close();
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_READONLY);
 	return result;
 }
 

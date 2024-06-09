@@ -44,6 +44,7 @@ public:
 	const static  char* dataFile;//数据存储文件
 	static bool storeInfo(); 
 	static bool loadInfo();
+	const static string bankAccount;
 }; 
 
 

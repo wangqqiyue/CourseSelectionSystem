@@ -92,6 +92,9 @@ const char* Classroom::dataFile = "classroomsInfo.txt";
 bool Classroom::storeInfo(){
 	bool result = true;
 	ofstream out;
+	//写入前设置文件属性为普通 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_NORMAL);
+	
 	//加载管理员账号密码
 	out.open(dataFile,ios::out);
 	if(!Classroom::recordToStream(out,roomList.begin())){
@@ -99,6 +102,10 @@ bool Classroom::storeInfo(){
 	}
 
 	out.close();
+	
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_READONLY);
+	
 	return result;
 }
 
@@ -122,6 +129,7 @@ bool Classroom::loadInfo(){
 		Classroom::roomList.push_back(cr);
 	}		
 	in.close();
+	
 }
 
 bool Classroom::checkIdExist(int id,vector<Classroom>::iterator &i){

@@ -57,6 +57,9 @@ const char* Teacher::dataFile = "teachersInfo.txt";
 bool Teacher::storeInfo(){
 	bool result = true;
 	ofstream out;
+	//写入前设置文件属性为普通 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_NORMAL);
+	
 	//加载管理员账号密码
 	out.open(dataFile,ios::out);
 	if(!Teacher::recordToStream(out, teacherList.begin())){
@@ -64,13 +67,16 @@ bool Teacher::storeInfo(){
 	}
 
 	out.close();
+	
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_READONLY);
 	return result;
 }
 
 bool Teacher::loadInfo(){
 	ifstream in;
 	string temp;
-	
+
 	//加载管理员账号密码
 	in.open(dataFile,ios::in);
 	getline(in,temp);

@@ -44,6 +44,9 @@ const char* Course::dataFile = "coursesInfo.txt";
 bool Course::storeInfo(){
 	bool result = true;
 	ofstream out;
+	//写入前设置文件属性为普通 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_NORMAL);
+	
 	//加载管理员账号密码
 	out.open(dataFile,ios::out);
 	if(!Course::recordToStream(out,Course::courseList.begin())){
@@ -51,6 +54,9 @@ bool Course::storeInfo(){
 	}
 
 	out.close();
+	
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(dataFile, FILE_ATTRIBUTE_READONLY);
 	return result;
 }
 

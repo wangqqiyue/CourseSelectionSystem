@@ -2,22 +2,26 @@
 #include "selectionTable.h"
 #endif
 
-
 #ifndef INCLUDE_GLOBAL
 #include "global.h"
 #endif
-
 
 #ifndef INCLUDE_FSTREAM
 #include <fstream>
 #define INCLUDE_FSTREAM
 #endif
 
-
 #ifndef INCLUDE_SSTREAM
 #include <sstream>
 #define INCLUDE_SSTREAM
 #endif
+
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif 
+
+
 /*-----------------CourseSelectionTable 定义实现-------------------------------------*/ 
 
 OrderTable CourseSelectionTable::paidOrder;
@@ -120,16 +124,26 @@ bool CourseSelectionTable::storeInfo(){
 	bool result = true;
 	ofstream out;
 
+	//写入前设置文件属性为普通 
+	SetFileAttributes(paidOrderFile, FILE_ATTRIBUTE_NORMAL);
+	
 	out.open(paidOrderFile,ios::out);
 	if(!paidOrder.recordToStream(out)){
 		result= false;
 	}
 	out.close();
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(paidOrderFile, FILE_ATTRIBUTE_READONLY);
 	
+	//写入前设置文件属性为普通 
+	SetFileAttributes(unpaidOrderFile, FILE_ATTRIBUTE_NORMAL);
 	out.open(unpaidOrderFile,ios::out);
 	if(!unpaidOrder.recordToStream(out)){
 		result= false;
 	}
+	out.close(); 
+	//写入后设置文件属性为只读,防止他人修改 
+	SetFileAttributes(unpaidOrderFile, FILE_ATTRIBUTE_READONLY);
 	
 	return result;
 }
