@@ -49,6 +49,10 @@ public:
 	const static  char* dataFile;//数据存储文件
 	static bool storeInfo(); 
 	static bool loadInfo();
+	static bool create();
+	static bool del();
+	static bool retrieve();
+	static bool getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion=true);
 };
 
 

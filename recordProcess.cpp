@@ -77,12 +77,3 @@ void storeInfo(){
 	CourseSelectionTable::storeInfo();
 }
 
-//查询课程数据 
-bool courseInfoRetrieve(){
-	clear();
-	cout << "------课程信息查询-----"	<< endl;
-	Course::recordToStream(cout,Course::courseList.begin());
-	goPrevious();
-	return true;
-	
-}

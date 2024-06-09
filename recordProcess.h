@@ -19,7 +19,4 @@ void loadInfo();
 //信息存储
 void storeInfo();
 
-//查询课程数据 
-bool courseInfoRetrieve();
-
 #endif

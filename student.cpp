@@ -15,12 +15,6 @@
 #define INCLUDE_CONIO
 #endif
 
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif
-
 #ifndef INCLUDE_TEACHER
 #include "teacher.h"
 #endif
@@ -43,11 +37,17 @@
 #include "classroom.h"
 #endif
 
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif 
+
+
 
 vector<Student> Student::studentList;
 
 //函数指针数组的初始化 
-bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {showSelectedCourse,courseInfoRetrieve,selectCourse,withdrawCourse,payOrder};
+bool (*Student::stuFuncs[Global::STU_FUNC_MAX])() = {showSelectedCourse,Course::retrieve,selectCourse,withdrawCourse,payOrder};
 //当前登陆学生账号 
 string Student::login_account="";
 
@@ -196,17 +196,6 @@ bool Student::recordToStream(ostream& out, vector<Student>::iterator firstRecord
 } 
 
 
-template<class T>
-bool checkExist(const vector<T>& vec, const T& target){
-	for(typename vector<T>::const_iterator i=vec.begin();i!=vec.end();i++){
-		if(*i == target){
-			return true;
-		}
-	}
-	return false;
-}
-
-
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, courseTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
 bool Student::getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion){
 		
@@ -335,6 +324,12 @@ bool Student::selectCourse(){
 	
 	if(!getSelection(exclusionList,selectList,courseTotal,false)){
 		free(selectList);
+		return false;
+	}
+	
+	if(checkAllZero(selectList,courseTotal)){
+		cout << "您未做选择" << endl;
+		goPrevious();
 		return false;
 	}
     

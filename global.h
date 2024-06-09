@@ -21,6 +21,12 @@
 #endif 
 
 
+#ifndef INCLUDE_VECTOR
+#include <vector>
+#define INCLUDE_VECTOR
+#endif
+
+
 using namespace std;
 
 //宏定义全局变量类 
@@ -155,4 +161,16 @@ bool login(Global::Role role);
 //返回上一级
 void goPrevious();
 
+//检查是否存在id 
+template<class T>
+bool checkExist(const vector<T>& vec, const T& target){
+	for(typename vector<T>::const_iterator i=vec.begin();i!=vec.end();i++){
+		if(*i == target){
+			return true;
+		}
+	}
+	return false;
+}
+
+ bool checkAllZero(int *selectList, int total);
 #endif

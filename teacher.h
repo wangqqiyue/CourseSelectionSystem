@@ -29,6 +29,7 @@ public:
 	string name;
 	string password;
 	Teacher(string acc,string n,string p):account(acc),name(n),password(p){}
+	static bool printTitleToStream(ostream& out);
 	static bool recordToStream(ostream& out, vector<Teacher>::iterator firstRecord, bool onlyOne=false);
 	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 
 	static bool checkAccountExist(string account);
@@ -40,6 +41,10 @@ public:
 	const static  char* dataFile;//数据存储文件
 	static bool storeInfo(); 
 	static bool loadInfo();
+	static bool create();
+	static bool retrieve();
+	static bool del();
+	static bool getSelection(const vector<string>& idList, int* selectList, const int& teacherTotal,bool isInclusion=true);
 };
 extern vector<Teacher> teacherList;
 

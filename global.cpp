@@ -213,4 +213,11 @@ bool login(Global::Role role){
 	return false;
 }
 
- 
+ bool checkAllZero(int *selectList, int total){
+ 	for(int i=0;i<total;i++){
+ 		if(selectList[i]){
+ 			return false;
+		 }
+	}
+	return true;
+ }
