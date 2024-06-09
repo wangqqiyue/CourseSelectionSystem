@@ -87,7 +87,10 @@ bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 
 //学生基本操作流程 
 void Student::process(){
-	while(login(Global::STUDENT)){
+	while(true){
+		if(!login(Global::STUDENT)){
+			continue;
+		}
 		int stuFuncChoice = -1;
 		while(Global::STU_FUNC_MAX != stuFuncChoice){
 			clear();
@@ -165,13 +168,23 @@ bool Student::createAccount(){
 		}
 		
 		password = setPassword();	
-			
-		Student s = Student(account,id,name,tel,password);
-		studentList.push_back(s);
 		
-		cout << "已注册账号如下："	<< endl;
-		Student::recordToStream(cout, studentList.end() - 1,true);
-		Student::login_account =  account;
+		Student s = Student(account,id,name,tel,password);//新建一个学生对象 
+		
+		cout << "即将新增数据如下" << endl;
+		printTitleToStream(cout);
+		s.recordToStream(cout);
+		cout << "是否确认新增?Y/N" << endl;
+		cin >> comfirm;
+		if('y' == comfirm || 'Y' == comfirm){	
+			studentList.push_back(s);
+			cout << "已新增数据如下" << endl;
+			recordToStream(cout, studentList.end() - 1,true);
+			Student::login_account =  account;
+		}else{
+			cout <<"已取消新增"<<endl;
+			result = false;
+		}
 		break; 
 	}
 	goPrevious();
@@ -185,7 +198,7 @@ bool Student::recordToStream(ostream& out, vector<Student>::iterator firstRecord
 		return false;
 	}
 	
-	out << setw(Global::PRINT_LONG_WIDTH)<<"账号" << setw(Global::PRINT_LONG_WIDTH) << "姓名" << setw(Global::PRINT_LONG_WIDTH) << "身份证号" << setw(Global::PRINT_LONG_WIDTH) << "手机号" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
+	printTitleToStream(out);
 	for(vector<Student>::iterator i=studentList.begin();i!=studentList.end();i++){
 		if(onlyOne){
 			i = firstRecord;
@@ -195,6 +208,28 @@ bool Student::recordToStream(ostream& out, vector<Student>::iterator firstRecord
 			break;
 		}
 	}
+	return true;
+} 
+
+bool Student::printTitleToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out << setw(Global::PRINT_LONG_WIDTH)<<"账号" << setw(Global::PRINT_LONG_WIDTH) << "姓名" << setw(Global::PRINT_LONG_WIDTH) << "身份证号" << setw(Global::PRINT_LONG_WIDTH) << "手机号" << setw(Global::PRINT_LONG_WIDTH) << "密码"<< endl;
+	return true;
+}
+bool Student::recordToStream(ostream& out){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out <<  setw(Global::PRINT_LONG_WIDTH)<< account << setw(Global::PRINT_LONG_WIDTH) << name << setw(Global::PRINT_LONG_WIDTH) << idCardNumber << setw(Global::PRINT_LONG_WIDTH) << telphone << setw(Global::PRINT_LONG_WIDTH)  << password << endl;
+
 	return true;
 } 
 
