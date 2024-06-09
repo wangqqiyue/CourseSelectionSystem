@@ -409,7 +409,9 @@ bool Classroom::changeInfo(vector<Classroom>::iterator &it){
 	while('y' == comfirm || 'Y' == comfirm){
 		cout<<"教室编号:";
 		cin >> id;
-		while(!isInputOk()){}
+		if(!isInputOk()){
+			continue;
+		}
 
 		if(checkIdExist(id)){
 			cout << "该编号已存在！请重新选择" << endl;
@@ -498,7 +500,9 @@ bool Classroom::create(){
 		while('y' == comfirm || 'Y' == comfirm){
 			cout<<"教室编号:";
 			cin >> id;
-			while(!isInputOk()){}
+			if(!isInputOk()){
+				continue;
+			}
 
 			if(checkIdExist(id)){
 				cout << "该编号已存在！请重新选择" << endl;

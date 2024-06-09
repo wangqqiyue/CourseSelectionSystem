@@ -197,11 +197,13 @@ bool courseMgmt(){
 		cout << "------课程信息管理-----"  << endl;
 		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
 		if(Global::RETRIEVE == opChoice){
-			return Course::retrieve();
+			Course::retrieve();
 		}else if(Global::CREATE == opChoice){
-			return Course::create();
+			Course::create();
 		}else if(Global::DEL == opChoice){
-			return Course::del();
+			Course::del();
+		}else if(Global::UPDATE == opChoice){
+			Course::update();
 		}
 	}
 	return false;

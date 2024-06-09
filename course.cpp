@@ -291,7 +291,7 @@ bool Course::create(){
 }
 
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, courseTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
-bool Course::getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion){
+bool Course::getSelection(const string prompt, const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion,bool onlyOne){
 		
 	static bool firstPrint = true;
 	int currentLine = 0;
@@ -305,7 +305,7 @@ bool Course::getSelection(const vector<int>& idList, int* selectList, const int&
 	
         	clear();
         	//标题和规则说明 
-			cout << "----------------删除无人选课的课程----------------" << endl;
+			cout << "----------------"<<prompt<<"----------------" << endl;
 			
 			//显示当前状态 
 			float priceTotal = 0;
@@ -346,7 +346,11 @@ bool Course::getSelection(const vector<int>& idList, int* selectList, const int&
 	                currentLine%=courseTotal;
 	            } else if(ch == 13) {//回车键 
 	            		selectList[currentLine] += 1;
-	            		selectList[currentLine] %= 2;	            		
+	            		selectList[currentLine] %= 2;	        
+						if(onlyOne) {
+							firstPrint = true;
+							return true;
+						}
 	        	}else if(ch == 'y'){
 	        		firstPrint = true;
 	        		return true;
@@ -420,7 +424,7 @@ bool Course::del(){
     	selectList[i] = 0;
 	}
 	
-	if(!getSelection(deletableList,selectList,courseTotal)){
+	if(!getSelection("删除无人选课的课程",deletableList,selectList,courseTotal)){
 		free(selectList);
 		return false;
 	}
@@ -462,3 +466,200 @@ bool Course::retrieve(){
 	return true;
 	
 }
+
+//修改课程信息 
+bool Course::update(){
+	int *selectList;//已选择的课程列表, 如果选中则为1 
+	int courseTotal;//可选课程总数量
+	int line=0;//行下标 
+	vector<Course>::iterator i;//课程遍历迭代器 
+    
+    //初始化 
+    vector<int> unchangableList;//可删课程列表
+    for(i=courseList.begin();i!=courseList.end();i++){
+    	if(0 != i->studentNumber){
+    		unchangableList.push_back(i->courseId);
+		}
+	}
+    
+	courseTotal = courseList.size() - unchangableList.size();//可退课程总数量
+	if(0 == courseTotal){
+		clear();
+		cout << "目前没有可以修改的课程" << endl;
+		goPrevious(); 
+		return false;
+	}
+
+	selectList = new int[courseTotal];
+    for(int i=0;i<courseTotal;i++){
+    	selectList[i] = 0;
+	}
+	
+	if(!getSelection("修改无人选择的课程信息",unchangableList,selectList,courseTotal,false,true)){
+		free(selectList);
+		return false;
+	}
+	
+	if(checkAllZero(selectList,courseTotal)){
+		cout << "您未做选择" << endl;
+		goPrevious();
+		return false;
+	}
+	
+    //确认选课结果并删除 
+    cout << "以下课程待修改"  << endl;
+    Course::printTitleToStream(cout);
+    for(i=Course::courseList.begin(),line=0;i!=Course::courseList.end();i++){
+    	//跳过不可修改的课程 
+		if(checkExist(unchangableList,i->courseId)){
+			continue;
+		}
+		if(1 == selectList[line]){
+			recordToStream(cout,i,true);
+			//todo 修改课程
+			changeInfo(i); 
+		}
+    	line++;
+	}
+
+    free(selectList);
+	goPrevious(); 
+	return true;
+}
+
+//修改课程信息 
+bool Course::changeInfo(vector<Course>::iterator &it){
+	char comfirm = 'y';
+	int id,capacity,roomId;
+	string name,teacherAccount;
+	float price;
+
+
+	cout << "请输入信息" << endl;
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		cout<<"课程编号:";
+		cin >> id;
+		if(!isInputOk()){
+			continue;
+		}
+		
+		Course* c= getElementById(id);
+		if(!c){
+			cout << "该编号已存在！请重新选择" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+	
+
+
+	while('y' == comfirm || 'Y' == comfirm){
+		cout << "课程名称:" ;
+		cin >> name;
+		
+		vector<Course>::iterator i;
+		for(i=Course::courseList.begin();i!=Course::courseList.end();++i){
+			if(i->courseName == name){
+				cout << "该名称已存在！请重新选择" << endl;
+				break;
+			}
+		}
+		if(i != Course::courseList.end()){
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		cout << "课程价格";
+		cin >> price;
+		if(price < 0 || price > Global::COURSE_PRICE_MAX){
+			cout << "课程价格需要在合理范围(0--"<< Global::COURSE_PRICE_MAX <<")，请重新输入:" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		cout<<"教师帐号:";
+		cin >> teacherAccount;
+
+		if(!Teacher::checkAccountExist(teacherAccount)){
+			cout << "该编号不存在！请重新选择" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+
+	while('y' == comfirm || 'Y' == comfirm){
+		cout << "课程人数限额";
+		cin >> capacity;
+		if(capacity < Global::COURSE_CAPACITY_MIN || capacity > Global::COURSE_CAPACITY_MAX){
+			cout << "课程人数限额需要在合理范围("<< Global::COURSE_CAPACITY_MIN <<"--"<< Global::COURSE_CAPACITY_MAX <<")"<<endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+	
+	while('y' == comfirm || 'Y' == comfirm){
+		cout<<"教室编号:";
+		cin >> roomId;
+		if(!isInputOk()){
+			continue;
+		}
+		vector<Classroom>::iterator i;
+		if(!Classroom::checkIdExist(roomId,i)){
+			cout << "该编号不存在！请重新选择" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}else if(i->capacity < capacity){
+			cout << "该教室仅能容纳" << i->capacity << "人, 请重新选择！" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+
+	it->courseId = id;
+	it->courseName = name;
+	it->teacherAccount = teacherAccount;
+	it->roomId = roomId;
+	it->capacity = capacity;
+		
+	cout << "修改如下" << endl;
+	printTitleToStream(cout);
+	recordToStream(cout,it,true);
+	return true;
+}
+

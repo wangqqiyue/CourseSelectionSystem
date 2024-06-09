@@ -143,6 +143,7 @@ bool login(Global::Role role){
 	vector<Student>::iterator is;
 	vector<Teacher>::iterator it;
 	int loginChoice = -1;
+	char comfirm = 'y';
 	
 	clear();
 	cout << "------"<< Global::roleStr[role] <<"登陆-----" << endl;
@@ -159,25 +160,31 @@ bool login(Global::Role role){
 			return false;
 		}
 	}
-	
-	for(int i=0;i<Global::LOGIN_RETRY_MAX;i++){
+	int i;
+	for(i=0;i<Global::LOGIN_RETRY_MAX && ('y' == comfirm || 'Y' == comfirm);i++){
 		cout << "请输入账号名称:" ;
 		cin >> inputAccount;		
 		
 		if(Global::ADMINISTRATOR == role){	
 			if(inputAccount != Administrator::adminAccount){
 				cout << "账号不存在!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 		}else if(Global::TEACHER == role){
 			if(!Teacher::checkAccountExist(inputAccount,it)){
 				cout << "账号不存在!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 			
 		}else{
 			if(!Student::checkAccountExist(inputAccount,is)){
 				cout << "账号不存在!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 		}
@@ -189,11 +196,15 @@ bool login(Global::Role role){
 			if(inputPasswd != Administrator::password){
 			
 				cout << "密码错误!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 		}else if(Global::TEACHER == role){
 			if(inputPasswd != it->password){
 				cout << "密码错误!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 			//当前登陆账号 
@@ -201,6 +212,8 @@ bool login(Global::Role role){
 		}else{
 			if(inputPasswd != is->password){
 				cout << "密码错误!请重新输入"  << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
 				continue;
 			}
 			Student::login_account =  inputAccount;
@@ -209,9 +222,10 @@ bool login(Global::Role role){
 		cout << "登陆成功" << endl;
 		return true;
 	}
-	
-	cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
-	cout << "已退出" << endl;
+	if(Global::LOGIN_RETRY_MAX == i){
+		cout << "登陆次数超过" << Global::LOGIN_RETRY_MAX << endl; 
+	}
+	goPrevious();
 	return false;
 }
 

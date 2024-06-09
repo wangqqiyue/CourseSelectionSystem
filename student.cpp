@@ -510,6 +510,8 @@ bool Student::payOrder(){
 		else{
 			result = false;
 		}
+	}else{
+		cout << "已取消支付" << endl;
 	}
 	
 	//结算页面 
@@ -517,7 +519,7 @@ bool Student::payOrder(){
 		cout << "支付成功！选课信息已录入系统，无法更改" << endl;
 		CourseSelectionTable::storeInfo();
 	}else{
-		cout << "已取消支付" << endl;
+		cout << "信息录入出错,已取消支付" << endl;
 	}
 	goPrevious(); 
 	return result;

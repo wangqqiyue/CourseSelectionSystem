@@ -52,7 +52,9 @@ public:
 	static bool create();
 	static bool del();
 	static bool retrieve();
-	static bool getSelection(const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion=true);
+	static bool update();
+	static bool changeInfo(vector<Course>::iterator& it);
+	static bool getSelection(const string prompt, const vector<int>& idList, int* selectList, const int& courseTotal,bool isInclusion=true, bool onlyOne = false);
 };
 
 
