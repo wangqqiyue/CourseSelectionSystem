@@ -8,6 +8,10 @@
 #define INCLUDE_WINDOWS
 #endif
 
+#ifndef INCLUDE_CONIO
+#include <conio.h>
+#define INCLUDE_CONIO
+#endif
 
 #ifndef INCLUDE_VECTOR
 #include <vector>
@@ -80,8 +84,12 @@ Global::Role greeting(){
 //返回上一级 
 void goPrevious(){
 	cout << "按任意键返回上一级" << endl;
-	cin.ignore();
-	getchar();
+	while(true){	
+		if (_kbhit()){
+			_getch();
+			return;
+		}
+	}
 } 
 
 //检查输入是否合规 
@@ -101,18 +109,27 @@ bool isInputOk(){
 
 //获取用户输入的选项 
 int getChoice(const char* promptStr, const char **choiceStr, const int choiceMax){
-	int choice = -1;
+	char choice = -1;
 	//含choiceMax，用户可以选择退出/返回到上一级 
 	while(choice > choiceMax || choice < 0){
 		choice = -1;
 		cout << promptStr <<endl;
-		for(int i=0;i<=choiceMax;i++){
+		for(int i=0;i<choiceMax;i++){
 			cout << i << ". " << choiceStr[i] << endl;
 		}
-		cin >> choice;
+		cout << "[Esc] "  << choiceStr[choiceMax] << endl;
 		
-		if(!isInputOk()){
-			choice = -1;
+		while(true){	
+			if (_kbhit()){
+				choice = _getch();
+				if(choice < '0' + choiceMax && choice >= '0'){
+					choice -= '0';
+					break;
+				}else if(choice == 27){//esc的ASCII码27
+					choice =  choiceMax;
+					break;
+				}
+			}
 		}
 	}
 	

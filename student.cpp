@@ -101,7 +101,6 @@ void Student::process(){
 				stuFuncs[stuFuncChoice]();
 			}
 		}
-
 	}
 }
 

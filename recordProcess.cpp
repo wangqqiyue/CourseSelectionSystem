@@ -34,6 +34,7 @@
 
 //信息加载 
 void loadInfo(){
+	cout << "系统数据加载中..." << endl;
 	
 	//加载管理员信息	
 	Administrator::loadInfo();
@@ -52,11 +53,14 @@ void loadInfo(){
 	
 	//加载选课表 
 	CourseSelectionTable::loadInfo();
+	
+	cout << "系统数据加载完毕" << endl;
 }
 
 
 //信息存储
 void storeInfo(){
+	cout << "系统数据存储中..." << endl;
 
 	//存储管理员信息 
 	Administrator::storeInfo();
@@ -75,5 +79,7 @@ void storeInfo(){
 	
 	//存储选课表信息 
 	CourseSelectionTable::storeInfo();
+	
+	cout << "系统数据存储完毕" << endl;
 }
 
