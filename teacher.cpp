@@ -162,6 +162,18 @@ bool Teacher::recordToStream(ostream& out, vector<Teacher>::iterator firstRecord
 	return true;
 } 
 
+bool Teacher::recordToStream(ostream& out, bool onlyOne){
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+
+	out <<  setw(Global::PRINT_WIDTH)<<account << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << password << endl;
+
+	return true;
+} 
+
 //根据教师账号返回教师元素的指针 
 Teacher* Teacher::getElementByAccount(string account){
 		for(vector<Teacher>::iterator i=teacherList.begin();i!=teacherList.end();i++){
@@ -275,6 +287,7 @@ bool Teacher::create(){
 		cin >> account;
 
 		if(Teacher::checkAccountExist(account)){
+			cout << "该账号已存在" << endl; 
 			cout << "是否继续?Y/N" << endl;
 			cin >> comfirm;
 			continue;
@@ -285,12 +298,21 @@ bool Teacher::create(){
 		
 		passwd=setPassword();
 		
-		Teacher t(account,name,passwd);
-		teacherList.push_back(t);
+		Teacher t(account,name,passwd);//新建一个教师对象 
 		
-		cout << "已新增数据如下" << endl;
-		Teacher::recordToStream(cout, teacherList.end()-1, true);
-
+		cout << "即将新增数据如下" << endl;
+		printTitleToStream(cout);
+		t.recordToStream(cout);
+		cout << "是否确认新增?Y/N" << endl;
+		cin >> comfirm;
+		if('y' == comfirm || 'Y' == comfirm){	
+			teacherList.push_back(t);
+			cout << "已新增数据如下" << endl;
+			Teacher::recordToStream(cout, teacherList.end()-1, true);
+		}else{
+			cout <<"已取消新增"<<endl;
+		}
+		
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
 	}

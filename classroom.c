@@ -76,6 +76,18 @@ bool Classroom::recordToStream(ostream& out, vector<Classroom>::iterator firstRe
 	return true;
 }
 
+bool Classroom::recordToStream(ostream& out){ 
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	
+	out <<  setw(Global::PRINT_WIDTH)<< roomId << setw(Global::PRINT_LONG_WIDTH) <<	 roomName << setw(Global::PRINT_WIDTH)  <<  capacity << endl;
+
+	return true;
+}
+
 
 //根据id获取教室名称 
 Classroom* Classroom::getElementById(int id){
@@ -549,12 +561,19 @@ bool Classroom::create(){
 		}
 		
 		Classroom cr(id,name,capacity);
-		Classroom::roomList.push_back(cr);
-		
-		cout << "已新增数据如下" << endl;
+		cout << "即将新增数据如下" << endl;
 		printTitleToStream(cout);
-		recordToStream(cout,roomList.end()-1,true);
-		
+		cr.recordToStream(cout);
+		cout << "是否确认新增?Y/N" << endl;
+		cin >> comfirm;
+		if('y' == comfirm || 'Y' == comfirm){	
+			roomList.push_back(cr);
+			cout << "已新增数据如下" << endl;
+			recordToStream(cout,roomList.end()-1,true);
+		}else{
+			cout <<"已取消新增"<<endl;
+		}
+
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
 	}

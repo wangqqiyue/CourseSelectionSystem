@@ -43,6 +43,7 @@ public:
 	Course(int id,string name,int num,float p,string tAcc,int rId,int c):courseId(id),courseName(name),studentNumber(num),price(p),teacherAccount(tAcc),roomId(rId),capacity(c){}
 	
 	static bool recordToStream(ostream& os, vector<Course>::iterator firstRecord,bool onlyOne=false);
+	bool recordToStream(ostream& os);
 	static bool printTitleToStream(ostream& out);
 	static Course* getElementById(int id);
 	static vector<Course> courseList;

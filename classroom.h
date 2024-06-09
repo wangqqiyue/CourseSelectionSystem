@@ -22,6 +22,7 @@ public:
 	
 	Classroom(int id,string name,int cap):roomId(id),roomName(name),capacity(cap){}
 	static bool recordToStream(ostream& os, vector<Classroom>::iterator firstRecord,bool onlyOne=false);
+	bool recordToStream(ostream& os);
 	static bool printTitleToStream(ostream& out);
 	static Classroom* getElementById(int id);
 	static vector<Classroom> roomList;

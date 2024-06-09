@@ -7,3 +7,5 @@
            2                完颜尔康                     123
    lee_white                国服李白                     123
         dufu                    杜甫                     123
+    zhangfei                    张飞                     123
+     liguang                    李广                     123

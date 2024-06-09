@@ -31,6 +31,7 @@ public:
 	Teacher(string acc,string n,string p):account(acc),name(n),password(p){}
 	static bool printTitleToStream(ostream& out);
 	static bool recordToStream(ostream& out, vector<Teacher>::iterator firstRecord, bool onlyOne=false);
+	bool recordToStream(ostream& out,bool onlyOne=true);
 	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 
 	static bool checkAccountExist(string account);
 	static Teacher* getElementByAccount(string account);

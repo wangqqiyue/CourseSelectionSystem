@@ -121,6 +121,17 @@ bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, 
 	return true;
 }
 
+ 
+bool Course::recordToStream(ostream& out){ 
+	//非法流 返回false 
+	if(!out){
+		cerr << "非法的流" << endl;
+		return false;
+	}
+	out <<  setw(Global::PRINT_WIDTH)<< courseId << setw(Global::PRINT_LONG_WIDTH) <<	 courseName << setw(Global::PRINT_WIDTH)  <<  studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << price << setw(Global::PRINT_WIDTH)  <<  teacherAccount << setw(Global::PRINT_WIDTH)  << roomId << setw(Global::PRINT_WIDTH)  << capacity << endl;
+	return true;
+}
+
 Course* Course::getElementById(int id){
 		for(vector<Course>::iterator i=Course::courseList.begin();i!=Course::courseList.end();i++){
 		if(i->courseId == id){
@@ -271,16 +282,22 @@ bool Course::create(){
 		if('y' != comfirm && 'Y' != comfirm){
 			break;
 		}
-				
+		
 		//新建课程对象，并添加到向量尾部 
 		Course c(id,name,0,price,teacherAccount,roomId,capacity);
-		Course::courseList.push_back(c);
-		
-		//打印新增数据 
-		cout << "已新增数据如下" << endl;
-		Course::printTitleToStream(cout);
-		Course::recordToStream(cout,Course::courseList.end() - 1,true);
-		
+		cout << "即将新增数据如下" << endl;
+		printTitleToStream(cout);
+		c.recordToStream(cout);
+		cout << "是否确认新增?Y/N" << endl;
+		cin >> comfirm;
+		if('y' == comfirm || 'Y' == comfirm){	
+			courseList.push_back(c);
+			cout << "已新增数据如下" << endl;
+			recordToStream(cout,Course::courseList.end() - 1,true);
+		}else{
+			cout <<"已取消新增"<<endl;
+		}
+
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
 	}
@@ -516,7 +533,6 @@ bool Course::update(){
 		}
 		if(1 == selectList[line]){
 			recordToStream(cout,i,true);
-			//todo 修改课程
 			changeInfo(i); 
 		}
     	line++;
