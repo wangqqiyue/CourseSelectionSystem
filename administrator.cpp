@@ -176,11 +176,13 @@ bool classroomMgmt(){
 		cout << "------教室信息管理-----"  << endl;
 		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
 		if(Global::RETRIEVE == opChoice){
-			return Classroom::retrieve();
+			Classroom::retrieve();
 		}else if(Global::CREATE == opChoice){
-			return Classroom::create();
+			Classroom::create();
 		}else if(Global::DEL == opChoice){
-			return Classroom::del();
+			Classroom::del();
+		}else if(Global::UPDATE == opChoice){
+			Classroom::update();
 		}
 	}
 	return false;

@@ -26,13 +26,17 @@ public:
 	static Classroom* getElementById(int id);
 	static vector<Classroom> roomList;
 	static bool checkIdExist(int id,vector<Classroom>::iterator &i);
+	static bool checkIdExist(int id);
+	static bool checkNameExist(string name);
 	const static  char* dataFile;//数据存储文件
 	static bool storeInfo(); 
 	static bool loadInfo();
-	static bool getSelection(const vector<int>& idList, int* selectList, const int& classroomTotal,bool isInclusion=true);
+	static bool getSelection(const string prompt, const vector<int>& idList, int* selectList, const int& classroomTotal,bool isInclusion=true,bool onlyOne=false);
 	static bool del();
+	static bool update();
 	static bool retrieve();
 	static bool create();
+	static bool changeInfo(vector<Classroom>::iterator& i);
 };
 
 #endif

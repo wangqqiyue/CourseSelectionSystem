@@ -141,9 +141,28 @@ bool Classroom::checkIdExist(int id,vector<Classroom>::iterator &i){
 	return false;
 }
 
+bool Classroom::checkIdExist(int id){
+	for(vector<Classroom>::iterator i=Classroom::roomList.begin();i!=roomList.end();i++){
+		if(i->roomId == id){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Classroom::checkNameExist(string name){
+	for(vector<Classroom>::iterator i=Classroom::roomList.begin();i!=roomList.end();i++){
+		if(i->roomName == name){
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, classroomTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
-bool Classroom::getSelection(const vector<int>& idList, int* selectList, const int& classroomTotal,bool isInclusion){
+bool Classroom::getSelection(const string prompt, const vector<int>& idList, int* selectList, const int& classroomTotal,bool isInclusion,bool onlyOne){
 		
 	static bool firstPrint = true;
 	int currentLine = 0;
@@ -157,7 +176,7 @@ bool Classroom::getSelection(const vector<int>& idList, int* selectList, const i
 	
         	clear();
         	//标题和规则说明 
-			cout << "----------------删除无人使用的教室----------------" << endl;
+			cout << "----------------"<<prompt<<"----------------" << endl;
 			
 			//显示当前状态 
 			float priceTotal = 0;
@@ -197,8 +216,12 @@ bool Classroom::getSelection(const vector<int>& idList, int* selectList, const i
 	                currentLine++;
 	                currentLine%=classroomTotal;
 	            } else if(ch == 13) {//回车键 
-	            		selectList[currentLine] += 1;
-	            		selectList[currentLine] %= 2;	            		
+	            	selectList[currentLine] += 1;
+	            	selectList[currentLine] %= 2;	            		
+	            	if(onlyOne){
+	            		firstPrint = true;
+	        			return true;
+					}
 	        	}else if(ch == 'y'){
 	        		firstPrint = true;
 	        		return true;
@@ -275,7 +298,7 @@ bool Classroom::del(){
     	selectList[i] = 0;
 	}
 	
-	if(!getSelection(undeletableList,selectList,classroomTotal,false)){
+	if(!getSelection("删除未被使用的教室", undeletableList,selectList,classroomTotal,false)){
 		free(selectList);
 		return false;
 	}
@@ -309,6 +332,140 @@ bool Classroom::del(){
 	return true;
 }
 
+bool Classroom::update(){
+	int *selectList;//已选择的课程列表, 如果选中则为1 
+	int classroomTotal;//可选课程总数量
+	int line=0;//行下标 
+	vector<Course>::iterator i;//课程遍历迭代器 
+    
+    //初始化 
+    vector<int> unchanableList;//不可改的课程列表
+    for(i=Course::courseList.begin();i!=Course::courseList.end();i++){
+    	//如果课程人数不为0，且该教室未加入到不可删除列表，则加入 
+    	if(0 != i->studentNumber){
+    		if(!checkExist(unchanableList,i->roomId)){
+    			unchanableList.push_back(i->roomId);
+			}
+		}
+	}
+    
+	classroomTotal = roomList.size() - unchanableList.size();//可删除教室的总数量
+	if(0 == classroomTotal){
+		clear();
+		cout << "目前没有可以修改的教室" << endl;
+		goPrevious(); 
+		return false;
+	}
+
+	selectList = new int[classroomTotal];
+    for(int i=0;i<classroomTotal;i++){
+    	selectList[i] = 0;
+	}
+	
+	if(!getSelection("修改未被使用的教室", unchanableList,selectList,classroomTotal,false,true)){
+		free(selectList);
+		return false;
+	}
+	
+	if(checkAllZero(selectList,classroomTotal)){
+		cout << "您未做选择" << endl;
+		goPrevious();
+		return false;
+	}
+	
+    //确认选择结果并修改 
+    cout << "以下教室待修改"  << endl;
+    printTitleToStream(cout);
+    vector<Classroom>::iterator it;
+    for(it=roomList.begin(),line=0;it!=roomList.end();it++){
+    	//跳过不可退的课程 
+		if(checkExist(unchanableList,it->roomId)){
+			continue;
+		}
+		if(1 == selectList[line]){
+			recordToStream(cout,it,true);
+			changeInfo(it); 	
+			break;
+		}
+    	line++;
+	}
+
+    free(selectList);
+	goPrevious(); 
+	return true;
+}
+
+
+bool Classroom::changeInfo(vector<Classroom>::iterator &it){
+	int id,capacity;
+	string name;
+	
+	if(it == roomList.end()){
+		cerr <<"无效的迭代器" << endl;
+		return false;
+	}
+
+	char comfirm = 'y';
+	while('y' == comfirm || 'Y' == comfirm){
+		cout<<"教室编号:";
+		cin >> id;
+		while(!isInputOk()){}
+
+		if(checkIdExist(id)){
+			cout << "该编号已存在！请重新选择" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+		
+	while('y' == comfirm || 'Y' == comfirm){
+		cout << "教室名称:" ;
+		cin >> name;
+
+		if(checkNameExist(name)){
+			cout << "该名称已存在！请重新选择" << endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+		
+	while('y' == comfirm || 'Y' == comfirm){
+		cout << "教室容量";
+		cin >> capacity;
+		
+		if(capacity < Global::ROOM_CAPACITY_MIN || capacity > Global::ROOM_CAPACITY_MAX){
+			cout << "教室容量需要在合理范围("<< Global::ROOM_CAPACITY_MIN <<"--"<< Global::ROOM_CAPACITY_MAX <<")"<<endl;
+			cout << "是否继续?Y/N" << endl;
+			cin >> comfirm;
+			continue;
+		}
+		break;
+	}
+	if('y' != comfirm && 'Y' != comfirm){
+		return false;
+	}
+	
+		
+	it->roomId = id;
+	it->roomName = name;
+	it->capacity = capacity;
+		
+	cout << "修改如下" << endl;
+	printTitleToStream(cout);
+	recordToStream(cout,it,true);
+	return true;
+}
+
 //查询教室数据 
 bool Classroom::retrieve(){
 	clear();
@@ -330,63 +487,75 @@ bool Classroom::create(){
 	clear();
 	cout << "------新增教室信息-----"	<< endl;
 	
-	while('y' == comfirm || 'Y' == comfirm){
+	while('y' == comfirm || 'Y' == comfirm){			
+
 		if(Classroom::roomList.size() >= Global::ROOM_NUMBER_MAX){
 			cout << "教室数量已达上限("<< Global::ROOM_NUMBER_MAX <<")!" << endl;
 			break;
 		}
 		cout << "请输入信息" << endl;
-		cout<<"教室编号:";
-		cin >> id;
-		if(!isInputOk()){
-			continue;
-		}
 		
-		vector<Classroom>::iterator i;
-		for(i=Classroom::roomList.begin();i!=Classroom::roomList.end();++i){
-			if(i->roomId == id){
+		while('y' == comfirm || 'Y' == comfirm){
+			cout<<"教室编号:";
+			cin >> id;
+			while(!isInputOk()){}
+
+			if(checkIdExist(id)){
 				cout << "该编号已存在！请重新选择" << endl;
-				break;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
 			}
+			break;
 		}
-		if(i != Classroom::roomList.end()){
-			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
-			continue;
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
 		}
 		
-		cout << "教室名称:" ;
-		cin >> name;
-		for(i=Classroom::roomList.begin();i!=Classroom::roomList.end();++i){
-			if(i->roomName == name){
+		while('y' == comfirm || 'Y' == comfirm){
+			cout << "教室名称:" ;
+			cin >> name;
+
+			if(checkNameExist(name)){
 				cout << "该名称已存在！请重新选择" << endl;
-				break;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
 			}
+			break;
 		}
-		if(i != Classroom::roomList.end()){
-			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
-			continue;
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
 		}
 		
-		cout << "教室容量";
-		cin >> capacity;
+		while('y' == comfirm || 'Y' == comfirm){
+			cout << "教室容量";
+			cin >> capacity;
+			
+			if(capacity < Global::ROOM_CAPACITY_MIN || capacity > Global::ROOM_CAPACITY_MAX){
+				cout << "教室容量需要在合理范围("<< Global::ROOM_CAPACITY_MIN <<"--"<< Global::ROOM_CAPACITY_MAX <<")"<<endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}
+			break;
+		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
+		}
 		
 		Classroom cr(id,name,capacity);
 		Classroom::roomList.push_back(cr);
 		
 		cout << "已新增数据如下" << endl;
-		cout << setw(Global::PRINT_WIDTH)<<"教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_LONG_WIDTH) << "教室容量"<< endl;
-		cout <<  setw(Global::PRINT_WIDTH)<<id << setw(Global::PRINT_LONG_WIDTH) <<	name << setw(Global::PRINT_LONG_WIDTH)  << capacity << endl;
-		
+		printTitleToStream(cout);
+		recordToStream(cout,roomList.end()-1,true);
 		
 		cout << "是否继续?Y/N" << endl;
 		cin >> comfirm;
 	}
 	
-	cout << "按任意键返回上一级" << endl;
-	cin.ignore();
-	getchar();
+	goPrevious();
 	return true;
 	
 }

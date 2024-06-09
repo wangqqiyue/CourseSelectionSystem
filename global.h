@@ -51,6 +51,10 @@ public:
 	static int COURSE_CAPACITY_MAX;
 	//最小课程人数限额 
 	static int COURSE_CAPACITY_MIN;
+	//最大课程人数限额 
+	static int ROOM_CAPACITY_MAX;
+	//最小课程人数限额 
+	static int ROOM_CAPACITY_MIN;
 	//身份证号长度 
 	static int ID_LENGTH;
 	//手机号长度 

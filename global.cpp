@@ -36,6 +36,8 @@ int Global::COURSE_NUMBER_MAX=100;
 int Global::COURSE_PRICE_MAX=3000;
 int Global::COURSE_CAPACITY_MAX=200;
 int Global::COURSE_CAPACITY_MIN=20;
+int Global::ROOM_CAPACITY_MAX=500;
+int Global::ROOM_CAPACITY_MIN=40;
 int Global::ID_LENGTH=18;
 int Global::TEL_LENGTH=11;
 
