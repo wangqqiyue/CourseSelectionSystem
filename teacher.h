@@ -44,7 +44,9 @@ public:
 	static bool create();
 	static bool retrieve();
 	static bool del();
-	static bool getSelection(const vector<string>& idList, int* selectList, const int& teacherTotal,bool isInclusion=true);
+	static bool update();
+	static bool getSelection(const string prompt, const vector<string>& idList, int* selectList, const int& teacherTotal,bool isInclusion=true,bool onlyOne=false);
+	static bool changeInfo(const vector<string> &unchangableAccounts, vector<Teacher>::iterator &it);
 };
 extern vector<Teacher> teacherList;
 

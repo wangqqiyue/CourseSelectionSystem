@@ -277,8 +277,7 @@ bool Teacher::create(){
 		cout << "教师姓名:" ;
 		cin >> name;
 		
-		cout << "密码;";
-		cin >> passwd;
+		passwd=setPassword();
 		
 		Teacher t(account,name,passwd);
 		teacherList.push_back(t);
@@ -298,7 +297,7 @@ bool Teacher::create(){
 
 
 //选择菜单  idList是一个课程id名单表 , selectList 是选择表, teacherTotal 是可选项总数, isInclusion表示是包含idList中的课程，还是跳过 
-bool Teacher::getSelection(const vector<string>& idList, int* selectList, const int& teacherTotal,bool isInclusion){
+bool Teacher::getSelection(const string prompt, const vector<string>& idList, int* selectList, const int& teacherTotal,bool isInclusion,bool onlyOne){
 		
 	static bool firstPrint = true;
 	int currentLine = 0;
@@ -312,7 +311,7 @@ bool Teacher::getSelection(const vector<string>& idList, int* selectList, const 
 	
         	clear();
         	//标题和规则说明 
-			cout << "----------------删除无课程任务的教师账号----------------" << endl;
+			cout << "----------------"<< prompt <<"----------------" << endl;
 			
 			//显示当前状态 
 			float priceTotal = 0;
@@ -352,8 +351,12 @@ bool Teacher::getSelection(const vector<string>& idList, int* selectList, const 
 	                currentLine++;
 	                currentLine%=teacherTotal;
 	            } else if(ch == 13) {//回车键 
-	            		selectList[currentLine] += 1;
-	            		selectList[currentLine] %= 2;	            		
+            		selectList[currentLine] += 1;
+            		selectList[currentLine] %= 2;	  
+					if(onlyOne){
+						firstPrint = true;
+						return true;
+					}          		
 	        	}else if(ch == 'y'){
 	        		firstPrint = true;
 	        		return true;
@@ -430,7 +433,7 @@ bool Teacher::del(){
     	selectList[i] = 0;
 	}
 	
-	if(!getSelection(undeletableList,selectList,teacherTotal,false)){
+	if(!getSelection("删除无课程任务的教师账号", undeletableList,selectList,teacherTotal,false)){
 		free(selectList);
 		return false;
 	}
@@ -464,3 +467,95 @@ bool Teacher::del(){
 	return true;
 }
  
+bool Teacher::update(){
+	int *selectList;//已选择的课程列表, 如果选中则为1 
+	int teacherTotal;//可选课程总数量
+	int line=0;//行下标 
+
+	vector<string> idList;
+	vector<string> unchangableAccounts;
+	for(vector<Teacher>::iterator i=teacherList.begin();i!=teacherList.end();i++){
+		idList.push_back(i->account);
+	}
+	
+	for(vector<Course>::iterator i=Course::courseList.begin();i!=Course::courseList.end();i++){
+		if(0 != i->studentNumber){
+			unchangableAccounts.push_back(i->teacherAccount);
+		}
+	}
+	
+	teacherTotal = teacherList.size();//可修改的总数量
+	if(0 == teacherTotal){
+		clear();
+		cout << "目前没有可以修改的教师账号" << endl;
+		goPrevious(); 
+		return false;
+	}
+
+	selectList = new int[teacherTotal];
+    for(int i=0;i<teacherTotal;i++){
+    	selectList[i] = 0;
+	}
+	
+	if(!getSelection("修改教师账号", idList,selectList,teacherTotal,true,true)){
+		free(selectList);
+		return false;
+	}
+
+	if(checkAllZero(selectList,teacherTotal)){
+		cout << "您未做选择" << endl;
+		goPrevious();
+		return false;
+	}
+	
+    //确认选课结果并删除 
+    cout << "以下教师账号待修改"  << endl;
+    printTitleToStream(cout);
+    vector<Teacher>::iterator it;
+    for(it=teacherList.begin(),line=0;it!=teacherList.end();it++){
+
+		if(1 == selectList[line]){
+			recordToStream(cout,it,true);
+			changeInfo(unchangableAccounts, it);
+		}
+    	line++;
+	}
+
+    free(selectList);
+	goPrevious(); 
+	return true;
+}
+
+bool Teacher::changeInfo(const vector<string>& unchangableAccounts,vector<Teacher>::iterator &it){
+	string account,name,passwd;
+	
+	if(checkExist(unchangableAccounts,it->account)){
+		cout << "该教师有授课,无法修改账号" << endl;
+	}else{
+		char comfirm = 'y';
+		while(comfirm == 'y' || 'Y' == comfirm){
+			cout << "请输入教师账号:";
+			cin >> account;
+			if(Teacher::checkAccountExist(account)){
+				cout << "账号已存在" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}
+			it->account = account;
+			break;
+		}
+	}
+	
+	cout << "教师姓名:" ;
+	cin >> name;
+
+	passwd = setPassword();
+	
+	it->name = name;
+	it->password = passwd;
+	
+	cout << "修改如下" << endl;
+	printTitleToStream(cout);
+	recordToStream(cout,it,true);
+}

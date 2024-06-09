@@ -142,11 +142,13 @@ bool teacherMgmt(){
 		cout << "------教师信息管理-----"  << endl;
 		opChoice = getChoice("选择操作:", Global::operationStr, Global::OP_MAX);
 		if(Global::RETRIEVE == opChoice){
-			return Teacher::retrieve();
+			Teacher::retrieve();
 		}else if(Global::CREATE == opChoice){
-			return Teacher::create();
+			Teacher::create();
 		}else if(Global::DEL == opChoice){
-			return Teacher::del();
+			Teacher::del();
+		}else if(Global::UPDATE == opChoice){
+			Teacher::update();
 		}
 	}
 	return false;
