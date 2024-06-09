@@ -319,11 +319,20 @@ bool Student::selectCourse(){
 	exclusionList.insert(exclusionList.end(),unpaidList.begin(),unpaidList.end());
 	 
 	courseTotal = Course::courseList.size() - exclusionList.size();//可选课程总数量
+	
+	if(0 == courseTotal){
+		clear();
+		cout << "暂无可选课程" << endl;
+		goPrevious(); 
+		return true;
+	}
 
 	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
     	selectList[i] = 0;
 	}
+	
+
 	
 	if(!getSelection(exclusionList,selectList,courseTotal,false)){
 		free(selectList);
@@ -366,6 +375,13 @@ bool Student::withdrawCourse(){
     //初始化 
     vector<int> unpaidList = CourseSelectionTable::unpaidOrder.getCourseByStudent(Student::login_account);//可退课程列表
 	courseTotal = unpaidList.size();//可退课程总数量
+
+	if(0 == courseTotal){
+		clear();
+		cout << "暂无可退课程" << endl;
+		goPrevious(); 
+		return true;
+	}
 
 	selectList = new int[courseTotal];
     for(int i=0;i<courseTotal;i++){
