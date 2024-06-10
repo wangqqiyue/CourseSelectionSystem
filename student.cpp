@@ -87,10 +87,7 @@ bool Student::checkAccountExist(string account, vector<Student>::iterator &i){
 
 //学生基本操作流程 
 void Student::process(){
-	while(true){
-		if(!login(Global::STUDENT)){
-			continue;
-		}
+	while(login(Global::STUDENT)){
 		int stuFuncChoice = -1;
 		while(Global::STU_FUNC_MAX != stuFuncChoice){
 			clear();
