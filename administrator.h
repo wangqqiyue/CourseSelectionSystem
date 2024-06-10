@@ -33,8 +33,7 @@
 //由于默认只有一个管理员，不需要被实例化，所以设为静态类 
 class Administrator{
 public:
-	static bool hasAccount;
-	static bool hasLoaded;
+	static bool hasAccount;//是否已注册 
 	static void createAdmin();
 	static bool (*mgmtFuncs[Global::MGMT_MAX])();//管理功能的函数指针数组 
 	static string adminAccount;//管理员账号 

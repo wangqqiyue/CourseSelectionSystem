@@ -86,6 +86,15 @@ public:
 	
 	static const char *stuLoginStr[];
 
+	enum greetingChoice{
+		GREETING_CONTINUE=0,
+		GREETING_ABOUT,
+		GREETING_MAX,
+	};
+	
+	static const char *greetingStr[];
+
+	static const char *aboutInfoFile;
 
 	//数据操作枚举 
 	enum OPERATION{
@@ -147,8 +156,14 @@ void setTitle();
 //设置控制台颜色 
 void setConsoleColor(WORD color);
 
-//统一的欢迎界面,获取用户身份 
-Global::Role greeting();
+//统一的欢迎界面
+bool greeting();
+
+//打印帮助信息 
+bool printAboutInfo();
+
+ //获取用户身份
+Global::Role getRole();
 
 //检查输入是否合规 
 bool isInputOk();
@@ -165,6 +180,9 @@ bool login(Global::Role role);
 //返回上一级
 void goPrevious();
 
+//任意键继续 
+void goContinue();
+
 //检查是否存在id 
 template<class T>
 bool checkExist(const vector<T>& vec, const T& target){
@@ -177,4 +195,5 @@ bool checkExist(const vector<T>& vec, const T& target){
 }
 
  bool checkAllZero(int *selectList, int total);
+ 
 #endif

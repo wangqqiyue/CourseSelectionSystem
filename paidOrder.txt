@@ -1,19 +1,1 @@
     ¿Î³Ì±àºÅ                Ñ§ÉúÕËºÅ
-           1                zhangsan
-           1                     uzi
-           2                zhangsan
-           2               fandebiao
-           2                   lisi2
-           3               fandebiao
-           3                    gogo
-           3                   lisi2
-           4                zhangsan
-           4               fandebiao
-           4                   lisi2
-           4                     uzi
-           5               fandebiao
-           7               fandebiao
-           7                    gogo
-           7                   lisi2
-           7                     uzi
-           8                     uzi

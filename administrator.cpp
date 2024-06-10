@@ -45,10 +45,10 @@
 
 //静态成员变量需要在类外定义 
 bool Administrator::hasAccount=false;
-bool Administrator::hasLoaded=false;
 string Administrator::adminAccount;
 string Administrator::password;
 const string Administrator::bankAccount = "5248-6532-3159-6450";
+
 //函数指针数组的初始化 
 bool (*Administrator::mgmtFuncs[Global::MGMT_MAX])() = {teacherMgmt,classroomMgmt,courseMgmt};
 
@@ -57,6 +57,10 @@ const char* Administrator::dataFile = "administrator.txt";
 
 bool Administrator::storeInfo(){
 	bool result = true;
+	if(!Administrator::hasAccount){
+		return false;
+	}
+	
 	//写入前设置文件属性为普通 
 	SetFileAttributes(dataFile, FILE_ATTRIBUTE_NORMAL);
 
@@ -96,7 +100,8 @@ void Administrator::process(){
 	if(!hasAccount){
 		createAdmin();
 	}
-	while(login(Global::ADMINISTRATOR)){
+	
+	while(hasAccount && login(Global::ADMINISTRATOR)){
 		int mgmtChoice=-1; 	
 		/*打印菜单选项 
 		教师信息
@@ -121,12 +126,34 @@ void Administrator::process(){
 
 //创建管理员账号 
 void Administrator::createAdmin(){
+	string inputAccount,passwd;
+	char comfirm;
+	 
 	clear();
-	cout << "------创建管理员账号-----" << endl;
+	cout << "当前无管理员账号,需要注册唯一管理员账号" << endl;
+	cout << "------创建唯一管理员账号-----" << endl;
 	cout << "请输入管理员账号名称:" ;
-	cin >> adminAccount;
+	cin >> inputAccount; 
+	passwd = setPassword();
 	
-	Administrator::password = setPassword();
+	cout << "即将注册唯一的管理员账号如下:" << endl;
+	cout << "账号:"  << inputAccount << endl;
+	cout << "密码" << passwd << endl;
+
+	cout << "是否确认?Y/N" << endl;
+	cin >> comfirm;
+	if('y' == comfirm || 'Y' == comfirm){	
+		adminAccount = inputAccount;
+		Administrator::password = passwd;
+		Administrator::hasAccount = true;
+		cout << "已注册管理员账号如下" << endl;
+		recordToStream(cout);
+
+	}else{
+		cout <<"已取消注册"<<endl;
+		Administrator::hasAccount = false; 
+	}
+
 }
 
 bool Administrator::recordToStream(ostream& out){

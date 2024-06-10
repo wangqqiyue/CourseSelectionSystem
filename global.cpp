@@ -8,6 +8,18 @@
 #define INCLUDE_WINDOWS
 #endif
 
+#ifndef INCLUDE_FSTREAM
+#include <fstream>
+#define INCLUDE_FSTREAM
+#endif
+
+
+#ifndef INCLUDE_SSTREAM
+#include <sstream>
+#define INCLUDE_SSTREAM
+#endif
+
+
 #ifndef INCLUDE_CONIO
 #include <conio.h>
 #define INCLUDE_CONIO
@@ -45,7 +57,7 @@ int Global::ROOM_CAPACITY_MIN=40;
 int Global::ID_LENGTH=18;
 int Global::TEL_LENGTH=11;
 
-const char *Global::roleStr[]={"¹ÜÀíÔ±","Ñ§Éú","ÀÏÊ¦","ÍË³ö"};
+const char *Global::roleStr[]={"¹ÜÀíÔ±","Ñ§Éú","ÀÏÊ¦","·µ»ØÉÏÒ»¼¶"};
 const char *Global::loginStr[]={"µÇÂ½","·µ»ØÉÏÒ»¼¶"};
 const char *Global::stuLoginStr[]={"×¢²á","µÇÂ½","·µ»ØÉÏÒ»¼¶"};
 const char *Global::operationStr[]={"ĞÂÔö","É¾³ı","ĞŞ¸Ä","²éÑ¯","·µ»ØÉÏÒ»¼¶"};
@@ -53,6 +65,8 @@ const char *Global::mgmtStr[]={"¹ÜÀí½ÌÊ¦ĞÅÏ¢","¹ÜÀí½ÌÊÒĞÅÏ¢","¹ÜÀí¿Î³ÌĞÅÏ¢","·µ»
 const char *Global::stuFuncStr[]={"²é¿´ÒÑÑ¡¿Î³Ì","²é¿´ËùÓĞ¿Î³Ì","Ñ¡ÔñĞÂ¿Î³Ì","ÍËÑ¡Î´Ö§¸¶µÄ¿Î³Ì","Ö§¸¶¶©µ¥","·µ»ØÉÏÒ»¼¶"};
 const char *Global::titleStr="ÅàÑµÖĞĞÄ¹ÜÀíÏµÍ³";
 const char *Global::teacherFuncStr[] = {"²é¿´ÃûÏÂ¿Î³Ì", "²é¿´¿Î³ÌÑ§ÉúÃûµ¥","·µ»ØÉÏÒ»¼¶"}; 
+const char *Global::greetingStr[] = {"¼ÌĞø½øÈëÏµÍ³", "²é¿´°ïÖúĞÅÏ¢", "ÍË³öÏµÍ³"};
+const char *Global::aboutInfoFile="about.txt";
 
 //Çå¿Õ¿ØÖÆÌ¨
 void clear(){
@@ -71,12 +85,47 @@ void setConsoleColor(WORD color) {
 }
 
 //Í³Ò»µÄ»¶Ó­½çÃæ,»ñÈ¡ÓÃ»§Éí·İ 
-Global::Role greeting(){
+bool greeting(){
+	int choice  = -1;
+	clear(); 
+	cout << "»¶Ó­Ê¹ÓÃ" << Global::titleStr << endl;
+	choice = getChoice("ÇëÑ¡Ôñ",Global::greetingStr,Global::GREETING_MAX);
+	clear();
+	if(Global::GREETING_CONTINUE == choice){
+		return true;
+	}else if(Global::GREETING_ABOUT == choice){
+		printAboutInfo();
+		goContinue();
+		return true;
+	}else if(Global::GREETING_MAX == choice){
+		return false;
+	}	
+}
+
+//´òÓ¡°ïÖúĞÅÏ¢ 
+bool printAboutInfo(){
+	ifstream in;
+	string line;
+	
+	//¼ÓÔØ¹ØÓÚĞÅÏ¢ 
+	in.open(Global::aboutInfoFile,ios::in);
+	if(!in){
+		return false;
+	}
+
+	while(getline(in,line)){
+		cout << line << endl;
+	}		
+	in.close();	
+	
+	return true;
+}
+
+//Í³Ò»µÄ»¶Ó­½çÃæ,»ñÈ¡ÓÃ»§Éí·İ 
+Global::Role getRole(){
 	int role = -1;
 	clear(); 
-	cout << "-----Ö÷²Ëµ¥-----"<< endl;
-	cout << "»¶Ó­Ê¹ÓÃ" << Global::titleStr << endl;
-
+	cout << "---------------·Ã¿ÍÉí·İÑ¡Ôñ-----------------" << endl;
 	role = getChoice("ÄúµÄÉí·İÊÇ£º",Global::roleStr,Global::ROLE_MAX);
 	return (Global::Role)role;
 }
@@ -84,6 +133,17 @@ Global::Role greeting(){
 //·µ»ØÉÏÒ»¼¶ 
 void goPrevious(){
 	cout << "°´ÈÎÒâ¼ü·µ»ØÉÏÒ»¼¶" << endl;
+	while(true){	
+		if (_kbhit()){
+			_getch();
+			return;
+		}
+	}
+} 
+
+//ÈÎÒâ¼ü¼ÌĞø 
+void goContinue(){
+	cout << "°´ÈÎÒâ¼ü¼ÌĞø" << endl;
 	while(true){	
 		if (_kbhit()){
 			_getch();
