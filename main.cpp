@@ -79,8 +79,7 @@ int main(int argc, char** argv) {
 			Global::Role role = Global::ROLE_MAX;
 			//获取用户身份 
 			role = greeting();
-		
-			
+
 			//确认身份并根据身份不同登陆不同的界面 
 			if(role == Global::ADMINISTRATOR){
 				Administrator::process();
