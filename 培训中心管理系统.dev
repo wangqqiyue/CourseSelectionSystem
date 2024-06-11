@@ -201,7 +201,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=classroom.c
+FileName=classroom.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -211,7 +211,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=classroom.h
+FileName=classroom.cpp
 CompileCpp=1
 Folder=
 Compile=1
