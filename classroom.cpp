@@ -6,34 +6,6 @@
 #include "course.h"
 #endif
 
-#ifndef INCLUDE_GLOBAL
-#include "global.h"
-#endif
-
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
-#endif
-
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
-#endif
-
-
-#ifndef INCLUDE_CONIO
-#include <conio.h>
-#define INCLUDE_CONIO
-#endif
-
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif 
-
 
 /*-----------------Classroom 定义实现-------------------------------------*/ 
 
@@ -417,8 +389,8 @@ bool Classroom::changeInfo(vector<Classroom>::iterator &it){
 		return false;
 	}
 
-	char comfirm = 'y';
-	while('y' == comfirm || 'Y' == comfirm){
+	char confirm = 'y';
+	while('y' == confirm || 'Y' == confirm){
 		cout<<"教室编号:";
 		cin >> id;
 		if(!isInputOk()){
@@ -428,44 +400,44 @@ bool Classroom::changeInfo(vector<Classroom>::iterator &it){
 		if(checkIdExist(id)){
 			cout << "该编号已存在！请重新选择" << endl;
 			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
+			cin >> confirm;
 			continue;
 		}
 		break;
 	}
-	if('y' != comfirm && 'Y' != comfirm){
+	if('y' != confirm && 'Y' != confirm){
 		return false;
 	}
 		
-	while('y' == comfirm || 'Y' == comfirm){
+	while('y' == confirm || 'Y' == confirm){
 		cout << "教室名称:" ;
 		cin >> name;
 
 		if(checkNameExist(name)){
 			cout << "该名称已存在！请重新选择" << endl;
 			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
+			cin >> confirm;
 			continue;
 		}
 		break;
 	}
-	if('y' != comfirm && 'Y' != comfirm){
+	if('y' != confirm && 'Y' != confirm){
 		return false;
 	}
 		
-	while('y' == comfirm || 'Y' == comfirm){
+	while('y' == confirm || 'Y' == confirm){
 		cout << "教室容量";
 		cin >> capacity;
 		
 		if(capacity < Global::ROOM_CAPACITY_MIN || capacity > Global::ROOM_CAPACITY_MAX){
 			cout << "教室容量需要在合理范围("<< Global::ROOM_CAPACITY_MIN <<"--"<< Global::ROOM_CAPACITY_MAX <<")"<<endl;
 			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
+			cin >> confirm;
 			continue;
 		}
 		break;
 	}
-	if('y' != comfirm && 'Y' != comfirm){
+	if('y' != confirm && 'Y' != confirm){
 		return false;
 	}
 	
@@ -515,11 +487,11 @@ bool Classroom::create(){
 	int id,capacity;
 	string name;
 
-	char comfirm = 'y';
+	char confirm = 'y';
 	clear();
 	cout << "------新增教室信息-----"	<< endl;
 	
-	while('y' == comfirm || 'Y' == comfirm){			
+	while('y' == confirm || 'Y' == confirm){			
 
 		if(Classroom::roomList.size() >= Global::ROOM_NUMBER_MAX){
 			cout << "教室数量已达上限("<< Global::ROOM_NUMBER_MAX <<")!" << endl;
@@ -527,7 +499,7 @@ bool Classroom::create(){
 		}
 		cout << "请输入信息" << endl;
 		
-		while('y' == comfirm || 'Y' == comfirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout<<"教室编号:";
 			cin >> id;
 			if(!isInputOk()){
@@ -537,44 +509,44 @@ bool Classroom::create(){
 			if(checkIdExist(id)){
 				cout << "该编号已存在！请重新选择" << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			break;
 		}
 		
-		while('y' == comfirm || 'Y' == comfirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout << "教室名称:" ;
 			cin >> name;
 
 			if(checkNameExist(name)){
 				cout << "该名称已存在！请重新选择" << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			break;
 		}
 		
-		while('y' == comfirm || 'Y' == comfirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout << "教室容量";
 			cin >> capacity;
 			
 			if(capacity < Global::ROOM_CAPACITY_MIN || capacity > Global::ROOM_CAPACITY_MAX){
 				cout << "教室容量需要在合理范围("<< Global::ROOM_CAPACITY_MIN <<"--"<< Global::ROOM_CAPACITY_MAX <<")"<<endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			break;
 		}
 		
@@ -583,8 +555,8 @@ bool Classroom::create(){
 		printTitleToStream(cout);
 		cr.recordToStream(cout);
 		cout << "是否确认新增?Y/N" << endl;
-		cin >> comfirm;
-		if('y' == comfirm || 'Y' == comfirm){	
+		cin >> confirm;
+		if('y' == confirm || 'Y' == confirm){	
 			roomList.push_back(cr);
 			cout << "已新增数据如下" << endl;
 			recordToStream(cout,roomList.end()-1,true);
@@ -593,7 +565,7 @@ bool Classroom::create(){
 		}
 
 		cout << "是否继续?Y/N" << endl;
-		cin >> comfirm;
+		cin >> confirm;
 	}
 	
 	goPrevious();

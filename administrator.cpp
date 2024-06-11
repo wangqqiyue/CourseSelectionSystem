@@ -6,21 +6,6 @@
 #include "global.h"
 #endif
 
-#ifndef INCLUDE_RECORD_PROCESS
-#include "recordProcess.h" 
-#endif
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
-#endif
-
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
-#endif
-
 #ifndef INCLUDE_TEACHER
 #include "teacher.h"
 #endif
@@ -36,11 +21,6 @@
 #ifndef INCLUDE_CLASSROOM
 #include "classroom.h"
 #endif
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif 
 
 
 //静态成员变量需要在类外定义 
@@ -127,7 +107,7 @@ void Administrator::process(){
 //创建管理员账号 
 void Administrator::createAdmin(){
 	string inputAccount,passwd;
-	char comfirm;
+	char confirm;
 	 
 	clear();
 	cout << "当前无管理员账号,需要注册唯一管理员账号" << endl;
@@ -141,8 +121,8 @@ void Administrator::createAdmin(){
 	cout << "密码" << passwd << endl;
 
 	cout << "是否确认?Y/N" << endl;
-	cin >> comfirm;
-	if('y' == comfirm || 'Y' == comfirm){	
+	cin >> confirm;
+	if('y' == confirm || 'Y' == confirm){	
 		adminAccount = inputAccount;
 		Administrator::password = passwd;
 		Administrator::hasAccount = true;

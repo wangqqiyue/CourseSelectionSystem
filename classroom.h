@@ -1,18 +1,9 @@
 #ifndef INCLUDE_CLASSROOM
 #define INCLUDE_CLASSROOM
 
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
+#ifndef INCLUDE_GLOBAL
+#include "global.h"
 #endif
-
-
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
-
-using namespace std;
 
 class Classroom{
 public:

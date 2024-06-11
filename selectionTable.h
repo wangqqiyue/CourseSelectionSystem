@@ -1,6 +1,9 @@
 #ifndef INCLUDE_SELECTION_TABLE
 #define INCLUDE_SELECTION_TABLE
 
+#ifndef INCLUDE_GLOBAL
+#include "global.h"
+#endif
 
 #ifndef INCLUDE_MAP
 #include <map>
@@ -8,19 +11,7 @@
 #endif
 
 
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
-
-
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
-using namespace std;
-
+using std::multimap;
 /*---------------------课程学生关系表-----------------------*/
 //订单表 内部类 
 class OrderTable{

@@ -10,23 +10,8 @@
 #include "course.h"
 #endif
 
-#ifndef INCLUDE_CONIO
-#include <conio.h>
-#define INCLUDE_CONIO
-#endif
-
 #ifndef INCLUDE_TEACHER
 #include "teacher.h"
-#endif
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
-#endif
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
 #endif
 
 #ifndef INCLUDE_SELECTION_TABLE
@@ -37,16 +22,11 @@
 #include "classroom.h"
 #endif
 
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif 
-
 #ifndef INCLUDE_ADMINISTATOR
 #include "administrator.h"
 #endif
 
-
+using std::multimap;
 vector<Student> Student::studentList;
 
 //函数指针数组的初始化 
@@ -105,25 +85,25 @@ void Student::process(){
 //创建学生账号 
 bool Student::createAccount(){
 	string account,name,id,tel,password,comfirmPasswd;
-	char comfirm='y';
+	char confirm='y';
 	bool result=true;
 	
 	clear();
 	cout << "------注册学生账号-----" << endl;
-	while('y' == comfirm || 'Y' == comfirm){
-		while('y' == comfirm || 'Y' == comfirm){
+	while('y' == confirm || 'Y' == confirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout << "请输入账号名称:" ;
 			cin >> account;
 
 			if(checkAccountExist(account)){
 				cout << "账号已存在!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			result=false;
 			break;
 		}
@@ -131,34 +111,34 @@ bool Student::createAccount(){
 		cout << "请输入姓名：" ;
 		cin >> name;
 	
-		while('y' == comfirm || 'Y' == comfirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout << "请输入身份证号：" ;
 			cin >> id;
 			if(Global::ID_LENGTH != id.length()){
 				cout << "身份证号长度非法!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			result=false;
 			break;
 		}
 		
-		while('y' == comfirm || 'Y' == comfirm){
+		while('y' == confirm || 'Y' == confirm){
 			cout << "请输入手机号:";
 			cin >> tel;
 			if(Global::TEL_LENGTH != tel.length()){
 				cout << "手机号长度非法!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			break;
 		}
-		if('y' != comfirm && 'Y' != comfirm){
+		if('y' != confirm && 'Y' != confirm){
 			result=false;
 			break;
 		}
@@ -171,8 +151,8 @@ bool Student::createAccount(){
 		printTitleToStream(cout);
 		s.recordToStream(cout);
 		cout << "是否确认新增?Y/N" << endl;
-		cin >> comfirm;
-		if('y' == comfirm || 'Y' == comfirm){	
+		cin >> confirm;
+		if('y' == confirm || 'Y' == confirm){	
 			studentList.push_back(s);
 			cout << "已新增数据如下" << endl;
 			recordToStream(cout, studentList.end() - 1,true);
@@ -482,7 +462,7 @@ bool Student::payOrder(){
 	int courseTotal = 0;//课程总数量
 	float priceTotal = 0;//总价 
 	vector<Course>::iterator i;//课程遍历迭代器 
-	char comfirm = 'y';
+	char confirm = 'y';
 	bool result = true;
     
     //初始化 
@@ -528,8 +508,8 @@ bool Student::payOrder(){
 	cout << "教务处银行卡账户16位卡号:" << Administrator::bankAccount << endl;
 	cout << "注意：支付后，报名信息将计入系统，将无法退课！" << endl;
 	cout << "是否继续?Y/N" << endl;
-	cin >> comfirm;
-	if(comfirm == 'y' || comfirm == 'Y'){
+	cin >> confirm;
+	if(confirm == 'y' || confirm == 'Y'){
 		
 		//如果前面执行失败,则不执行后面的内容 
 		if(result){

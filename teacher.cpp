@@ -2,28 +2,12 @@
 #include "teacher.h"
 #endif
 
-#ifndef INCLUDE_GLOBAL
-#include "global.h"
-#endif
-
 #ifndef INCLUDE_COURSE
 #include "course.h"
 #endif
 
 #ifndef INCLUDE_STUDENT
 #include "student.h"
-#endif
-
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
-#endif
-
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
 #endif
 
 #ifndef INCLUDE_SELECTION_TABLE
@@ -34,16 +18,6 @@
 #include "classroom.h"
 #endif
 
-#ifndef INCLUDE_CONIO
-#include <conio.h>
-#define INCLUDE_CONIO
-#endif
-
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif 
 
 vector<Teacher> teacherList;
 
@@ -273,11 +247,11 @@ bool Teacher::retrieve(){
 */
 bool Teacher::create(){
 	string account,name,passwd;
-	char comfirm = 'y';
+	char confirm = 'y';
 	clear();
 	cout << "------新增教师信息-----"	<< endl;
 	
-	while('y' == comfirm || 'Y' == comfirm){
+	while('y' == confirm || 'Y' == confirm){
 		if(teacherList.size() >= Global::TEACHER_NUMBER_MAX){
 			cout << "教师数量已达上限("<< Global::TEACHER_NUMBER_MAX <<")!" << endl;
 			break;
@@ -289,7 +263,7 @@ bool Teacher::create(){
 		if(Teacher::checkAccountExist(account)){
 			cout << "该账号已存在" << endl; 
 			cout << "是否继续?Y/N" << endl;
-			cin >> comfirm;
+			cin >> confirm;
 			continue;
 		}
 		
@@ -304,8 +278,8 @@ bool Teacher::create(){
 		printTitleToStream(cout);
 		t.recordToStream(cout);
 		cout << "是否确认新增?Y/N" << endl;
-		cin >> comfirm;
-		if('y' == comfirm || 'Y' == comfirm){	
+		cin >> confirm;
+		if('y' == confirm || 'Y' == confirm){	
 			teacherList.push_back(t);
 			cout << "已新增数据如下" << endl;
 			Teacher::recordToStream(cout, teacherList.end()-1, true);
@@ -314,7 +288,7 @@ bool Teacher::create(){
 		}
 		
 		cout << "是否继续?Y/N" << endl;
-		cin >> comfirm;
+		cin >> confirm;
 	}
 	
 	goPrevious();
@@ -560,14 +534,14 @@ bool Teacher::changeInfo(const vector<string>& unchangableAccounts,vector<Teache
 	if(checkExist(unchangableAccounts,it->account)){
 		cout << "该教师有授课,无法修改账号" << endl;
 	}else{
-		char comfirm = 'y';
-		while(comfirm == 'y' || 'Y' == comfirm){
+		char confirm = 'y';
+		while(confirm == 'y' || 'Y' == confirm){
 			cout << "请输入教师账号:";
 			cin >> account;
 			if(Teacher::checkAccountExist(account)){
 				cout << "账号已存在" << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			it->account = account;

@@ -2,25 +2,6 @@
 #include "selectionTable.h"
 #endif
 
-#ifndef INCLUDE_GLOBAL
-#include "global.h"
-#endif
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
-#endif
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
-#endif
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif 
-
 
 /*-----------------CourseSelectionTable 定义实现-------------------------------------*/ 
 

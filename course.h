@@ -1,28 +1,9 @@
-/*课程定义头文件
-教室、课程都是课程所需的物理资源 
-因此放在同一个头文件里，看作一个整体组件 
-*/ 
-
 #ifndef INCLUDE_COURSE 
 #define INCLUDE_COURSE
-
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
-
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
 
 #ifndef INCLUDE_GLOBAL
 #include "global.h"
 #endif
-
-using namespace std;
-
 
 /*
 课程有课程名称、对应教室、老师、选课人数 、价格等 

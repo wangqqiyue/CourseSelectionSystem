@@ -5,16 +5,6 @@
 #include "global.h"
 #endif
 
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
-
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
 
 //ΩÃ ¶ ”–’À∫≈√‹¬Î 
 /*
@@ -29,7 +19,7 @@ public:
 	string name;
 	string password;
 	Teacher(string acc,string n,string p):account(acc),name(n),password(p){}
-	static bool printTitleToStream(ostream& out);
+	static bool printTitleToStream(std::ostream& out);
 	static bool recordToStream(ostream& out, vector<Teacher>::iterator firstRecord, bool onlyOne=false);
 	bool recordToStream(ostream& out,bool onlyOne=true);
 	static bool checkAccountExist(string account, vector<Teacher>::iterator &i); 

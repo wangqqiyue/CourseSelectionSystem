@@ -5,11 +5,6 @@
 #include "global.h"
 #endif
 
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
 //学生 有姓名 身份证号 手机号 密码 
 /*
 功能：登陆/注册 

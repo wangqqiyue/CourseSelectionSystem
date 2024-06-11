@@ -5,13 +5,6 @@
 #include "global.h"
 #endif
 
-
-#ifndef INCLUDE_STRING
-#include <string>
-#define INCLUDE_STRING
-#endif
-
-
 //管理员 有账号和密码 
 /*
 功能：录入课程信息、教室信息 
@@ -36,14 +29,14 @@ public:
 	static bool hasAccount;//是否已注册 
 	static void createAdmin();
 	static bool (*mgmtFuncs[Global::MGMT_MAX])();//管理功能的函数指针数组 
-	static string adminAccount;//管理员账号 
-	static string password;//管理员密码
+	static std::string adminAccount;//管理员账号 
+	static std::string password;//管理员密码
 	static void process();
-	static bool recordToStream(ostream& out);
+	static bool recordToStream(std::ostream& out);
 	const static  char* dataFile;//数据存储文件
 	static bool storeInfo(); 
 	static bool loadInfo();
-	const static string bankAccount;
+	const static std::string bankAccount;
 }; 
 
 

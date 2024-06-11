@@ -1,7 +1,3 @@
-/*
-所有文件需要的库头文件 
-*/
-
 #ifndef INCLUDE_GLOBAL
 #define INCLUDE_GLOBAL
 
@@ -20,12 +16,53 @@
 #define INCLUDE_MINWINDEF
 #endif 
 
+#ifndef INCLUDE_WINDOWS
+#include <windows.h>
+#define INCLUDE_WINDOWS
+#endif
+
+#ifndef INCLUDE_CONIO
+#include <conio.h>
+#define INCLUDE_CONIO
+#endif
 
 #ifndef INCLUDE_VECTOR
 #include <vector>
 #define INCLUDE_VECTOR
 #endif
 
+
+#ifndef INCLUDE_FSTREAM
+#include <fstream>
+#define INCLUDE_FSTREAM
+#endif
+
+#ifndef INCLUDE_SSTREAM
+#include <sstream>
+#define INCLUDE_SSTREAM
+#endif
+
+#ifndef INCLUDE_STRING
+#include <string>
+#define INCLUDE_STRING
+#endif
+
+/*规范 Std 命名空间*/
+using std::cerr;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::setw;
+using std::ostream;
+using std::ifstream;
+using std::ofstream;
+using std::ios;
+using std::stringstream;
+using std::vector;
+using std::string;
+using std::pair;
+using std::fixed;
+using std::setprecision;
 
 //宏定义全局变量类 
 class Global{
@@ -153,17 +190,8 @@ public:
 //清空控制台
 void clear();
 
-//设置控制台标题 
-void setTitle();
-
 //设置控制台颜色 
 void setConsoleColor(WORD color);
-
-//统一的欢迎界面
-bool greeting();
-
-//打印帮助信息 
-bool printAboutInfo();
 
  //获取用户身份
 Global::Role getRole();
@@ -175,7 +203,7 @@ bool isInputOk();
 int getChoice(const char* promptStr, const char **choiceStr, const int choiceMax);
 
 //设置密码
-std::string setPassword();
+string setPassword();
 
 //登陆
 bool login(Global::Role role);

@@ -6,9 +6,9 @@ CC       = gcc.exe
 WINDRES  = windres.exe
 OBJ      = main.o administrator.o global.o teacher.o course.o recordProcess.o student.o selectionTable.o classroom.o
 LINKOBJ  = main.o administrator.o global.o teacher.o course.o recordProcess.o student.o selectionTable.o classroom.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include"
 BIN      = 培训中心管理系统.exe
 CXXFLAGS = $(CXXINCS) 
 CFLAGS   = $(INCS) 
@@ -48,5 +48,5 @@ student.o: student.cpp
 selectionTable.o: selectionTable.cpp
 	$(CPP) -c selectionTable.cpp -o selectionTable.o $(CXXFLAGS)
 
-classroom.o: classroom.c
-	$(CPP) -c classroom.c -o classroom.o $(CXXFLAGS)
+classroom.o: classroom.cpp
+	$(CPP) -c classroom.cpp -o classroom.o $(CXXFLAGS)

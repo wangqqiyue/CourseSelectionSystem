@@ -2,34 +2,6 @@
 #include "global.h"
 #endif
 
-
-#ifndef INCLUDE_WINDOWS
-#include <windows.h>
-#define INCLUDE_WINDOWS
-#endif
-
-#ifndef INCLUDE_FSTREAM
-#include <fstream>
-#define INCLUDE_FSTREAM
-#endif
-
-
-#ifndef INCLUDE_SSTREAM
-#include <sstream>
-#define INCLUDE_SSTREAM
-#endif
-
-
-#ifndef INCLUDE_CONIO
-#include <conio.h>
-#define INCLUDE_CONIO
-#endif
-
-#ifndef INCLUDE_VECTOR
-#include <vector>
-#define INCLUDE_VECTOR
-#endif
-
 #ifndef INCLUDE_TEACHER
 #include "teacher.h"
 #endif
@@ -77,61 +49,10 @@ void clear(){
 	system("cls");
 }
 
-//设置控制台标题 
-void setTitle() {
-	SetConsoleTitle(Global::titleStr);
-}
-
 //设置控制台颜色 
 void setConsoleColor(WORD color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
-}
-
-//统一的欢迎界面,获取用户身份 
-bool greeting(){
-	int choice  = -1;
-	clear(); 
-	cout << "欢迎使用" << Global::titleStr << endl;
-	choice = getChoice("请选择",Global::greetingStr,Global::GREETING_MAX);
-	clear();
-	if(Global::GREETING_CONTINUE == choice){
-		return true;
-	}else if(Global::GREETING_ABOUT == choice){
-		printAboutInfo();
-		goContinue();
-		return true;
-	}else if(Global::GREETING_MAX == choice){
-		return false;
-	}	
-}
-
-//打印帮助信息 
-bool printAboutInfo(){
-	ifstream in;
-	string line;
-	
-	//加载关于信息 
-	in.open(Global::aboutInfoFile,ios::in);
-	if(!in){
-		return false;
-	}
-
-	while(getline(in,line)){
-		cout << line << endl;
-	}		
-	in.close();	
-	
-	return true;
-}
-
-//统一的欢迎界面,获取用户身份 
-Global::Role getRole(){
-	int role = -1;
-	clear(); 
-	cout << "---------------访客身份选择-----------------" << endl;
-	role = getChoice("您的身份是：",Global::roleStr,Global::ROLE_MAX);
-	return (Global::Role)role;
 }
 
 //返回上一级 
@@ -224,7 +145,7 @@ bool login(Global::Role role){
 	vector<Student>::iterator is;
 	vector<Teacher>::iterator it;
 	int loginChoice = -1;
-	char comfirm = 'y';
+	char confirm = 'y';
 	
 	clear();
 	cout << "------"<< Global::roleStr[role] <<"登陆-----" << endl;
@@ -242,7 +163,7 @@ bool login(Global::Role role){
 		}
 	}
 	int i;
-	for(i=0;i<Global::LOGIN_RETRY_MAX && ('y' == comfirm || 'Y' == comfirm);i++){
+	for(i=0;i<Global::LOGIN_RETRY_MAX && ('y' == confirm || 'Y' == confirm);i++){
 		cout << "请输入账号名称:" ;
 		cin >> inputAccount;		
 		
@@ -250,14 +171,14 @@ bool login(Global::Role role){
 			if(inputAccount != Administrator::adminAccount){
 				cout << "账号不存在!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 		}else if(Global::TEACHER == role){
 			if(!Teacher::checkAccountExist(inputAccount,it)){
 				cout << "账号不存在!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			
@@ -265,7 +186,7 @@ bool login(Global::Role role){
 			if(!Student::checkAccountExist(inputAccount,is)){
 				cout << "账号不存在!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 		}
@@ -278,14 +199,14 @@ bool login(Global::Role role){
 			
 				cout << "密码错误!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 		}else if(Global::TEACHER == role){
 			if(inputPasswd != it->password){
 				cout << "密码错误!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			//当前登陆账号 
@@ -294,7 +215,7 @@ bool login(Global::Role role){
 			if(inputPasswd != is->password){
 				cout << "密码错误!请重新输入"  << endl;
 				cout << "是否继续?Y/N" << endl;
-				cin >> comfirm;
+				cin >> confirm;
 				continue;
 			}
 			Student::login_account =  inputAccount;
