@@ -27,38 +27,41 @@
 #endif
 
 
-using namespace std;
-
 //宏定义全局变量类 
 class Global{
 public:
 	//登陆最多尝试次数 
-	static int LOGIN_RETRY_MAX;
+	static const int LOGIN_RETRY_MAX;
 
 	//打印字符宽度 
-	static int PRINT_WIDTH;
-	static int PRINT_LONG_WIDTH;
+	static const int PRINT_WIDTH;
+	static const int PRINT_LONG_WIDTH;
 
 	//最多老师人数
-	static int TEACHER_NUMBER_MAX;
+	static const int TEACHER_NUMBER_MAX;
 	//最大教室数量 
-	static int ROOM_NUMBER_MAX; 
+	static const int ROOM_NUMBER_MAX; 
 	//最大课程数量 
-	static int COURSE_NUMBER_MAX; 
+	static const int COURSE_NUMBER_MAX; 
 	//最大课程价格 
-	static int COURSE_PRICE_MAX;
+	static const int COURSE_PRICE_MAX;
 	//最大课程人数限额 
-	static int COURSE_CAPACITY_MAX;
+	static const int COURSE_CAPACITY_MAX;
 	//最小课程人数限额 
-	static int COURSE_CAPACITY_MIN;
+	static const int COURSE_CAPACITY_MIN;
 	//最大课程人数限额 
-	static int ROOM_CAPACITY_MAX;
+	static const int ROOM_CAPACITY_MAX;
 	//最小课程人数限额 
-	static int ROOM_CAPACITY_MIN;
+	static const int ROOM_CAPACITY_MIN;
 	//身份证号长度 
-	static int ID_LENGTH;
+	static const int ID_LENGTH;
 	//手机号长度 
-	static int TEL_LENGTH;
+	static const int TEL_LENGTH;
+	//可上课时间段 
+	static const int COURSE_HOURS_LENGTH;
+	
+	//上课时段字符串 
+	static const char *courseHourStr[];	
 	
 		
 	/*用户角色定义头文件*/
@@ -172,7 +175,7 @@ bool isInputOk();
 int getChoice(const char* promptStr, const char **choiceStr, const int choiceMax);
 
 //设置密码
-string setPassword();
+std::string setPassword();
 
 //登陆
 bool login(Global::Role role);
@@ -185,8 +188,8 @@ void goContinue();
 
 //检查是否存在id 
 template<class T>
-bool checkExist(const vector<T>& vec, const T& target){
-	for(typename vector<T>::const_iterator i=vec.begin();i!=vec.end();i++){
+bool checkExist(const std::vector<T>& vec, const T& target){
+	for(typename std::vector<T>::const_iterator i=vec.begin();i!=vec.end();i++){
 		if(*i == target){
 			return true;
 		}

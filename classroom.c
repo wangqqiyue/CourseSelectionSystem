@@ -484,7 +484,25 @@ bool Classroom::changeInfo(vector<Classroom>::iterator &it){
 bool Classroom::retrieve(){
 	clear();
 	cout << "------教室信息查询-----"	<< endl;
-	recordToStream(cout,Classroom::roomList.begin());
+	cout << setw(Global::PRINT_WIDTH) << "教室编号" << setw(Global::PRINT_LONG_WIDTH) << "教室名称" << setw(Global::PRINT_WIDTH) << "教室容量" << setw(Global::PRINT_LONG_WIDTH) << "已安排课程" << endl;
+	for(vector<Classroom>::iterator i=roomList.begin();i!=roomList.end();i++){
+
+		cout << setw(Global::PRINT_WIDTH) << i->roomId << setw(Global::PRINT_LONG_WIDTH) << i->roomName << setw(Global::PRINT_WIDTH) << i->capacity ;	
+		vector<Course>::iterator c;
+		int courseTotal=0;
+		for(c=Course::courseList.begin();c!=Course::courseList.end();c++){
+			if(c->roomId == i->roomId){
+				cout <<" "<< c->courseName <<" ";
+				courseTotal++;
+			}
+		}		
+		if(0!=courseTotal){
+			cout << endl;
+		}
+		else{
+			cout << "暂无" << endl;
+		}
+	}
 	goPrevious();
 	return true;
 	

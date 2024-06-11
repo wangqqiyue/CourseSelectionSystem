@@ -42,21 +42,23 @@
 #include "administrator.h"
 #endif
 
-int Global::LOGIN_RETRY_MAX=5;
-int Global::PRINT_WIDTH=12;
-int Global::PRINT_LONG_WIDTH=24;
+const int Global::LOGIN_RETRY_MAX=5;
+const int Global::PRINT_WIDTH=12;
+const int Global::PRINT_LONG_WIDTH=24;
 
-int Global::TEACHER_NUMBER_MAX=100;
-int Global::ROOM_NUMBER_MAX=100;
-int Global::COURSE_NUMBER_MAX=100;
-int Global::COURSE_PRICE_MAX=3000;
-int Global::COURSE_CAPACITY_MAX=200;
-int Global::COURSE_CAPACITY_MIN=20;
-int Global::ROOM_CAPACITY_MAX=500;
-int Global::ROOM_CAPACITY_MIN=40;
-int Global::ID_LENGTH=18;
-int Global::TEL_LENGTH=11;
-
+const int Global::TEACHER_NUMBER_MAX=100;
+const int Global::ROOM_NUMBER_MAX=100;
+const int Global::COURSE_NUMBER_MAX=100;
+const int Global::COURSE_PRICE_MAX=3000;
+const int Global::COURSE_CAPACITY_MAX=200;
+const int Global::COURSE_CAPACITY_MIN=20;
+const int Global::ROOM_CAPACITY_MAX=500;
+const int Global::ROOM_CAPACITY_MIN=40;
+const int Global::ID_LENGTH=18;
+const int Global::TEL_LENGTH=11;
+//可上课时间段 
+const int Global::COURSE_HOURS_LENGTH=8;
+	
 const char *Global::roleStr[]={"管理员","学生","老师","返回上一级"};
 const char *Global::loginStr[]={"登陆","返回上一级"};
 const char *Global::stuLoginStr[]={"注册","登陆","返回上一级"};
@@ -67,6 +69,8 @@ const char *Global::titleStr="培训中心管理系统";
 const char *Global::teacherFuncStr[] = {"查看名下课程", "查看课程学生名单","返回上一级"}; 
 const char *Global::greetingStr[] = {"继续进入系统", "查看帮助信息", "退出系统"};
 const char *Global::aboutInfoFile="about.txt";
+//上课时段字符串 
+const char *Global::courseHourStr[] = {"6:00-8:00", "8:00-10:00", "10:00-12:00", "12:00-14:00", "14:00-16:00", "16:00-18:00", "18:00-20:00", "20:00-22:00","取消选择"};
 
 //清空控制台
 void clear(){

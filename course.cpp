@@ -40,6 +40,7 @@
 vector<Course> Course::courseList;
 
 const char* Course::dataFile = "coursesInfo.txt"; 
+int Course::courseHourTable[8] = {0}; 
 
 bool Course::storeInfo(){
 	bool result = true;
@@ -64,11 +65,11 @@ bool Course::loadInfo(){
 	ifstream in;
 	string temp;
 	
-	//加载管理员账号密码
+	//加载课程信息 
 	in.open(dataFile,ios::in);
 	getline(in,temp);
 	while(getline(in,temp)){
-		int courseId,number,classroomId,capacity;
+		int courseId,number,classroomId,capacity,courseHourIndex;
 		float price;
 		string courseName,teacherAccount;
 		
@@ -80,8 +81,9 @@ bool Course::loadInfo(){
 		ss >> teacherAccount;
 		ss >> classroomId;
 		ss >> capacity;
+		ss >> courseHourIndex;
 		
-		Course c(courseId,courseName,number,price,teacherAccount,classroomId,capacity);
+		Course c(courseId,courseName,number,price,teacherAccount,classroomId,capacity,courseHourIndex);
 		Course::courseList.push_back(c);
 	}
 	in.close();
@@ -93,7 +95,7 @@ bool Course::printTitleToStream(ostream& out){
 		cerr << "非法的流" << endl;
 		return false;
 	}
-	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数"<< setw(Global::PRINT_WIDTH) << "课程价格"<< setw(Global::PRINT_WIDTH) << "任课老师"<< setw(Global::PRINT_WIDTH) << "教室" << setw(Global::PRINT_WIDTH) <<  "人数限额" <<endl;	
+	out << setw(Global::PRINT_WIDTH)<<"课程编码" << setw(Global::PRINT_LONG_WIDTH) << "课程名" << setw(Global::PRINT_WIDTH) << "选课人数"<< setw(Global::PRINT_WIDTH) << "课程价格"<< setw(Global::PRINT_WIDTH) << "任课老师"<< setw(Global::PRINT_WIDTH) << "教室" << setw(Global::PRINT_WIDTH) <<  "人数限额" << setw(Global::PRINT_WIDTH) <<  "上课时间段" << endl;	
 	return true;
 }
 
@@ -113,9 +115,12 @@ bool Course::recordToStream(ostream& out, vector<Course>::iterator firstRecord, 
 		if(onlyOne){
 			i=firstRecord;
 		}
-		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_WIDTH)  << i->studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_WIDTH)  << i->teacherAccount << setw(Global::PRINT_WIDTH)  << i->roomId << setw(Global::PRINT_WIDTH)  << i->capacity << endl;
+		out <<  setw(Global::PRINT_WIDTH)<<i->courseId << setw(Global::PRINT_LONG_WIDTH) <<	i->courseName << setw(Global::PRINT_WIDTH)  << i->studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << i->price << setw(Global::PRINT_WIDTH)  << i->teacherAccount << setw(Global::PRINT_WIDTH)  << i->roomId << setw(Global::PRINT_WIDTH)  << i->capacity ;
 		if(onlyOne){
+			out << setw(Global::PRINT_WIDTH)  << Global::courseHourStr[i->courseHourIndex] << endl;
 			break;
+		}else{
+			out << setw(Global::PRINT_WIDTH)  << i->courseHourIndex << endl;
 		}		
 	}
 	return true;
@@ -128,7 +133,7 @@ bool Course::recordToStream(ostream& out){
 		cerr << "非法的流" << endl;
 		return false;
 	}
-	out <<  setw(Global::PRINT_WIDTH)<< courseId << setw(Global::PRINT_LONG_WIDTH) <<	 courseName << setw(Global::PRINT_WIDTH)  <<  studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << price << setw(Global::PRINT_WIDTH)  <<  teacherAccount << setw(Global::PRINT_WIDTH)  << roomId << setw(Global::PRINT_WIDTH)  << capacity << endl;
+	out <<  setw(Global::PRINT_WIDTH)<< courseId << setw(Global::PRINT_LONG_WIDTH) <<	 courseName << setw(Global::PRINT_WIDTH)  <<  studentNumber << setw(Global::PRINT_WIDTH) << fixed << setprecision(2) << price << setw(Global::PRINT_WIDTH)  <<  teacherAccount << setw(Global::PRINT_WIDTH)  << roomId << setw(Global::PRINT_WIDTH)  << capacity  << setw(Global::PRINT_WIDTH)  << Global::courseHourStr[courseHourIndex]<<  endl;
 	return true;
 }
 
@@ -212,6 +217,11 @@ bool Course::create(){
 		while('y' == comfirm || 'Y' == comfirm){
 			cout << "课程价格";
 			cin >> price;
+			
+			if(!isInputOk()){
+				continue;
+			}
+			
 			if(price < 0 || price > Global::COURSE_PRICE_MAX){
 				cout << "课程价格需要在合理范围(0--"<< Global::COURSE_PRICE_MAX <<")，请重新输入:" << endl;
 				cout << "是否继续?Y/N" << endl;
@@ -245,6 +255,10 @@ bool Course::create(){
 		while('y' == comfirm || 'Y' == comfirm){
 			cout << "课程人数限额";
 			cin >> capacity;
+			if(!isInputOk()){
+				continue;
+			}
+			
 			if(capacity < Global::COURSE_CAPACITY_MIN || capacity > Global::COURSE_CAPACITY_MAX){
 				cout << "课程人数限额需要在合理范围("<< Global::COURSE_CAPACITY_MIN <<"--"<< Global::COURSE_CAPACITY_MAX <<")"<<endl;
 				cout << "是否继续?Y/N" << endl;
@@ -283,8 +297,28 @@ bool Course::create(){
 			break;
 		}
 		
+		int courseHourChoice = -1;
+		while('y' == comfirm || 'Y' == comfirm){
+			courseHourChoice = -1;
+			courseHourChoice = getChoice("请选择上课时间段", Global::courseHourStr,Global::COURSE_HOURS_LENGTH);
+			if(Global::COURSE_HOURS_LENGTH == courseHourChoice){
+				cout <<"已取消新增"<<endl;
+			}else if(0 != courseHourTable[courseHourChoice]){
+				cout << "已有课程在该时间段" << endl;
+				cout << "是否继续?Y/N" << endl;
+				cin >> comfirm;
+				continue;
+			}else{
+				courseHourTable[courseHourChoice] = 1;
+				break;
+			}
+		}
+		if('y' != comfirm && 'Y' != comfirm){
+			break;
+		}
+		
 		//新建课程对象，并添加到向量尾部 
-		Course c(id,name,0,price,teacherAccount,roomId,capacity);
+		Course c(id,name,0,price,teacherAccount,roomId,capacity,courseHourChoice);
 		cout << "即将新增数据如下" << endl;
 		printTitleToStream(cout);
 		c.recordToStream(cout);
@@ -293,6 +327,7 @@ bool Course::create(){
 		if('y' == comfirm || 'Y' == comfirm){	
 			courseList.push_back(c);
 			cout << "已新增数据如下" << endl;
+			printTitleToStream(cout);
 			recordToStream(cout,Course::courseList.end() - 1,true);
 		}else{
 			cout <<"已取消新增"<<endl;
@@ -478,7 +513,10 @@ bool Course::del(){
 bool Course::retrieve(){
 	clear();
 	cout << "------课程信息查询-----"	<< endl;
-	recordToStream(cout,Course::courseList.begin());
+	printTitleToStream(cout);
+	for(vector<Course>::iterator i=courseList.begin();i!=courseList.end();i++){
+		recordToStream(cout,i,true);
+	}
 	goPrevious();
 	return true;
 	
